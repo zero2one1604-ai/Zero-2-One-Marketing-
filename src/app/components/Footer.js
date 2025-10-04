@@ -80,7 +80,7 @@ export default function LuxuryFooter() {
                 className="mb-4"
                 />
               <p className="text-gray-600 leading-relaxed text-sm font-light max-w-md">
-                Curating the world's finest fragrances since 1985. Each scent in our collection tells a story of craftsmanship, elegance, and timeless sophistication.
+                Curating the world&apos;s finest fragrances since 1985. Each scent in our collection tells a story of craftsmanship, elegance, and timeless sophistication.
               </p>
             </div>
 
