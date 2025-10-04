@@ -106,8 +106,7 @@ export default function LuxuryReviews() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0e1a] via-[#0f1629] to-[#1a1f3a] py-20 px-4">
       <div className="max-w-6xl mx-auto">
-        
-        {/* Header Section */}
+    
         <div className="text-center mb-16 space-y-6">
           <div className="inline-block">
             <div className="flex items-center gap-3 mb-4">
@@ -168,7 +167,7 @@ export default function LuxuryReviews() {
                   </div>
 
                   <p className="text-amber-50/80 text-lg md:text-xl leading-relaxed font-light mb-8 italic">
-                    "{review.review}"
+                    {review.review}
                   </p>
 
                   <div className="inline-block bg-amber-500/10 border border-amber-500/30 rounded-full px-6 py-2 mb-8">
@@ -260,7 +259,7 @@ export default function LuxuryReviews() {
               </div>
               
               <p className="text-amber-50/70 text-sm leading-relaxed font-light mb-6 line-clamp-3">
-                "{review.review}"
+                {review.review}
               </p>
               
               <div className="flex items-center gap-3 pt-4 border-t border-amber-200/10">
