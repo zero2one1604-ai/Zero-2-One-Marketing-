@@ -182,7 +182,6 @@ export default function LuxuryPerfumeGallery() {
     disabled={cartItems.has(perfume.id)}
     className="w-full py-3.5 bg-gradient-to-br cursor-pointer from-[#d4af37] via-[#f4e5c2] to-[#d4af37] text-[#1a1a1a] text-xs tracking-[0.15em] uppercase font-semibold rounded shadow-xl shadow-black/40 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-700/50 hover:from-[#f0d678] hover:via-[#fff5dc] hover:to-[#f0d678] active:scale-[0.98] border border-[#b8941f] disabled:from-slate-700 disabled:via-slate-600 disabled:to-slate-700 disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed disabled:border-slate-600 flex items-center justify-center gap-2 relative overflow-hidden"
 >
-    {/* Metallic shine overlay */}
     <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none" />
     
     <span className="relative z-10 flex items-center gap-2">

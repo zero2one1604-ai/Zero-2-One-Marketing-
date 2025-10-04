@@ -108,13 +108,6 @@ export default function LuxuryReviews() {
       <div className="max-w-6xl mx-auto">
     
         <div className="text-center mb-16 space-y-6">
-          <div className="inline-block">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-amber-500/50" />
-              <Quote className="w-8 h-8 text-amber-400 opacity-60" />
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-amber-500/50" />
-            </div>
-          </div>
           
           <h2 className="text-5xl md:text-6xl font-light text-white tracking-[0.25em] uppercase">
             Client Stories

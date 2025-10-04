@@ -3,6 +3,7 @@ import Link from 'next/link'
 import LuxuryPerfumeGallery from './components/FeaturedCollection'
 import LuxuryReviews from './components/CustomerReviews'
 import LuxuryFooter from './components/Footer'
+import LuxuryNewsletterPopup from './components/NewsletterPopup'
 
 export default function Home () {
   return (
@@ -22,6 +23,7 @@ export default function Home () {
 
       <LuxuryPerfumeGallery />
       <LuxuryReviews />
+      <LuxuryNewsletterPopup/>
     </div>
     <LuxuryFooter />
     </>
