@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Heart, Globe, Users, Award, Leaf, Sparkles, HandHeart, Package, Target, Shield } from 'lucide-react';
+import { Heart, Globe, Users, Award, Leaf, HandHeart, Package, Target, Shield } from 'lucide-react';
 import Image from 'next/image';
 import LuxuryFooter from '../components/Footer';
 export default function AboutUsPage() {
@@ -21,7 +21,7 @@ export default function AboutUsPage() {
     {
       icon: Users,
       title: "Women Empowerment",
-      description: "We're committed to empowering women in our workforce and communities, creating opportunities for growth and leadership."
+      description: "We are committed to empowering women in our workforce and communities, creating opportunities for growth and leadership."
     },
     {
       icon: Award,
@@ -94,11 +94,11 @@ export default function AboutUsPage() {
               
               <div className="absolute -bottom-8 -right-8 bg-gradient-to-br from-[#d4af37] via-[#f4e5c2] to-[#d4af37] p-8 rounded-xl shadow-2xl border border-[#b8941f]">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none rounded-xl" />
                   <div className="relative z-10">
                     <div className="text-4xl font-light text-[#1a1a1a] mb-2">2015</div>
                     <p className="text-sm text-[#1a1a1a] tracking-wider uppercase font-semibold">Founded</p>
                   </div>
+                 
                 </div>
               </div>
             </div>
@@ -127,11 +127,11 @@ export default function AboutUsPage() {
                 </p>
 
                 <p>
-                  What started as a personal quest to protect our family became our life's mission. We spent countless hours researching, testing, and perfecting formulas that would be gentle enough for children yet sophisticated enough for adults.
+                  What started as a personal quest to protect our family became our life&apos;s mission. We spent countless hours researching, testing, and perfecting formulas that would be gentle enough for children yet sophisticated enough for adults.
                 </p>
 
                 <p>
-                  Every product we create is one we use personally with our own families. This isn't just business—it's personal. We understand that when you choose our fragrances, you're trusting us with the people you love most.
+                  Every product we create is one we use personally with our own families. This is not just business, it is personal. We understand that when you choose our fragrances, you are trusting us with the people you love most.
                 </p>
               </div>
 
@@ -159,7 +159,7 @@ export default function AboutUsPage() {
             </h2>
             
             <p className="text-xl text-amber-100/80 font-light leading-relaxed max-w-4xl mx-auto">
-              To become the world's most trusted luxury fragrance brand by making safe, sophisticated scents accessible to families everywhere, transforming the way people experience fragrance.
+              To become the world&apos;s most trusted luxury fragrance brand by making safe, sophisticated scents accessible to families everywhere, transforming the way people experience fragrance.
             </p>
           </div>
 
@@ -210,7 +210,7 @@ export default function AboutUsPage() {
             </h2>
             
             <p className="text-xl text-amber-100/80 font-light leading-relaxed max-w-3xl mx-auto">
-              Our values aren't just words on a wall—they're the principles that guide every decision we make.
+              Our values are not just words on a wall, they are the principles that guide every decision we make.
             </p>
           </div>
 
@@ -294,11 +294,11 @@ export default function AboutUsPage() {
 
               <div className="space-y-6 text-amber-100/80 leading-relaxed font-light text-lg">
                 <p>
-                  We believe that luxury and sustainability aren't mutually exclusive. In fact, we see environmental responsibility as the ultimate luxury—caring for the planet we all call home.
+                  We believe that luxury and sustainability are not mutually exclusive. In fact, we see environmental responsibility as the ultimate luxury—caring for the planet we all call home.
                 </p>
                 
                 <p>
-                  Our commitment extends beyond just creating beautiful fragrances. We've implemented comprehensive sustainability practices across every aspect of our business.
+                  Our commitment extends beyond just creating beautiful fragrances. We have implemented comprehensive sustainability practices across every aspect of our business.
                 </p>
               </div>
 

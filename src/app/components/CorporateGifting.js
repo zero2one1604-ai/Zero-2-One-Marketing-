@@ -81,7 +81,7 @@ export default function CorporateGifting() {
     {
       icon: Gift,
       title: "Curated Selection",
-      description: "We'll help you choose the perfect fragrances"
+      description: "We will help you choose the perfect fragrances"
     }
   ];
 
@@ -182,7 +182,6 @@ export default function CorporateGifting() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6 space-y-4">
                   <div>
                     <h3 className="text-2xl font-light text-white tracking-wide mb-2">
@@ -213,7 +212,6 @@ export default function CorporateGifting() {
           </div>
         </div>
 
-        {/* Customization Options */}
         <div className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-light text-white tracking-[0.2em] uppercase mb-4">
@@ -354,7 +352,7 @@ export default function CorporateGifting() {
                   Thank You!
                 </h3>
                 <p className="text-amber-100/70 text-lg font-light">
-                  We've received your request and will contact you shortly.
+                  We have received your request and will contact you shortly.
                 </p>
               </div>
             )}
