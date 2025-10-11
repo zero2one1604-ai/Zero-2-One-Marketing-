@@ -389,7 +389,7 @@ export default function LuxuryShopPage() {
             </h2>
             
             <p className="text-amber-100/70 text-lg leading-relaxed font-light mb-8">
-              We're curating an exceptional selection of luxury fragrances to complement our solid perfume collection.
+              We are curating an exceptional selection of luxury fragrances to complement our solid perfume collection.
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 pt-6">

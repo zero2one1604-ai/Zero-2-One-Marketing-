@@ -329,7 +329,7 @@ export default function AboutUsPage() {
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
                     <p className="text-white text-lg font-light italic leading-relaxed">
-                      "Every bottle we create is a step towards a more beautiful, sustainable future."
+                      &quot;Every bottle we create is a step towards a more beautiful, sustainable future.&quot;
                     </p>
                   </div>
                 </div>
