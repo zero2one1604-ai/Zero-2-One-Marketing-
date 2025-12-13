@@ -85,7 +85,7 @@ export default function AboutUsPage() {
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&h=1000&fit=crop"
+                  src="images/saavi cover.png"
                   alt="Our Story"
                   className="w-full h-[600px] object-cover"
                 />

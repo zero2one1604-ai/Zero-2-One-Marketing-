@@ -64,24 +64,11 @@ export default function LuxuryNewsletterPopup() {
           <div className="grid md:grid-cols-2">
             <div className="relative h-64 md:h-auto overflow-hidden bg-gradient-to-br from-[#0a0e1a] via-[#1a2942] to-[#0a1628]">
               <img
-                src="https://images.unsplash.com/photo-1588405748880-12d1d2a59d75?w=800&h=1000&fit=crop"
+                src="/images/welcome.jpg"
                 alt="Luxury Perfume"
-                className="w-full h-full object-cover opacity-60 mix-blend-overlay"
+                className="w-full h-full object-cover "
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628] via-transparent to-transparent" />
-              
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4 px-6">
-                  <Sparkles className="w-12 h-12 text-amber-400 mx-auto animate-pulse" />
-                  <h3 className="text-3xl md:text-4xl font-light text-white tracking-[0.2em]">
-                    EXCLUSIVE
-                  </h3>
-                  <p className="text-amber-100/80 text-sm tracking-wider uppercase">
-                    Welcome Offer Inside
-                  </p>
-                </div>
-              </div>
 
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
             </div>
