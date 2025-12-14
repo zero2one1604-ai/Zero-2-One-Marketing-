@@ -11,47 +11,47 @@ export default function LuxuryReviews() {
   const reviews = [
     {
       id: 1,
-      name: "Isabella Chen",
-      location: "New York, NY",
+      name: "Priya Sharma",
+      location: "Mumbai, MH",
       rating: 5,
       date: "September 2024",
       title: "Absolutely Divine",
-      review: "The Midnight Essence has become my signature scent. The complexity of the oud and vanilla creates an intoxicating aura that lasts from morning meetings to evening galas. I have received countless compliments.",
+      review: "The Midnight Essence has become my signature scent. The complexity of the oud and vanilla creates an intoxicating aura that lasts from morning meetings to evening parties. I have received countless compliments.",
       product: "Midnight Essence",
       verified: true,
       likes: 247,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1544717297-fa95b4ee3c25?w=150&h=150&fit=crop" // Changed image to one that might better represent the new name
     },
     {
       id: 2,
-      name: "Alexander Wright",
-      location: "London, UK",
+      name: "Rohan Kapoor",
+      location: "Delhi, DL",
       rating: 5,
       date: "August 2024",
       title: "Unparalleled Quality",
-      review: "As someone who has collected fragrances for over 20 years, I can confidently say this rivals the finest houses in Paris. The longevity is exceptional and the sillage is perfectly balanced, sophisticated without being overpowering.",
+      review: "As someone who has collected fragrances for over 20 years, I can confidently say this rivals the finest houses. The longevity is exceptional and the sillage is perfectly balanced—sophisticated without being overpowering. *Superb!*",
       product: "Royal Oud",
       verified: true,
       likes: 189,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1506794778202-dfa806963240?w=150&h=150&fit=crop"
     },
     {
       id: 3,
-      name: "Sofia Martinez",
-      location: "Dubai, UAE",
+      name: "Anjali Menon",
+      location: "Bangalore, KA",
       rating: 5,
       date: "September 2024",
       title: "Pure Elegance",
-      review: "Crystal Dawn is breathtaking. The white tea and iris blend creates such an ethereal, clean sophistication. It&apos;s become my daily luxury, understated yet unmistakably premium. Worth every penny.",
+      review: "Crystal Dawn is breathtaking. The white tea and iris blend creates such an ethereal, clean sophistication. It's become my daily luxury, understated yet unmistakably premium. *Paisa vasool* (worth every penny).",
       product: "Crystal Dawn",
       verified: true,
       likes: 312,
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1620888279867-00c8005391c4?w=150&h=150&fit=crop"
     },
     {
       id: 4,
-      name: "James Morrison",
-      location: "Los Angeles, CA",
+      name: "Siddharth Reddy",
+      location: "Hyderabad, TS",
       rating: 5,
       date: "July 2024",
       title: "Investment Worthy",
@@ -59,20 +59,20 @@ export default function LuxuryReviews() {
       product: "Noir Mystique",
       verified: true,
       likes: 203,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1601004890734-9277c0199d1f?w=150&h=150&fit=crop"
     },
     {
       id: 5,
-      name: "Olivia Bernard",
-      location: "Paris, France",
+      name: "Meera Gupta",
+      location: "Kolkata, WB",
       rating: 5,
       date: "August 2024",
       title: "Magnifique",
-      review: "Velvet Rose captures the essence of a Parisian rose garden at dawn. The sandalwood base gives it such warmth and sensuality. I have worked in the fragrance industry for 15 years, this is exceptional artistry.",
+      review: "Velvet Rose captures the essence of a beautiful rose garden. The sandalwood base gives it such warmth and sensuality. I have always preferred high-end scents, and this is truly exceptional artistry.",
       product: "Velvet Rose",
       verified: true,
       likes: 428,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop"
     }
   ];
 
@@ -104,23 +104,23 @@ export default function LuxuryReviews() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e1a] via-[#0f1629] to-[#1a1f3a] py-20 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#1B3A5F] via-[#1c3858] to-[#1B3A5F] py-10 md:py-20 px-4 border-t-4 md:border-t-8 border-gold-texture">
       <div className="max-w-6xl mx-auto">
     
-        <div className="text-center mb-16 space-y-6">
+        <div className="text-center mb-5 md:mb-16 md:space-y-6">
           
-          <h2 className="text-5xl md:text-6xl font-light text-white tracking-[0.25em] uppercase">
+          <h2 className="text-lg md:text-5xl font-light the-seasons text-white tracking-[0.25em] uppercase">
             Client Stories
           </h2>
           
-          <p className="text-amber-100/60 text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
+          <p className="text-amber-100/60 text-xs md:text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
             Discover why discerning individuals worldwide choose our collection
           </p>
 
           <div className="flex items-center justify-center gap-6 pt-6">
             <div className="text-center">
               <div className="text-5xl font-light text-white mb-2">4.9</div>
-              <div className="flex gap-1 mb-2">
+              <div className="flex gap-1 mb-2 items-center justify-center">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                 ))}
@@ -141,11 +141,10 @@ export default function LuxuryReviews() {
                     : 'opacity-0 absolute inset-0 pointer-events-none'
                 }`}
               >
-                <div className="bg-gradient-to-br from-[#1a2540]/80 to-[#0f1629]/80 backdrop-blur-xl rounded-2xl p-10 md:p-14 border border-amber-200/10 shadow-2xl">
+                <div className="bg-gradient-to-br from-[#1a2540]/80 to-[#0f1629]/80 backdrop-blur-xl rounded-2xl p-5 md:p-14 border border-amber-200/10 shadow-2xl">
                   
-                  <Quote className="w-16 h-16 text-amber-500/20 mb-6" />
                   
-                  <h3 className="text-2xl md:text-3xl font-light text-white mb-4 tracking-wide">
+                  <h3 className="text-lg md:text-3xl font-light text-white mb-4 tracking-wide">
                     {review.title}
                   </h3>
 
@@ -159,23 +158,23 @@ export default function LuxuryReviews() {
                     ))}
                   </div>
 
-                  <p className="text-amber-50/80 text-lg md:text-xl leading-relaxed font-light mb-8 italic">
+                  <p className="text-amber-50/80 text-sm md:text-xl text-justify leading-relaxed font-light mb-4 md:mb-8 italic">
                     {review.review}
                   </p>
 
-                  <div className="inline-block bg-amber-500/10 border border-amber-500/30 rounded-full px-6 py-2 mb-8">
+                  <div className="inline-block bg-amber-500/10 border border-amber-500/30 rounded-full px-3 py-1 md:px-6 md:py-2 mb-2 md:mb-8">
                     <p className="text-amber-300 text-xs tracking-widest uppercase">
                       {review.product}
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-6 border-t border-amber-200/10">
+                  <div className="flex items-center justify-between pt-2 md:pt-6 border-t border-amber-200/10">
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img
                           src={review.image}
                           alt={review.name}
-                          className="w-16 h-16 rounded-full object-cover border-2 border-amber-400/30"
+                          className="md:w-16 md:h-16 h-12 w-12 rounded-full object-cover border-2 border-amber-400/30"
                         />
                         {review.verified && (
                           <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1">
@@ -186,14 +185,14 @@ export default function LuxuryReviews() {
                       
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="text-white font-medium tracking-wide">
+                          <h4 className="text-white text-sm md:text-base font-medium tracking-wide">
                             {review.name}
                           </h4>
                           {review.verified && (
                             <span className="text-blue-400 text-xs">Verified</span>
                           )}
                         </div>
-                        <p className="text-amber-100/50 text-sm">
+                        <p className="text-amber-100/50 text-xs md:text-sm">
                           {review.location}
                         </p>
                         <p className="text-amber-100/40 text-xs mt-1">
@@ -204,10 +203,10 @@ export default function LuxuryReviews() {
 
                     <button
                       onClick={() => toggleLike(review.id)}
-                      className="group flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/30 transition-all duration-300"
+                      className="group flex items-center gap-2 md:px-4 md:py-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/30 transition-all duration-300"
                     >
                       <ThumbsUp 
-                        className={`w-5 h-5 transition-all duration-300 ${
+                        className={`md:w-5 md:h-5 w-4 h-4 transition-all duration-300 ${
                           likedReviews.has(review.id)
                             ? 'fill-amber-400 text-amber-400'
                             : 'text-amber-100/50 group-hover:text-amber-400'
@@ -223,22 +222,22 @@ export default function LuxuryReviews() {
             ))}
           </div>
 
-          <div className="flex justify-center gap-3 mt-8">
+          <div className="flex justify-center gap-3 mt-4 md:mt-8">
             {reviews.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToReview(index)}
                 className={`transition-all duration-500 rounded-full ${
                   index === activeReview
-                    ? 'w-12 h-3 bg-gradient-to-r from-amber-500 to-amber-600'
-                    : 'w-3 h-3 bg-white/20 hover:bg-white/40'
+                    ? 'md:w-12 md:h-3 w-8 h-2 bg-gradient-to-r from-amber-500 to-amber-600'
+                    : 'md:w-3 md:h-3 h-2 w-2 bg-white/20 hover:bg-white/40'
                 }`}
               />
             ))}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mt-20">
+        <div className="md:grid md:grid-cols-3 gap-6 mt-5 hidden md:mt-20">
           {reviews.slice(0, 3).map((review, index) => (
             <div
               key={review.id}
@@ -270,24 +269,38 @@ export default function LuxuryReviews() {
           ))}
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-8 mt-16 pt-16 border-t border-amber-200/10">
+        <div className="flex flex-wrap justify-center items-center gap-4 mt-8 md:gap-8 md:mt-16 pt-8 md:pt-16 border-t border-amber-200/10">
           <div className="text-center">
-            <div className="text-3xl font-light text-white mb-2">1000+</div>
-            <p className="text-amber-100/60 text-xs tracking-wider uppercase">5-Star Reviews</p>
+            <div className="text-sm md:text-3xl font-light text-white md:mb-2">1000+</div>
+            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">5-Star Reviews</p>
           </div>
           <div className="h-12 w-px bg-amber-200/20" />
           <div className="text-center">
-            <div className="text-3xl font-light text-white mb-2">98%</div>
-            <p className="text-amber-100/60 text-xs tracking-wider uppercase">Satisfaction Rate</p>
+            <div className="text-sm md:text-3xl font-light text-white md:mb-2">98%</div>
+            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">Satisfaction Rate</p>
           </div>
           <div className="h-12 w-px bg-amber-200/20" />
           <div className="text-center">
-            <div className="text-3xl font-light text-white mb-2">50K+</div>
-            <p className="text-amber-100/60 text-xs tracking-wider uppercase">Happy Clients</p>
+            <div className="text-sm md:text-3xl font-light text-white md:mb-2">50K+</div>
+            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">Happy Clients</p>
           </div>
         </div>
 
       </div>
+      <style jsx global>{`
+    .border-gold-texture {
+        /* Complex gradient mimicking polished gold */
+        border-image: linear-gradient(
+            to right, 
+            #bf953f,   /* Deep Gold/Brown */
+            #fcf7c5,   /* Bright Highlight */
+            #b38728,   /* Mid Gold */
+            #fcf7c5,   /* Bright Highlight */
+            #d4af37,   /* Standard Gold */
+            #bf953f    /* Deep Gold/Brown */
+        ) 1; /* Stretch the border image */
+    }
+`}</style>
     </div>
   );
 }

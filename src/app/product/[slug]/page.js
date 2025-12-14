@@ -1,4 +1,3 @@
-// app/product/[slug]/page.js
 import { notFound } from 'next/navigation';
 import ProductDetailClient from './ProductDetailClient';
 import products from '../../data/products';
@@ -9,7 +8,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({ params }) {
   const product = products.find((p) => p.slug === params.slug);
 
