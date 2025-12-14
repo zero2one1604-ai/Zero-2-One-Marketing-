@@ -16,7 +16,7 @@ export default function Home () {
         height={600}
         width={1920}
         priority
-        className='hidden md:block'
+        className='hidden'
     />
     <Image
         src='/images/mobileabout.png'
@@ -24,7 +24,7 @@ export default function Home () {
         height={300}
         width={768}
         priority
-        className='block md:hidden'
+        className='hidden'
     />
 
     <div className='absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0a0e1a] to-transparent' />
