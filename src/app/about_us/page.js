@@ -88,7 +88,7 @@ export default function AboutUsPage() {
               <div className="relative order-2 lg:order-1">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/savicover.png"
+                    src="/images/savicover.jpg"
                     alt="Saavi Perfumes Story - Family Business Since 2015"
                     width={800}
                     height={600}
@@ -97,14 +97,6 @@ export default function AboutUsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/80 via-transparent to-transparent" />
                 </div>
                 
-                <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 md:-bottom-8 md:-right-8 bg-gradient-to-br from-[#d4af37] via-[#f4e5c2] to-[#d4af37] p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl border border-[#b8941f]">
-                  <div className="relative">
-                    <div className="relative z-10">
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-light text-[#1a1a1a] mb-1 sm:mb-2">2015</div>
-                      <p className="text-xs sm:text-sm text-[#1a1a1a] tracking-wider uppercase font-semibold">Founded</p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <div className="sm:space-y-8 order-1 lg:order-2">

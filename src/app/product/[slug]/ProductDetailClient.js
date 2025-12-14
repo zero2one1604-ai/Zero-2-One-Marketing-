@@ -117,9 +117,7 @@ export default function ProductDetailClient ({ product }) {
                 
                 <div className='space-y-3 sm:space-y-4 pb-6 sm:pb-8 border-b border-amber-100/5'>
                   <div className='flex items-center justify-between'>
-                    <span className='text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-amber-300/80 font-medium'>
-                      {product.brand}
-                    </span>
+                  
                     <div className='flex items-center gap-2 sm:gap-4'>
                       <button
                         onClick={() => setIsFavorite(!isFavorite)}

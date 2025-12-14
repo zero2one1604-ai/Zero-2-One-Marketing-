@@ -24,48 +24,46 @@ export default function LuxuryFooter() {
       
       <div className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="grid grid-cols-4 gap-2 lg:gap-8">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left group">
-              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                <Truck className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
-              </div>
-              <div>
-                <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Free Shipping</h4>
-                <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">On orders over $100</p>
-              </div>
+    {/* Change grid-cols-4 to grid-cols-3 to center 3 items naturally */}
+    <div className="grid grid-cols-3 gap-2 lg:gap-8">
+        
+        {/* Feature 1 */}
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
+            <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                {/* Assuming Shield is a component */}
+                <Shield className="w-4 h-4 md:w-6 md:h-6 text-amber-600" /> 
             </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left group">
-              <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                <Shield className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
-              </div>
-              <div>
+            <div>
                 <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Secure Payment</h4>
                 <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">100% protected</p>
-              </div>
             </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left group">
-              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+        </div>
+        
+        {/* Feature 2 */}
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
+            <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+              
                 <Award className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
-              </div>
-              <div>
+            </div>
+            <div>
                 <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Authentic Products</h4>
                 <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">Guaranteed genuine</p>
-              </div>
             </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left group">
-              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+        </div>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
+            <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+          
                 <CreditCard className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
-              </div>
-              <div>
+            </div>
+            <div>
                 <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Easy Returns</h4>
                 <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">30-day guarantee</p>
-              </div>
             </div>
-          </div>
         </div>
+        
+    </div>
+</div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 md:py-12 sm:py-16">
@@ -78,7 +76,7 @@ export default function LuxuryFooter() {
                   alt="Luxe Fragrances Logo"
                   width={120}
                   height={40}
-                  className="md:w-[150px] w-[90px] h-fit mx-auto md:h-[50px]"
+                  className="md:w-[150px] w-[90px] h-fit mx-auto md:mx-0 md:h-fit"
                 />
               <p className="text-gray-600 leading-relaxed mt-4 text-xs text-center md:text-left md:text-sm font-light max-w-md">
                 Curating the world&apos;s finest fragrances since 1985. Each scent in our collection tells a story of craftsmanship, elegance, and timeless sophistication.
@@ -170,29 +168,28 @@ export default function LuxuryFooter() {
             </ul>
           </div>
 
-          {/* Contact Info - Responsive */}
           <div className="text-center sm:text-left">
             <h4 className="text-xs sm:text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4 sm:mb-6">
               Contact
             </h4>
             <ul className="space-y-3 sm:space-y-4">
-              <li className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 group">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 mt-0 sm:mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-600 font-light leading-relaxed text-center sm:text-left">
-                  B-12, PVR Cinema<br />
-                  Saket, Delhi-110016
-                </span>
-              </li>
+             
               <li className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 group">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0" />
-                <a href="tel:+919876543210" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light">
-                  +91 98765 43210
+                <a href="tel:+918448444373" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light">
+                  +91 8448 444 373
+                </a>
+                 <a href="tel:+918800504373" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light">
+                  +91 8800 504 373
                 </a>
               </li>
-              <li className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 group">
+              <li className="flex flex-col items-center justify-center sm:justify-start gap-2 sm:gap-3 group">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0" />
-                <a href="mailto:hello@saavi.com" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light break-all">
-                  hello@saavi.com
+                <a href="mailto:info@saaviskincare.com" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light break-all">
+                  info@saaviskincare.com
+                </a>
+                <a href="mailto:support@saaviskincare.com" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light break-all">
+                  support@saaviskincare.com
                 </a>
               </li>
             </ul>
@@ -208,7 +205,6 @@ export default function LuxuryFooter() {
         </div>
       </div>
 
-      {/* Bottom Bar - Responsive */}
       <div className="border-t border-gray-200 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
@@ -216,7 +212,6 @@ export default function LuxuryFooter() {
               © 2025 Saavi. All rights reserved. | Designed and Curated by Zero2One Marketing
             </p>
             
-            {/* Links - Responsive */}
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 order-3 md:order-2">
               <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-600 transition-colors duration-300 font-light whitespace-nowrap">
                 Privacy Policy
@@ -229,7 +224,6 @@ export default function LuxuryFooter() {
               </a>
             </div>
 
-            {/* Payment Methods - Responsive */}
             <div className="flex items-center gap-1.5 sm:gap-2 order-1 md:order-3">
               <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gray-200 rounded flex items-center justify-center text-[7px] sm:text-[8px] font-semibold text-gray-600">
                 VISA

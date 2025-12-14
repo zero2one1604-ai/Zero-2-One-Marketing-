@@ -45,24 +45,25 @@ export default function LuxuryNewsletterPopup() {
         onClick={handleClose}
       />
 
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pointer-events-none">
         <div 
-          className={`relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden pointer-events-auto transition-all duration-500 ${
+          className={`relative bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden pointer-events-auto transition-all duration-500 ${
             isClosing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
           }`}
           style={{
-            animation: isClosing ? 'none' : 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+            animation: isClosing ? 'none' : 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            maxHeight: 'calc(100vh - 24px)'
           }}
         >
           <button
             onClick={handleClose}
-            className="absolute cursor-pointer top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 flex items-center justify-center hover:bg-gray-100 hover:scale-110 transition-all duration-300 group shadow-lg"
+            className="absolute cursor-pointer top-3 right-3 sm:top-4 sm:right-4 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 flex items-center justify-center hover:bg-gray-100 hover:scale-110 transition-all duration-300 group shadow-lg"
           >
-            <X className="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 group-hover:text-gray-900 transition-colors" />
           </button>
 
-          <div className="grid md:grid-cols-2">
-            <div className="relative h-64 md:h-auto overflow-hidden bg-gradient-to-br from-[#0a0e1a] via-[#1a2942] to-[#0a1628]">
+          <div className="grid md:grid-cols-2 max-h-[calc(100vh-24px)] overflow-y-auto">
+            <div className="relative h-48 sm:h-64 md:h-auto overflow-hidden bg-gradient-to-br from-[#0a0e1a] via-[#1a2942] to-[#0a1628]">
               <img
                 src="/images/welcome.jpg"
                 alt="Luxury Perfume"
@@ -73,24 +74,24 @@ export default function LuxuryNewsletterPopup() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
             </div>
 
-            <div className="p-8 md:p-12 flex flex-col justify-center">
+            <div className="p-6 sm:p-8 md:p-12 flex flex-col justify-center">
               {!isSubscribed ? (
                 <>
-                  <div className="inline-flex items-center gap-2 mb-6">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-                      <Gift className="w-6 h-6 text-amber-600" />
+                  <div className="hidden md:inline-flex items-center gap-2 mb-4 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                      <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
                     </div>
                     <div className="h-px flex-1 bg-gradient-to-r from-amber-200 to-transparent" />
                   </div>
 
-                  <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-3 tracking-wide">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-2 sm:mb-3 tracking-wide">
                     Join Our Circle
                   </h2>
-                  <p className="text-gray-600 text-base leading-relaxed mb-6 font-light">
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 font-light">
                     Subscribe to receive exclusive access to new fragrances, insider stories, and a special welcome gift.
                   </p>
 
-                  <div className="space-y-3 mb-8">
+                  <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                     {[
                       '15% off your first order',
                       'Early access to new collections',
@@ -107,48 +108,48 @@ export default function LuxuryNewsletterPopup() {
                         <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                           <span className="text-amber-600 text-xs font-semibold">✓</span>
                         </div>
-                        <p className="text-sm text-gray-700 font-light">{benefit}</p>
+                        <p className="text-xs sm:text-sm text-gray-700 font-light">{benefit}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <Mail className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email address"
-                        className="w-full pl-12 pr-4 py-4 border placeholder:text-black/50 text-black border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
+                        className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 border placeholder:text-black/50 text-black border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
                         onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                       />
                     </div>
 
                     <button
                       onClick={handleSubscribe}
-                      className="w-full cursor-pointer py-4 bg-gradient-to-br from-[#d4af37] via-[#f4e5c2] to-[#d4af37] text-[#1a1a1a] text-sm tracking-[0.15em] uppercase font-semibold rounded-lg shadow-xl shadow-black/20 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-700/30 hover:from-[#f0d678] hover:via-[#fff5dc] hover:to-[#f0d678] active:scale-[0.98] relative overflow-hidden border border-[#b8941f]"
+                      className="w-full cursor-pointer py-3 sm:py-4 bg-gradient-to-br from-[#d4af37] via-[#f4e5c2] to-[#d4af37] text-[#1a1a1a] text-xs sm:text-sm tracking-[0.15em] uppercase font-semibold rounded-lg shadow-xl shadow-black/20 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-700/30 hover:from-[#f0d678] hover:via-[#fff5dc] hover:to-[#f0d678] active:scale-[0.98] relative overflow-hidden border border-[#b8941f]"
                     >
                       <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none" />
                       <span className="relative z-10">Claim Your Gift</span>
                     </button>
                   </div>
 
-                  <p className="text-xs text-gray-500 text-center mt-6 font-light">
+                  <p className="text-xs text-gray-500 text-center mt-4 sm:mt-6 font-light">
                     We respect your privacy. Unsubscribe anytime.
                   </p>
                 </>
               ) : (
-                <div className="text-center py-8 animate-fadeIn">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center mx-auto mb-6 animate-scaleIn">
-                    <svg className="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-6 sm:py-8 animate-fadeIn">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center mx-auto mb-4 sm:mb-6 animate-scaleIn">
+                    <svg className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-wide">
+                  <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-2 sm:mb-3 tracking-wide">
                     Welcome to Saavi!
                   </h3>
-                  <p className="text-gray-600 font-light">
+                  <p className="text-sm sm:text-base text-gray-600 font-light">
                     Check your email for your exclusive welcome gift.
                   </p>
                 </div>
