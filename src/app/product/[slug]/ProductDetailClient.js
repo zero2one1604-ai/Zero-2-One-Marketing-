@@ -57,8 +57,8 @@ export default function ProductDetailClient ({ product }) {
 
   return (
     <>
-      <div className='min-h-screen bg-gradient-to-br from-[#0a0e1a] via-[#0f1629] to-[#1a1f3a] text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
-        <div className='border-b border-amber-100/5 bg-[#050B1A]/90 backdrop-blur-md sticky top-0 z-50'>
+      <div className='min-h-screen bg-gradient-to-br from-[#1c3858] via-[#1B3A5F] to-[#1c3858] text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
+        <div className='bg-gradient-to-r from-[#0B1929] via-[#1B3A5F] to-[#0B1929] backdrop-blur-md sticky top-0 z-50'>
           <div className='max-w-[1440px] mx-auto px-4 sm:px-6 py-3 sm:py-4'>
             <div className='flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-slate-500 font-medium overflow-x-auto'>
               <Link href='/' className='hover:text-amber-400 transition-colors whitespace-nowrap'>

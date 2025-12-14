@@ -117,7 +117,7 @@ export default function LuxuryFooter() {
             <div className="flex gap-2 sm:gap-3 justify-center sm:justify-start">
               {[
                 { icon: Facebook, href: '#' },
-                { icon: Instagram, href: '#' },
+                { icon: Instagram, href: 'https://www.instagram.com/saaviskincareofficial' },
                 { icon: Twitter, href: '#' },
                 { icon: Linkedin, href: '#' }
               ].map((social, index) => (
