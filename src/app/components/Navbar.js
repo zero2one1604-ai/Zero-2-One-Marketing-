@@ -22,9 +22,9 @@ export default function Navbar() {
 
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm">
-      <div className="py-2 overflow-hidden bg-gradient-to-r from-[#0B1929] via-[#1B3A5F] to-[#0B1929] shadow-2xl border-y border-amber-200/20 backdrop-blur-sm">
+      <div className="py-2 overflow-hidden bg-gradient-to-br border-[#bfbfbf] from-[#f8f8f8] via-[#dcdcdc] to-[#f1f1f1] shadow-2xl border-y  backdrop-blur-sm">
         <div className="marquee-container">
-          <span className="marquee-content uppercase text-white text-xs md:text-sm font-light tracking-[0.15em] whitespace-nowrap">
+          <span className="marquee-content uppercase text-[#1a1a1a] text-xs md:text-sm font-light tracking-[0.15em] whitespace-nowrap">
             {repeatedContent}
           </span>
         </div>

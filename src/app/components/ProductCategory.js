@@ -67,15 +67,15 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1c3858] via-[#1B3A5F] to-[#1c3858]">
+    <div className="min-h-screen bg-[#F6F4EF]">
       
-      <div className="border-b border-amber-200/10 bg-gradient-to-r from-[#0a1628]/80 to-[#1a2942]/80 backdrop-blur-sm">
+      <div className="border-b border-[#F6F4EF] bg-amber-50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-12 sm:py-16">
           <div className="text-center md:space-y-3 sm:space-y-4">
-            <h1 className="the-seasons text-2xl md:text-5xl font-light text-white tracking-[0.2em] sm:tracking-[0.25em] uppercase">
+            <h1 className="the-seasons text-2xl md:text-5xl font-light text-[#1C1C1A] tracking-[0.2em] sm:tracking-[0.25em] uppercase">
                 Solid Perfumes
               </h1>
-            <p className="text-amber-100/60 text-xs md:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase font-light">
+            <p className="text-[#6E6A61] text-xs md:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase font-light">
               Portable luxury that travels with you
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
               onMouseEnter={() => setHoveredId(product.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="relative bg-gradient-to-b from-[#1a2540] to-[#0f1629] rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20">
+              <div className="relative bg-white rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20">
                 
                 <div className="relative h-64 sm:h-72 md:h-100 overflow-hidden">
                   <Image
@@ -192,7 +192,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
                     sizes="(max-width: 480px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
                   
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1629] via-transparent to-transparent opacity-60" />
+                  <div className="absolute hidden inset-0 bg-gradient-to-t from-[#0f1629] via-transparent to-transparent opacity-60" />
                   
                   <button
                     onClick={(e) => {
@@ -226,17 +226,17 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
 
                 <div className="p-4 sm:p-6 space-y-2 sm:space-y-4">
                   <div className="space-y-1 sm:space-y-2">
-                    <p className="text-amber-300/70 text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase font-light">
+                    <p className="text-amber-700 text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase font-light">
                       {product.category === 'men' ? 'For Him' : product.category === 'women' ? 'For Her' : 'Unisex'}
                     </p>
-                    <h3 className="text-white text-base sm:text-lg lg:text-xl font-light tracking-wide line-clamp-2">
+                    <h3 className="text-[#3D2F1F] text-base sm:text-lg lg:text-xl font-light tracking-wide line-clamp-2">
                       {product.name}
                     </h3>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-baseline gap-2">
-                      <p className="text-amber-100 text-lg sm:text-xl lg:text-2xl font-light">
+                      <p className="text-amber-900 text-lg sm:text-xl lg:text-2xl font-light">
                         ₹{product.price}
                       </p>
                       {product.mrp && product.mrp > product.price && (

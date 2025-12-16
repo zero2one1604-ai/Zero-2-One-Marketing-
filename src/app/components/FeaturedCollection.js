@@ -41,15 +41,15 @@ export default function LuxuryPerfumeGallery () {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-r from-[#1c3858] via-[#1B3A5F] to-[#1c3858] py-8 md:py-16 px-4 border-t-4 md:border-t-8 border-gold-texture'>
+    <div className='min-h-screen bg-[#F6F4EF] py-8 md:py-16 px-4 border-t-4 md:border-t-8 border-gold-texture'>
       <div className='max-w-7xl mx-auto'>
         <div className='text-center mb-6 md:mb-16 md:space-y-4'>
           <div className='flex items-center justify-center gap-2 md:mb-4'>
-            <h1 className='text-lg md:text-5xl font-light text-white tracking-[0.2em] the-seasons uppercase'>
+            <h1 className='text-lg md:text-5xl font-light text-[#1C1C1A] tracking-[0.2em] the-seasons uppercase'>
               Featured Collection
             </h1>
           </div>
-          <p className='text-amber-100/60 text-xs md:text-sm tracking-wider uppercase font-light'>
+          <p className='text-[#6E6A61] text-xs md:text-sm tracking-wider uppercase font-light'>
             Discover our most exquisite fragrances
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function LuxuryPerfumeGallery () {
               onMouseEnter={() => setHoveredId(perfume.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className='relative bg-gradient-to-b from-[#1a2540] to-[#0f1629] rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
+              <div className='relative bg-white rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
                 <div className='relative h-fit overflow-hidden'>
                   <Link href={`/product/${perfume.slug}`}>
                     <Image
@@ -75,7 +75,7 @@ export default function LuxuryPerfumeGallery () {
                     />
                   </Link>
 
-                  <div className='absolute inset-0 bg-gradient-to-t from-[#0f1629] via-transparent to-transparent opacity-60' />
+                  <div className='absolute inset-0 bg-gradient-to-t hidden from-[#D4C4A8] via-transparent to-transparent opacity-60' />
 
                   <button
                     onClick={() => toggleFavorite(perfume.id)}
@@ -91,15 +91,15 @@ export default function LuxuryPerfumeGallery () {
                   </button>
 
                   <div
-                    className={`absolute inset-0 bg-[#0a1628]/95 backdrop-blur-sm transition-all duration-500 flex items-center justify-center ${
+                    className={`absolute inset-0 bg-[#D9CDB5]/95 backdrop-blur-sm transition-all duration-500 flex items-center justify-center ${
                       hoveredId === perfume.id ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
-                    <div className='text-center px-6'>
-                      <p className='text-amber-200/80 text-xs tracking-widest uppercase mb-2 font-light'>
+                  <div className='text-center px-6'>
+                      <p className='text-amber-800/80 text-xs tracking-widest uppercase mb-2 font-light'>
                         Notes
                       </p>
-                      <p className='text-white text-sm font-light'>
+                      <p className='text-[#3D2F1F] text-sm font-light'>
                         {perfume.notes.join(', ')}
                       </p>
                     </div>
@@ -107,20 +107,32 @@ export default function LuxuryPerfumeGallery () {
                 </div>
                 <Link href={`/product/${perfume.slug}`}>
                   <div className='p-3 md:p-6 md:space-y-4 cursor-pointer'>
-                    <h3 className='text-white text-sm text-center md:text-left md:text-xl font-light tracking-wide'>
+                    <h3 className='text-[#3D2F1F] text-sm text-center md:text-left md:text-xl font-light tracking-wide'>
                       {perfume.name}
                     </h3>
 
-                    <p className='text-amber-100  text-center md:text-left text-lg md:text-2xl font-light'>
+                    <p className='text-amber-900  text-center md:text-left text-lg md:text-2xl font-light'>
                       ₹{perfume.price}
                     </p>
 
                     <button
                       onClick={() => addToCart(perfume.id)}
                       disabled={cartItems.has(perfume.id)}
-                      className='w-full py-2 mt-2 md:py-3.5 cursor-pointer bg-gradient-to-br from-[#f8f8f8] via-[#dcdcdc] to-[#f1f1f1] text-[#1a1a1a] text-xs tracking-[0.15em] uppercase font-semibold rounded shadow-xl shadow-black/30 transition-all duration-300 hover:shadow-2xl hover:shadow-black/50
-hover:from-[#ffffff] hover:via-[#e6e6e6] hover:to-[#ffffff] active:scale-[0.98] border border-[#bfbfbf] disabled:from-slate-700 disabled:via-slate-600 disabled:to-slate-700  disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed  disabled:border-slate-600 flex items-center justify-center gap-2 relative overflow-hidden'
-                    >
+                  className='
+w-full py-2 mt-2 md:py-3.5 cursor-pointer
+bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
+text-[#1A1405]
+shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
+transition-all duration-300
+hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-2px_0_rgba(0,0,0,0.35)]
+hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
+active:scale-[0.98]
+focus:outline-none focus:ring-2 focus:ring-[#D6B45A]/40 focus:ring-offset-2
+border border-[#8F7220]
+relative overflow-hidden rounded-xl
+flex items-center justify-center gap-2
+'
+>
                       <div className='absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none' />
 
                       <span className='relative z-10 flex text-xs md:text-base items-center gap-2'>

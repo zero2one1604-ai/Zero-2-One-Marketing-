@@ -23,6 +23,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import LuxuryFooter from '@/app/components/Footer'
 import products from '../../data/products'
+import Product3D from '@/app/components/Product3D'
 
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
@@ -57,7 +58,7 @@ export default function ProductDetailClient ({ product }) {
 
   return (
     <>
-      <div className='min-h-screen bg-gradient-to-br from-[#1c3858] via-[#1B3A5F] to-[#1c3858] text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
+      <div className='min-h-screen bg-[#F6F4EF]  text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
         <div className='bg-gradient-to-r from-[#0B1929] via-[#1B3A5F] to-[#0B1929] backdrop-blur-md sticky top-0 z-50'>
           <div className='max-w-[1440px] mx-auto px-4 sm:px-6 py-3 sm:py-4'>
             <div className='flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-slate-500 font-medium overflow-x-auto'>
@@ -78,34 +79,26 @@ export default function ProductDetailClient ({ product }) {
           <div className='grid lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-24 py-8 sm:py-12 lg:py-20'>
             
             <div className='lg:col-span-7 space-y-4 sm:space-y-8'>
-              <div className='relative w-full aspect-[4/5] bg-gradient-to-b from-[#0A1329] to-[#050B1A] rounded-xl sm:rounded-2xl overflow-hidden border border-amber-100/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group'>
-                <Image
-                  src={product.proimage}
-                  alt={`${product.name} by ${product.brand}`}
-                  fill
-                  className='object-cover transition-transform duration-[1.5s] ease-in-out group-hover:scale-105'
-                  priority
-                  sizes='(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 60vw'
-                />
-                <div className='absolute inset-0 bg-gradient-to-t from-[#050B1A]/60 via-transparent to-transparent pointer-events-none' />
-              </div>
+             
 
-              <div className='grid grid-cols-3 divide-x divide-amber-100/10 border border-amber-100/10 rounded-lg sm:rounded-xl bg-[#0A1329]/50 backdrop-blur-lg'>
+               <Product3D image={product.dimage} />
+
+              <div className='grid grid-cols-3 divide-x divide-black/65 border border-black  rounded-lg sm:rounded-xl bg-white backdrop-blur-lg'>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Truck className='w-4 h-4 sm:w-5 sm:h-5 text-white' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-amber-100 uppercase tracking-wider sm:tracking-widest leading-tight'>
+                  <Truck className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
+                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
                     Free Shipping
                   </p>
                 </div>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Shield className='w-4 h-4 sm:w-5 sm:h-5 text-white' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-amber-100 uppercase tracking-wider sm:tracking-widest leading-tight'>
+                  <Shield className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
+                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
                     100% Authentic
                   </p>
                 </div>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Package className='w-4 h-4 sm:w-5 sm:h-5 text-white' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-amber-100 uppercase tracking-wider sm:tracking-widest leading-tight'>
+                  <Package className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
+                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
                     Premium Packaging
                   </p>
                 </div>
@@ -115,13 +108,13 @@ export default function ProductDetailClient ({ product }) {
             <div className='lg:col-span-5 flex flex-col justify-center'>
               <div className='space-y-6 sm:space-y-10'>
                 
-                <div className='space-y-3 sm:space-y-4 pb-6 sm:pb-8 border-b border-amber-100/5'>
+                <div className='space-y-3 sm:space-y-4 pb-6 sm:pb-8 border-b border-gray-500'>
                   <div className='flex items-center justify-between'>
                   
                     <div className='flex items-center gap-2 sm:gap-4'>
                       <button
                         onClick={() => setIsFavorite(!isFavorite)}
-                        className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all group'
+                        className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'
                       >
                         <Heart
                           className={`w-4 h-4 transition-all ${
@@ -131,22 +124,22 @@ export default function ProductDetailClient ({ product }) {
                           }`}
                         />
                       </button>
-                      <button className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all group'>
+                      <button className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'>
                         <Share2 className='w-4 h-4 text-slate-400 group-hover:text-white' />
                       </button>
                     </div>
                   </div>
 
-                  <h1 className='text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif text-white font-medium leading-tight'>
+                  <h1 className='text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif text-[#3D2F1F] font-medium leading-tight'>
                     {product.name}
                   </h1>
 
-                  <p className='text-base sm:text-lg lg:text-xl text-amber-200/80 font-serif italic'>
+                  <p className='text-base sm:text-lg lg:text-xl text-[#6E6A61] font-serif italic'>
                     {product.tagline}
                   </p>
 
                   <div className='flex items-end gap-3 sm:gap-4 pt-2 sm:pt-4'>
-                    <span className={`text-3xl sm:text-4xl font-serif font-medium ${goldTextClasses}`}>
+                    <span className={`text-3xl sm:text-4xl font-serif font-medium text-amber-900`}>
                       ₹{product.price.toLocaleString()}
                     </span>
                     <span className='text-lg sm:text-xl text-slate-500 line-through mb-1 font-serif'>
@@ -155,18 +148,16 @@ export default function ProductDetailClient ({ product }) {
                   </div>
                 </div>
 
-                {/* Description */}
                 <div className='space-y-3 sm:space-y-4'>
-                  <h3 className='text-xs sm:text-sm font-bold text-amber-100 uppercase tracking-widest flex items-center gap-2'>
-                    <span className='w-6 sm:w-8 h-[1px] bg-amber-500/50'></span>
+                  <h3 className='text-xs sm:text-sm font-bold text-[#6E6A61] uppercase tracking-widest flex items-center gap-2'>
+                    <span className='w-6 sm:w-8 h-[1px] bg-black'></span>
                     The Experience
                   </h3>
-                  <p className='text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed font-light'>
+                  <p className='text-sm sm:text-base lg:text-lg text-[#6E6A61] leading-relaxed font-light'>
                     {product.description}
                   </p>
                 </div>
 
-                {/* Mood & Notes - Responsive Layout */}
                 <div className='space-y-4 sm:space-y-6 py-6 sm:py-8 border-y border-amber-100/5'>
                   <div className='space-y-3'>
                     <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
@@ -200,10 +191,9 @@ export default function ProductDetailClient ({ product }) {
                   </div>
                 </div>
 
-                {/* Quantity & Actions */}
                 <div className='space-y-6 sm:space-y-8 pt-2 sm:pt-4'>
                   <div className='flex items-center justify-between'>
-                    <label className='text-xs sm:text-sm text-amber-100/80 font-medium tracking-wider uppercase'>
+                    <label className='text-xs sm:text-sm text-black font-medium tracking-wider uppercase'>
                       Quantity
                     </label>
                     <div className='flex items-center border border-amber-100/20 rounded-full p-0.5 sm:p-1 bg-[#0A1329]'>
@@ -225,7 +215,6 @@ export default function ProductDetailClient ({ product }) {
                     </div>
                   </div>
 
-                  {/* Buttons - Responsive */}
                   <div className='flex gap-3 sm:gap-4'>
                     <button
                       disabled={isAddedToCart}
@@ -239,18 +228,18 @@ export default function ProductDetailClient ({ product }) {
                       </span>
                     </button>
                     <button
-                      className='py-4 sm:py-5 px-4 sm:px-6 border border-yellow-400 cursor-pointer hover:scale-105 transition-all rounded-lg sm:rounded-xl flex items-center justify-center'
+                      className='py-4 sm:py-5 px-4 sm:px-6 border border-black cursor-pointer hover:scale-105 transition-all rounded-lg sm:rounded-xl flex items-center justify-center'
                       onClick={handleAddToCart}
                     >
                       {isAddedToCart ? (
                         <Check className='w-4 h-4 sm:w-5 sm:h-5 text-green-400' />
                       ) : (
-                        <ShoppingCart className='w-4 h-4 sm:w-5 sm:h-5 text-yellow-400' />
+                        <ShoppingCart className='w-4 h-4 sm:w-5 sm:h-5 text-black' />
                       )}
                     </button>
                   </div>
 
-                  <p className='text-center text-[10px] sm:text-xs text-amber-200/60 font-medium tracking-wider'>
+                  <p className='text-center text-[10px] sm:text-xs text-[#6E6A61] font-medium tracking-wider'>
                     In Stock. Ships within 24 hours.
                   </p>
                 </div>
@@ -258,39 +247,37 @@ export default function ProductDetailClient ({ product }) {
             </div>
           </div>
 
-          {/* Reviews Section - No Reviews UI */}
           <section className='py-12 sm:py-16 lg:py-24 border-t border-amber-100/5'>
             <div className='max-w-3xl mx-auto text-center space-y-6 sm:space-y-8'>
-              <div className='inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4'>
-                <MessageSquare className='w-8 h-8 sm:w-10 sm:h-10 text-amber-400' />
+              <div className='inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-500/10 border border-[#3D2F1F] mb-4'>
+                <MessageSquare className='w-8 h-8 sm:w-10 sm:h-10 text-[#3D2F1F]' />
               </div>
               
               <div className='space-y-3 sm:space-y-4'>
-                <h2 className='text-2xl sm:text-3xl lg:text-4xl font-serif text-white'>
+                <h2 className='text-2xl sm:text-3xl lg:text-4xl font-serif text-[#3D2F1F]'>
                   Be The First to Review
                 </h2>
-                <p className='text-sm sm:text-base text-slate-400 leading-relaxed max-w-xl mx-auto px-4'>
+                <p className='text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl mx-auto px-4'>
                   Share your experience with {product.name} and help others discover this exceptional fragrance.
                 </p>
               </div>
 
-              <button className='inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-[#B38D25] text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all hover:scale-105'>
+              <button className='inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-[#232323] text-[#000000] hover:bg-[#D4AF37]/10 transition-all hover:scale-105'>
                 <Star className='w-4 h-4' />
                 Write a Review
               </button>
             </div>
           </section>
 
-          {/* Similar Products Section */}
           {similarProducts.length > 0 && (
             <section className='py-12 sm:py-16 lg:py-24 border-t border-amber-100/5'>
               <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-12'>
-                <h2 className='text-2xl sm:text-3xl font-serif text-white'>
+                <h2 className='text-2xl sm:text-3xl font-serif text-black'>
                   Curated For You
                 </h2>
                 <Link
                   href='/shop'
-                  className='group flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest'
+                  className='group flex items-center gap-2 text-xs font-bold text-[#3D2F1F] uppercase tracking-widest'
                 >
                   View Collection{' '}
                   <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
@@ -309,19 +296,18 @@ export default function ProductDetailClient ({ product }) {
                         src={item.image}
                         alt={item.name}
                         fill
-                        className='object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700'
+                        className='object-cover  group-hover:scale-105 transition-all duration-700'
                         sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
                       />
-                      <div className='absolute inset-0 bg-gradient-to-t from-[#050B1A] via-transparent to-transparent opacity-50' />
-                    </div>
+                     </div>
                     <div className='text-center space-y-1 sm:space-y-2 px-1'>
-                      <p className='text-[9px] sm:text-xs text-amber-200/60 font-medium uppercase tracking-widest'>
+                      <p className='text-[9px] sm:text-xs text-[#6E6A61] font-medium uppercase tracking-widest'>
                         {item.category}
                       </p>
-                      <h3 className='text-sm sm:text-base lg:text-lg font-serif text-white group-hover:text-amber-400 transition-colors line-clamp-2'>
+                      <h3 className='text-sm sm:text-base lg:text-lg font-serif text-[#3D2F1F] group-hover:text-amber-800 transition-colors line-clamp-2'>
                         {item.name}
                       </h3>
-                      <p className={`text-sm sm:text-base font-serif ${goldTextClasses}`}>
+                      <p className={`text-sm sm:text-base font-serif text-amber-900`}>
                         ₹{item.price.toLocaleString()}
                       </p>
                     </div>

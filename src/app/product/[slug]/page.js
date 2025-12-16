@@ -18,11 +18,11 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${product.name} by ${product.brand} | Luxury Solid Perfumes`,
+    title: `${product.name} by Saavi | Luxury Solid Perfumes`,
     description: product.description,
     keywords: [
       product.brand,
-      product.name,
+      "Saavi",
       'solid perfume',
       'luxury fragrance',
       ...product.notes,
@@ -57,7 +57,7 @@ export default function ProductPage({ params }) {
     name: product.name,
     brand: {
       '@type': 'Brand',
-      name: product.brand,
+      name: "Saavi",
     },
     description: product.description,
     image: product.image,

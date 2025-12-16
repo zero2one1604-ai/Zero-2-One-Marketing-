@@ -20,8 +20,7 @@ export default function LuxuryReviews() {
       product: "Midnight Essence",
       verified: true,
       likes: 247,
-      image: "https://images.unsplash.com/photo-1544717297-fa95b4ee3c25?w=150&h=150&fit=crop" // Changed image to one that might better represent the new name
-    },
+      image: "https://images.unsplash.com/photo-1622038094167-a2e40e21df17?q=80&w=735&auto=format&fit=crop"},
     {
       id: 2,
       name: "Rohan Kapoor",
@@ -33,7 +32,7 @@ export default function LuxuryReviews() {
       product: "Royal Oud",
       verified: true,
       likes: 189,
-      image: "https://images.unsplash.com/photo-1506794778202-dfa806963240?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1729157661483-ed21901ed892?q=80&w=687&auto=format&fit=crop"
     },
     {
       id: 3,
@@ -46,7 +45,7 @@ export default function LuxuryReviews() {
       product: "Crystal Dawn",
       verified: true,
       likes: 312,
-      image: "https://images.unsplash.com/photo-1620888279867-00c8005391c4?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1726076581380-980193a75161?q=80&w=687&auto=format&fit=crop"
     },
     {
       id: 4,
@@ -59,7 +58,7 @@ export default function LuxuryReviews() {
       product: "Noir Mystique",
       verified: true,
       likes: 203,
-      image: "https://images.unsplash.com/photo-1601004890734-9277c0199d1f?w=150&h=150&fit=crop"
+      image: "https://plus.unsplash.com/premium_photo-1691030254390-aa56b22e6a45?q=80&w=687&auto=format&fit=crop"
     },
     {
       id: 5,
@@ -72,7 +71,7 @@ export default function LuxuryReviews() {
       product: "Velvet Rose",
       verified: true,
       likes: 428,
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop"
+      image: "https://images.unsplash.com/photo-1672343567026-d1b5abb6f7f9?q=80&w=1470&auto=format&fit=crop"
     }
   ];
 
@@ -104,28 +103,28 @@ export default function LuxuryReviews() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1B3A5F] via-[#1c3858] to-[#1B3A5F] py-10 md:py-20 px-4 border-t-4 md:border-t-8 border-gold-texture">
+    <div className="min-h-screen bg-[#F6F4EF] py-10 md:py-20 px-4 border-t-4 md:border-t-8 border-gold-texture">
       <div className="max-w-6xl mx-auto">
     
         <div className="text-center mb-5 md:mb-16 md:space-y-6">
           
-          <h2 className="text-lg md:text-5xl font-light the-seasons text-white tracking-[0.25em] uppercase">
+          <h2 className="text-lg md:text-5xl font-light the-seasons text-[#1C1C1A] tracking-[0.25em] uppercase">
             Client Stories
           </h2>
           
-          <p className="text-amber-100/60 text-xs md:text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
+          <p className="text-[#6E6A61] text-xs md:text-sm tracking-[0.2em] uppercase font-light max-w-2xl mx-auto">
             Discover why discerning individuals worldwide choose our collection
           </p>
 
           <div className="flex items-center justify-center gap-6 pt-6">
             <div className="text-center">
-              <div className="text-5xl font-light text-white mb-2">4.9</div>
+              <div className="text-5xl font-light text-amber-900 mb-2">4.9</div>
               <div className="flex gap-1 mb-2 items-center justify-center">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-amber-100/50 text-xs tracking-wider">Based on 1,247 reviews</p>
+              <p className="text-[#1c1c1a] text-xs tracking-wider">Based on 08 reviews</p>
             </div>
           </div>
         </div>
@@ -141,10 +140,10 @@ export default function LuxuryReviews() {
                     : 'opacity-0 absolute inset-0 pointer-events-none'
                 }`}
               >
-                <div className="bg-gradient-to-br from-[#1a2540]/80 to-[#0f1629]/80 backdrop-blur-xl rounded-2xl p-5 md:p-14 border border-amber-200/10 shadow-2xl">
+                <div className="bg-white backdrop-blur-xl rounded-2xl p-5 md:p-14 border border-amber-200/10 shadow-2xl">
                   
                   
-                  <h3 className="text-lg md:text-3xl font-light text-white mb-4 tracking-wide">
+                  <h3 className="text-lg md:text-3xl font-light text-[#1c1c1a] mb-4 tracking-wide">
                     {review.title}
                   </h3>
 
@@ -158,12 +157,12 @@ export default function LuxuryReviews() {
                     ))}
                   </div>
 
-                  <p className="text-amber-50/80 text-sm md:text-xl text-justify leading-relaxed font-light mb-4 md:mb-8 italic">
+                  <p className="text-[#6E6A61] text-sm md:text-xl text-justify leading-relaxed font-light mb-4 md:mb-8 italic">
                     {review.review}
                   </p>
 
                   <div className="inline-block bg-amber-500/10 border border-amber-500/30 rounded-full px-3 py-1 md:px-6 md:py-2 mb-2 md:mb-8">
-                    <p className="text-amber-300 text-xs tracking-widest uppercase">
+                    <p className="text-amber-900 text-xs tracking-widest uppercase">
                       {review.product}
                     </p>
                   </div>
@@ -185,17 +184,17 @@ export default function LuxuryReviews() {
                       
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="text-white text-sm md:text-base font-medium tracking-wide">
+                          <h4 className="text-[#1c1c1a] text-sm md:text-base font-medium tracking-wide">
                             {review.name}
                           </h4>
                           {review.verified && (
                             <span className="text-blue-400 text-xs">Verified</span>
                           )}
                         </div>
-                        <p className="text-amber-100/50 text-xs md:text-sm">
+                        <p className="text-[#6E6A61] text-xs md:text-sm">
                           {review.location}
                         </p>
-                        <p className="text-amber-100/40 text-xs mt-1">
+                        <p className="text-[#6E6A61] text-xs mt-1">
                           {review.date}
                         </p>
                       </div>
@@ -209,7 +208,7 @@ export default function LuxuryReviews() {
                         className={`md:w-5 md:h-5 w-4 h-4 transition-all duration-300 ${
                           likedReviews.has(review.id)
                             ? 'fill-amber-400 text-amber-400'
-                            : 'text-amber-100/50 group-hover:text-amber-400'
+                            : 'text-[#6E6A61] group-hover:text-amber-400'
                         }`}
                       />
                       <span className="text-amber-100/70 text-sm font-light">
@@ -229,8 +228,8 @@ export default function LuxuryReviews() {
                 onClick={() => goToReview(index)}
                 className={`transition-all duration-500 rounded-full ${
                   index === activeReview
-                    ? 'md:w-12 md:h-3 w-8 h-2 bg-gradient-to-r from-amber-500 to-amber-600'
-                    : 'md:w-3 md:h-3 h-2 w-2 bg-white/20 hover:bg-white/40'
+                    ? 'md:w-12 md:h-3 w-8 h-2 bg-amber-900'
+                    : 'md:w-3 md:h-3 h-2 w-2 bg-white/90 hover:bg-white'
                 }`}
               />
             ))}
@@ -241,7 +240,7 @@ export default function LuxuryReviews() {
           {reviews.slice(0, 3).map((review, index) => (
             <div
               key={review.id}
-              className="group bg-gradient-to-b from-[#1a2540]/60 to-[#0f1629]/60 backdrop-blur-md rounded-xl p-6 border border-amber-200/10 hover:border-amber-400/30 transition-all duration-500 hover:scale-[1.02] hover:shadow-xl hover:shadow-amber-500/10"
+              className="group bg-white backdrop-blur-md rounded-xl p-6 border border-amber-200/10 hover:border-amber-400/30 transition-all duration-500 hover:scale-[1.02] hover:shadow-xl hover:shadow-amber-500/10"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex gap-1 mb-4">
@@ -250,7 +249,7 @@ export default function LuxuryReviews() {
                 ))}
               </div>
               
-              <p className="text-amber-50/70 text-sm leading-relaxed font-light mb-6 line-clamp-3">
+              <p className="text-[#1c1c1a] text-sm leading-relaxed font-light mb-6 line-clamp-3">
                 {review.review}
               </p>
               
@@ -261,8 +260,8 @@ export default function LuxuryReviews() {
                   className="w-10 h-10 rounded-full object-cover border border-amber-400/30"
                 />
                 <div>
-                  <p className="text-white text-sm font-medium">{review.name}</p>
-                  <p className="text-amber-100/50 text-xs">{review.location}</p>
+                  <p className="text-[#6E6A61] text-sm font-medium">{review.name}</p>
+                  <p className="text-[#6E6A61] text-xs">{review.location}</p>
                 </div>
               </div>
             </div>
@@ -271,18 +270,18 @@ export default function LuxuryReviews() {
 
         <div className="flex flex-wrap justify-center items-center gap-4 mt-8 md:gap-8 md:mt-16 pt-8 md:pt-16 border-t border-amber-200/10">
           <div className="text-center">
-            <div className="text-sm md:text-3xl font-light text-white md:mb-2">1000+</div>
-            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">5-Star Reviews</p>
+            <div className="text-sm md:text-3xl font-light text-amber-900 md:mb-2">1000+</div>
+            <p className="text-[#6E6A61] text-[8px] md:text-xs tracking-wider uppercase">5-Star Reviews</p>
           </div>
-          <div className="h-12 w-px bg-amber-200/20" />
+          <div className="h-12 w-px bg-amber-500" />
           <div className="text-center">
-            <div className="text-sm md:text-3xl font-light text-white md:mb-2">98%</div>
-            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">Satisfaction Rate</p>
+            <div className="text-sm md:text-3xl font-light text-amber-900 md:mb-2">98%</div>
+            <p className="text-[#6E6A61] text-[8px] md:text-xs tracking-wider uppercase">Satisfaction Rate</p>
           </div>
-          <div className="h-12 w-px bg-amber-200/20" />
+          <div className="h-12 w-px bg-amber-500" />
           <div className="text-center">
-            <div className="text-sm md:text-3xl font-light text-white md:mb-2">50K+</div>
-            <p className="text-amber-100/60 text-[8px] md:text-xs tracking-wider uppercase">Happy Clients</p>
+            <div className="text-sm md:text-3xl font-light text-amber-900 md:mb-2">50K+</div>
+            <p className="text-[#6E6A61] text-[8px] md:text-xs tracking-wider uppercase">Happy Clients</p>
           </div>
         </div>
 

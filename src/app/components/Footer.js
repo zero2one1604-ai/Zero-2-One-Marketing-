@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Send, Award, Shield, Truck, CreditCard } from 'lucide-react';
+import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin, Send, Award, Shield, Bus } from 'lucide-react';
 import Image from 'next/image';
 
 export default function LuxuryFooter() {
@@ -24,13 +24,9 @@ export default function LuxuryFooter() {
       
       <div className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-    {/* Change grid-cols-4 to grid-cols-3 to center 3 items naturally */}
     <div className="grid grid-cols-3 gap-2 lg:gap-8">
-        
-        {/* Feature 1 */}
         <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
             <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                {/* Assuming Shield is a component */}
                 <Shield className="w-4 h-4 md:w-6 md:h-6 text-amber-600" /> 
             </div>
             <div>
@@ -39,7 +35,6 @@ export default function LuxuryFooter() {
             </div>
         </div>
         
-        {/* Feature 2 */}
         <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
             <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
               
@@ -54,11 +49,11 @@ export default function LuxuryFooter() {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-2 sm:gap-4 text-center group">
             <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
           
-                <CreditCard className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
+                <Bus className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
             </div>
             <div>
-                <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Easy Returns</h4>
-                <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">30-day guarantee</p>
+                <h4 className="text-[10px] md:text-sm font-semibold text-gray-900 tracking-wide">Quick Shipping</h4>
+                <p className="text-[8px] md:text-xs text-gray-500 md:mt-0.5">1-2 Day Delivery</p>
             </div>
         </div>
         
@@ -79,7 +74,7 @@ export default function LuxuryFooter() {
                   className="md:w-[150px] w-[90px] h-fit mx-auto md:mx-0 md:h-fit"
                 />
               <p className="text-gray-600 leading-relaxed mt-4 text-xs text-center md:text-left md:text-sm font-light max-w-md">
-                Curating the world&apos;s finest fragrances since 1985. Each scent in our collection tells a story of craftsmanship, elegance, and timeless sophistication.
+                Curating the world&apos;s finest fragrances. Each scent in our collection tells a story of craftsmanship, elegance, and timeless sophistication.
               </p>
             </div>
 
