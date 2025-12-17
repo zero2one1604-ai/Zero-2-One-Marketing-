@@ -29,7 +29,7 @@ export default function Product3D({ image }) {
     return () => clearInterval(interval);
   }, [isHovered]);
 
-  // SMOOTH INTERPOLATION
+  // SMOOTH FOLLOW
   useEffect(() => {
     const lerp = setInterval(() => {
       setRotation((prev) => ({
@@ -66,10 +66,7 @@ export default function Product3D({ image }) {
         <div
           className="relative transition-transform duration-500 ease-out"
           style={{
-            transform: `
-              rotateX(${rotation.x}deg)
-              rotateY(${rotation.y}deg)
-            `,
+            transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
             transformStyle: 'preserve-3d',
           }}
         >
@@ -82,20 +79,30 @@ export default function Product3D({ image }) {
               bottom: '-10px',
               background: 'rgba(0,0,0,0.25)',
               filter: 'blur(10px)',
-              transform: 'translateZ(-16px)',
+              transform: 'translateZ(-18px)',
             }}
           />
 
           {/* TIN OBJECT */}
           <div className="relative aspect-[2/3]" style={{ transformStyle: 'preserve-3d' }}>
-            {/* BACK / SIDE BODY (THICKER) */}
+            
+            {/* BACK PANEL (RECESSED BASE) */}
             <div
-              className="absolute inset-[-6px] rounded-[32px]"
+              className="absolute inset-[6px] rounded-[22px]"
               style={{
-                transform: 'translateZ(-9px)', // 👈 increased depth
-                background:
-                  'linear-gradient(180deg, #151515, #050505)', // darker = heavier metal
-                boxShadow: '0 10px 26px rgba(0,0,0,0.45)',
+                transform: 'translateZ(-12px)',
+                background: 'linear-gradient(180deg, #0d0d0d, #030303)',
+                boxShadow: 'inset 0 6px 12px rgba(0,0,0,0.6)',
+              }}
+            />
+
+            {/* METAL LIP / WALL */}
+            <div
+              className="absolute inset-[-4px] rounded-[30px]"
+              style={{
+                transform: 'translateZ(-6px)',
+                background: 'linear-gradient(180deg, #1a1a1a, #0a0a0a)',
+                boxShadow: '0 10px 24px rgba(0,0,0,0.45)',
               }}
             />
 

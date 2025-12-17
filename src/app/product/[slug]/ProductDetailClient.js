@@ -22,7 +22,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import LuxuryFooter from '@/app/components/Footer'
 import products from '../../data/products'
-import Product3D from '@/app/components/Product3D'
+import Product3DScene from '@/app/components/Product3DScene'
 
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
@@ -79,7 +79,7 @@ export default function ProductDetailClient ({ product }) {
             
             <div className='lg:col-span-7 space-y-4 sm:space-y-8'>
               <div className='relative w-full h-[400px] px-0 sm:px-0 sm:h-[500px] lg:h-[600px] mb-30 md:mb-0 xl:h-[700px] 2xl:h-[800px]'>
-                <Product3D image={product.dimage} alt={product.name} />
+                <Product3DScene image={product.dimage} alt={product.name} />
               </div>
 
               <div className='grid grid-cols-3 divide-x divide-black/65 border border-black  rounded-lg sm:rounded-xl bg-white backdrop-blur-lg'>
