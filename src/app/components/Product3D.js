@@ -1,134 +1,166 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Product3D({ image }) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [targetRotation, setTargetRotation] = useState({ x: 0, y: 0 });
+  const [shine, setShine] = useState(-120);
   const [isHovered, setIsHovered] = useState(false);
-  const [idle, setIdle] = useState({ x: 0, y: 0, z: 0 });
 
-  // more visible idle motion
+  const tRef = useRef(0);
+
+  // AUTO ORBIT + SHINE
   useEffect(() => {
-    let t = 0;
     const interval = setInterval(() => {
-      t += 0.025;
-      setIdle({
-        x: Math.sin(t) * 3.2,
-        y: Math.cos(t * 0.8) * 4.5,
-        z: Math.sin(t * 0.6) * 6,
+      tRef.current += 0.028;
+
+      if (!isHovered) {
+        setTargetRotation({
+          x: Math.sin(tRef.current) * 18,
+          y: Math.cos(tRef.current * 0.85) * 22,
+        });
+      }
+
+      setShine((prev) => {
+        const next = prev + 2.4;
+        return next > 220 ? -120 : next;
       });
     }, 30);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [isHovered]);
+
+  // SMOOTH INTERPOLATION
+  useEffect(() => {
+    const lerp = setInterval(() => {
+      setRotation((prev) => ({
+        x: prev.x + (targetRotation.x - prev.x) * 0.12,
+        y: prev.y + (targetRotation.y - prev.y) * 0.12,
+      }));
+    }, 16);
+
+    return () => clearInterval(lerp);
+  }, [targetRotation]);
 
   const handlePointerMove = (e) => {
-    if (!isHovered || window.innerWidth < 768) return;
+    if (window.innerWidth < 768) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
 
-    setRotation({
-      x: (0.5 - y / rect.height) * 16,
-      y: (x / rect.width - 0.5) * 16,
+    setTargetRotation({
+      x: (0.5 - y) * 24,
+      y: (x - 0.5) * 28,
     });
   };
 
-  const finalX = rotation.x + idle.x;
-  const finalY = rotation.y + idle.y;
-  const finalZ = idle.z;
-
   return (
-    <div className="relative w-full flex justify-center pb-16 pt-4 md:py-14 overflow-hidden">
+    <div className="relative w-full flex justify-center py-20 overflow-hidden">
       <div
-        className="relative w-full cursor-pointer max-w-[300px] sm:max-w-[340px] md:max-w-[380px]"
-        style={{ perspective: '1300px' }}
-        onPointerMove={handlePointerMove}
+        className="relative w-full max-w-[240px] sm:max-w-[270px] md:max-w-[300px]"
+        style={{ perspective: '1800px' }}
         onPointerEnter={() => setIsHovered(true)}
-        onPointerLeave={() => {
-          setIsHovered(false);
-          setRotation({ x: 0, y: 0 });
-        }}
+        onPointerLeave={() => setIsHovered(false)}
+        onPointerMove={handlePointerMove}
       >
         <div
-          className="relative transition-transform duration-700 ease-out"
+          className="relative transition-transform duration-500 ease-out"
           style={{
             transform: `
-              rotateX(${finalX}deg)
-              rotateY(${finalY}deg)
-              translateZ(${finalZ}px)
+              rotateX(${rotation.x}deg)
+              rotateY(${rotation.y}deg)
             `,
             transformStyle: 'preserve-3d',
           }}
         >
-          {/* grounded shadow */}
+          {/* CONTACT SHADOW */}
           <div
             className="absolute left-1/2 -translate-x-1/2 rounded-full"
             style={{
-              width: '70%',
-              height: '28px',
-              bottom: '-18px',
-              background: 'rgba(0,0,0,0.28)',
-              filter: 'blur(18px)',
-              transform: 'translateZ(-30px)',
+              width: '55%',
+              height: '12px',
+              bottom: '-10px',
+              background: 'rgba(0,0,0,0.25)',
+              filter: 'blur(10px)',
+              transform: 'translateZ(-16px)',
             }}
           />
 
-          {/* card */}
-          <div
-            className="relative aspect-[2/3] rounded-3xl overflow-hidden bg-black"
-            style={{
-              transformStyle: 'preserve-3d',
-              boxShadow:
-                '0 18px 40px rgba(0,0,0,0.35), 0 0 40px rgba(245,158,11,0.08)',
-            }}
-          >
-            {/* image */}
-            <img
-              src={image}
-              alt="product"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{
-                transform: 'translateZ(2px)',
-                zIndex: 10,
-                backfaceVisibility: 'hidden',
-              }}
-            />
-
-            {/* light */}
+          {/* TIN OBJECT */}
+          <div className="relative aspect-[2/3]" style={{ transformStyle: 'preserve-3d' }}>
+            {/* BACK / SIDE BODY (THICKER) */}
             <div
-              className="absolute inset-0 pointer-events-none"
+              className="absolute inset-[-6px] rounded-[32px]"
               style={{
-                zIndex: 20,
+                transform: 'translateZ(-9px)', // 👈 increased depth
                 background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.28) 0%, transparent 40%, transparent 65%, rgba(0,0,0,0.35) 100%)',
+                  'linear-gradient(180deg, #151515, #050505)', // darker = heavier metal
+                boxShadow: '0 10px 26px rgba(0,0,0,0.45)',
               }}
             />
 
-            {/* glow */}
+            {/* FRONT LID */}
             <div
-              className="absolute -top-20 -left-20 w-64 h-64 rounded-full blur-xl pointer-events-none"
+              className="absolute inset-0 rounded-[26px] overflow-hidden bg-black"
               style={{
-                zIndex: 30,
-                background:
-                  'radial-gradient(circle, rgba(255,255,255,0.45), transparent 70%)',
-                opacity: isHovered ? 0.55 : 0.35,
-                transition: 'opacity 0.4s',
+                transform: 'translateZ(0)',
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.22)',
               }}
-            />
+            >
+              {/* ARTWORK */}
+              <img
+                src={image}
+                alt="solid perfume"
+                className="w-full h-full object-cover"
+              />
 
-            {/* inner depth */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                zIndex: 5,
-                boxShadow: 'inset 0 0 40px rgba(255,237,213,0.2)',
-              }}
-            />
+              {/* BRUSHED METAL GRAIN */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    'repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 3px)',
+                  mixBlendMode: 'overlay',
+                  opacity: 0.4,
+                }}
+              />
 
-            {/* border */}
-            <div
-              className="absolute inset-0 rounded-3xl border border-white/15 pointer-events-none"
-              style={{ zIndex: 40 }}
-            />
+              {/* SHINING SWEEP */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `
+                    linear-gradient(
+                      120deg,
+                      transparent ${shine - 25}%,
+                      rgba(255,255,255,0.85) ${shine}%,
+                      transparent ${shine + 25}%
+                    )
+                  `,
+                  mixBlendMode: 'screen',
+                  opacity: 0.75,
+                }}
+              />
+
+              {/* STATIC METAL REFLECTION */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    'linear-gradient(130deg, rgba(255,255,255,0.28), transparent 35%, transparent 70%, rgba(255,255,255,0.18))',
+                  opacity: isHovered ? 0.6 : 0.4,
+                  transition: 'opacity 0.3s',
+                }}
+              />
+
+              {/* INNER SEAM */}
+              <div
+                className="absolute inset-[3px] rounded-[22px] pointer-events-none"
+                style={{
+                  boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.6)',
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
