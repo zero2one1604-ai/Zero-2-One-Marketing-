@@ -73,22 +73,30 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Dropdown */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-sm">
-          <nav className="flex flex-col space-y-3 px-6 py-4">
-            {navigation.map((item) => (
+      <div 
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-100 shadow-lg">
+          <nav className="flex flex-col px-6 py-6 space-y-1">
+            {navigation.map((item, index) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-gray-900 font-medium text-base transition"
+                className={`group relative text-gray-700 hover:text-gray-900 font-medium text-base py-3 px-4 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:pl-6 ${
+                  isMenuOpen ? 'animate-slideIn' : ''
+                }`}
+                style={{ animationDelay: `${index * 50}ms` }}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.name}
+                <span className="relative z-10">{item.name}</span>
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gray-900 rounded-r transition-all duration-300 group-hover:h-8"></span>
               </Link>
             ))}
           </nav>
         </div>
-      )}
+      </div>
 
       {/* Custom CSS for Marquee Animation */}
       <style jsx global>{`
@@ -116,6 +124,23 @@ export default function Navbar() {
           display: inline-block;
           animation: marquee 15s linear infinite; /* Adjust duration (15s) for speed */
           padding-right: 5vw; /* Adds a bit of justified gap between repetitions */
+        }
+
+        /* Mobile menu slide-in animation */
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-slideIn {
+          animation: slideIn 0.4s ease-out forwards;
+          opacity: 0;
         }
       `}</style>
     </header>

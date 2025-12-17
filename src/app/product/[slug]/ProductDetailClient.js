@@ -1,4 +1,3 @@
-// app/product/[slug]/ProductDetailClient.js
 'use client'
 
 import React, { useState } from 'react'
@@ -75,13 +74,13 @@ export default function ProductDetailClient ({ product }) {
           </div>
         </div>
 
-        <main className='max-w-[1440px] mx-auto px-4 sm:px-6 pb-12 sm:pb-24'>
+        <main className='max-w-[1440px] px-4 sm:px-6 mx-auto pb-12 sm:pb-24'>
           <div className='grid lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-24 py-8 sm:py-12 lg:py-20'>
             
             <div className='lg:col-span-7 space-y-4 sm:space-y-8'>
-             
-
-               <Product3D image={product.dimage} />
+              <div className='relative w-full h-[400px] px-0 sm:px-0 sm:h-[500px] lg:h-[600px] mb-30 md:mb-0 xl:h-[700px] 2xl:h-[800px]'>
+                <Product3D image={product.dimage} alt={product.name} />
+              </div>
 
               <div className='grid grid-cols-3 divide-x divide-black/65 border border-black  rounded-lg sm:rounded-xl bg-white backdrop-blur-lg'>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
@@ -106,7 +105,7 @@ export default function ProductDetailClient ({ product }) {
             </div>
 
             <div className='lg:col-span-5 flex flex-col justify-center'>
-              <div className='space-y-6 sm:space-y-10'>
+              <div>
                 
                 <div className='space-y-3 sm:space-y-4 pb-6 sm:pb-8 border-b border-gray-500'>
                   <div className='flex items-center justify-between'>
@@ -148,7 +147,7 @@ export default function ProductDetailClient ({ product }) {
                   </div>
                 </div>
 
-                <div className='space-y-3 sm:space-y-4'>
+                <div className='space-y-3 mt-6 sm:space-y-4'>
                   <h3 className='text-xs sm:text-sm font-bold text-[#6E6A61] uppercase tracking-widest flex items-center gap-2'>
                     <span className='w-6 sm:w-8 h-[1px] bg-black'></span>
                     The Experience
@@ -158,7 +157,7 @@ export default function ProductDetailClient ({ product }) {
                   </p>
                 </div>
 
-                <div className='space-y-4 sm:space-y-6 py-6 sm:py-8 border-y border-amber-100/5'>
+                <div className=' py-6 sm:py-8 border-y border-amber-100/5'>
                   <div className='space-y-3'>
                     <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
                       Mood
@@ -174,7 +173,7 @@ export default function ProductDetailClient ({ product }) {
                       ))}
                     </div>
                   </div>
-                  <div className='space-y-3'>
+                  <div className='space-y-3 mt-6'>
                     <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
                       Notes
                     </h4>
