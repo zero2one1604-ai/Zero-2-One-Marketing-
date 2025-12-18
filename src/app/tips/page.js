@@ -65,7 +65,7 @@ export default function TipsPage() {
                 </svg>
               </div>
               <p className="text-lg text-[#1C1C1A] font-light">
-                Thank you! We'll notify you soon.
+                Thank you! We will notify you soon.
               </p>
             </div>
           )}
