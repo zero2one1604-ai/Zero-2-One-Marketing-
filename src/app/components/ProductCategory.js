@@ -1,8 +1,7 @@
-// app/shop/LuxuryShopPage.js
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { ShoppingCart, Heart, SlidersHorizontal, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShoppingCart, Heart, Filter, ChevronDown, Clock, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,17 +11,18 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
   const [favorites, setFavorites] = useState(new Set());
   const [cartItems, setCartItems] = useState(new Set());
   const [hoveredId, setHoveredId] = useState(null);
+  
   const [priceRange, setPriceRange] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
 
-  const categories = useMemo(() => [
-    { id: 'all', label: 'All', count: categoryCounts.all },
-    { id: 'men', label: 'Men', count: categoryCounts.men },
-    { id: 'women', label: 'Women', count: categoryCounts.women },
+  const categories = [
+    { id: 'all', label: 'All Products', count: categoryCounts.all },
+    { id: 'men', label: 'For Him', count: categoryCounts.men },
+    { id: 'women', label: 'For Her', count: categoryCounts.women },
     { id: 'unisex', label: 'Unisex', count: categoryCounts.unisex }
-  ], [categoryCounts]);
+  ];
 
-  const toggleFavorite = useCallback((id) => {
+  const toggleFavorite = (id) => {
     setFavorites(prev => {
       const newFavorites = new Set(prev);
       if (newFavorites.has(id)) {
@@ -32,9 +32,9 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
       }
       return newFavorites;
     });
-  }, []);
+  };
 
-  const addToCart = useCallback((id) => {
+  const addToCart = (id) => {
     setCartItems(prev => {
       const newCart = new Set(prev);
       newCart.add(id);
@@ -47,139 +47,90 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
         return newCart;
       });
     }, 2000);
-  }, []);
+  };
 
-  const sortedProducts = useMemo(() => {
-    const filtered = products.filter(product => {
-      if (activeCategory !== 'all' && product.category !== activeCategory) return false;
-      if (priceRange === 'under300' && product.price >= 300) return false;
-      if (priceRange === '300to500' && (product.price < 300 || product.price > 500)) return false;
-      if (priceRange === 'over500' && product.price <= 500) return false;
-      return true;
-    });
+  const filteredProducts = products.filter(product => {
+    if (activeCategory !== 'all' && product.category !== activeCategory) return false;
+    if (priceRange === 'under300' && product.price >= 300) return false;
+    if (priceRange === '300to500' && (product.price < 300 || product.price > 500)) return false;
+    if (priceRange === 'over500' && product.price <= 500) return false;
+    return true;
+  });
 
-    return [...filtered].sort((a, b) => {
-      if (sortBy === 'priceLow') return a.price - b.price;
-      if (sortBy === 'priceHigh') return b.price - a.price;
-      if (sortBy === 'name') return a.name.localeCompare(b.name);
-      return 0;
-    });
-  }, [products, activeCategory, priceRange, sortBy]);
-
-  const handleClearFilters = useCallback(() => {
-    setPriceRange('all');
-    setSortBy('featured');
-  }, []);
-
-  const getCategoryLabel = useCallback((category) => {
-    switch(category) {
-      case 'men': return 'Men';
-      case 'women': return 'Women';
-      default: return 'Unisex';
-    }
-  }, []);
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'priceLow') return a.price - b.price;
+    if (sortBy === 'priceHigh') return b.price - a.price;
+    if (sortBy === 'name') return a.name.localeCompare(b.name);
+    return 0;
+  });
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8]">
-      {/* Elegant Hero Header */}
-      <header className="relative overflow-hidden bg-white border-b border-neutral-100">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-50/30 to-transparent pointer-events-none" />
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="text-center space-y-3 sm:space-y-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight text-neutral-900 tracking-[0.3em] uppercase letterspacing">
-              Solid Perfumes
-            </h1>
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto" />
-            <p className="text-xs sm:text-sm text-neutral-500 tracking-[0.2em] uppercase font-light max-w-md mx-auto">
-              Luxury in Every Touch
+    <div className="min-h-screen bg-[#F6F4EF]">
+      
+      <div className="border-b bg-gradient-to-b from-amber-50 via-white to-amber-50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-12 sm:py-16">
+          <div className="text-center md:space-y-3 sm:space-y-4">
+            <h1 className="the-seasons text-2xl md:text-5xl font-light text-[#1C1C1A] tracking-[0.2em] sm:tracking-[0.25em] uppercase">
+                Solid Perfumes
+              </h1>
+            <p className="text-[#6E6A61] text-xs md:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase font-light">
+              Portable luxury that travels with you
             </p>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        {/* Refined Filter Bar */}
-        <div className="mb-10 sm:mb-14 space-y-6">
-          {/* Category Pills - Horizontal Scroll */}
-          <nav aria-label="Product categories" className="relative">
-            <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-              <div className="flex sm:justify-center items-center gap-2 sm:gap-3 min-w-max sm:min-w-0 pb-1">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
-                    aria-pressed={activeCategory === cat.id}
-                    className={`group relative px-6 sm:px-8 py-2.5 sm:py-3 text-xs sm:text-sm tracking-[0.15em] uppercase font-medium transition-all duration-300 whitespace-nowrap ${
-                      activeCategory === cat.id
-                        ? 'text-neutral-900'
-                        : 'text-neutral-400 hover:text-neutral-700'
-                    }`}
-                  >
-                    <span className="relative z-10">{cat.label}</span>
-                    <span className={`ml-1.5 text-[10px] sm:text-xs opacity-60 relative z-10 ${
-                      activeCategory === cat.id ? 'text-neutral-600' : ''
-                    }`}>
-                      {cat.count}
-                    </span>
-                    {activeCategory === cat.id && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </nav>
-
-          {/* Filter Controls */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-6 border-t border-neutral-100">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              aria-expanded={showFilters}
-              aria-controls="filter-panel"
-              className="group flex items-center justify-center sm:justify-start gap-2.5 px-5 py-2.5 bg-white border border-neutral-200 hover:border-neutral-300 rounded-md text-neutral-700 text-sm transition-all duration-200"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              <span className="tracking-wide">Filters</span>
-              {(priceRange !== 'all' || sortBy !== 'featured') && (
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-              )}
-            </button>
-
-            <div className="flex items-center justify-center text-neutral-500 text-sm">
-              <span aria-live="polite">{sortedProducts.length} items</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        
+        <div className="mb-8 sm:mb-12 space-y-4 sm:space-y-6">
+          
+          <div className="overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex sm:flex-wrap items-center justify-start sm:justify-center gap-2 sm:gap-3 min-w-max sm:min-w-0">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-4 sm:px-6 py-2 sm:py-3 cursor-pointer rounded-full text-xs sm:text-sm tracking-wider uppercase font-medium transition-all duration-300 border whitespace-nowrap ${
+                    activeCategory === cat.id
+                      ? 'bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white border-amber-500 shadow-lg shadow-amber-500/30'
+                      : 'bg-white/5 text-amber-100/70 border-white/10 hover:bg-white/10 hover:border-amber-500/30'
+                  }`}
+                >
+                  {cat.label}
+                  <span className="ml-2 text-[10px] sm:text-xs opacity-70">({cat.count})</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Elegant Filter Panel */}
-          {showFilters && (
-            <div 
-              id="filter-panel"
-              role="region"
-              aria-label="Filter options"
-              className="bg-white rounded-lg border border-neutral-100 p-6 sm:p-8 shadow-sm animate-slideDown"
+          <div className="flex hidden flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-amber-200/10">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex cursor-pointer items-center justify-center sm:justify-start gap-2 px-4 sm:px-5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm hover:bg-white/10 transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm uppercase tracking-[0.15em] text-neutral-900 font-medium">Refine</h3>
-                <button
-                  onClick={() => setShowFilters(false)}
-                  className="sm:hidden p-1 hover:bg-neutral-100 rounded-full transition-colors"
-                  aria-label="Close filters"
-                >
-                  <X className="w-4 h-4 text-neutral-500" />
-                </button>
-              </div>
+              <Filter className="w-4 h-4" />
+              <span className="tracking-wide">Filters</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showFilters ? 'rotate-180' : ''}`} />
+            </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Price Range */}
+            <div className="flex items-center justify-center gap-3 text-amber-100/70 text-sm">
+              <span className="tracking-wide">{sortedProducts.length} Products</span>
+            </div>
+          </div>
+
+          {showFilters && (
+            <div className="bg-gradient-to-b from-[#1a2540]/60 to-[#0f1629]/60 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-amber-200/10 animate-slideDown">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                
                 <div>
-                  <label htmlFor="price-range" className="block text-xs uppercase tracking-wider text-neutral-500 mb-3">
-                    Price
+                  <label className="text-white text-xs sm:text-sm font-medium tracking-wider uppercase mb-2 sm:mb-3 block">
+                    Price Range
                   </label>
                   <select
-                    id="price-range"
                     value={priceRange}
                     onChange={(e) => setPriceRange(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-md text-neutral-900 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900 transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-white/5 border border-white/20 rounded-lg cursor-pointer text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
                   >
                     <option value="all">All Prices</option>
                     <option value="under300">Under ₹300</option>
@@ -188,31 +139,31 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
                   </select>
                 </div>
 
-                {/* Sort By */}
                 <div>
-                  <label htmlFor="sort-by" className="block text-xs uppercase tracking-wider text-neutral-500 mb-3">
-                    Sort
+                  <label className="text-white text-xs sm:text-sm font-medium tracking-wider uppercase mb-2 sm:mb-3 cursor-pointer block">
+                    Sort By
                   </label>
                   <select
-                    id="sort-by"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-md text-neutral-900 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900 transition-all"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-white/5 border border-white/20 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
                   >
                     <option value="featured">Featured</option>
-                    <option value="name">Alphabetical</option>
+                    <option value="name">Name (A-Z)</option>
                     <option value="priceLow">Price: Low to High</option>
                     <option value="priceHigh">Price: High to Low</option>
                   </select>
                 </div>
 
-                {/* Clear Filters */}
-                <div className="sm:col-span-2 lg:col-span-2 flex items-end">
+                <div className="sm:col-span-2 lg:col-span-1 flex items-end">
                   <button
-                    onClick={handleClearFilters}
-                    className="w-full px-4 py-2.5 border border-neutral-200 hover:bg-neutral-50 rounded-md text-neutral-700 text-sm transition-all font-medium"
+                    onClick={() => {
+                      setPriceRange('all');
+                      setSortBy('featured');
+                    }}
+                    className="w-full px-4 py-2 sm:py-2.5 bg-white/10 border border-white/20 rounded-lg text-white text-sm hover:bg-white/20 transition-all duration-300"
                   >
-                    Clear All
+                    Clear Filters
                   </button>
                 </div>
               </div>
@@ -220,183 +171,167 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
           )}
         </div>
 
-        {/* Elegant Products Grid */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-16 sm:mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16">
           {sortedProducts.map((product) => (
-            <article
+            <Link
+              href={`/product/${product.slug}`}
               key={product.id}
-              className="group relative"
+              className="group relative block"
               onMouseEnter={() => setHoveredId(product.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <Link href={`/product/${product.slug}`} className="block">
-                <div className="relative bg-white overflow-hidden transition-all duration-500">
-                  {/* Product Image */}
-                  <div className="relative aspect-[3/4] overflow-hidden bg-neutral-50">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      priority={sortedProducts.indexOf(product) < 4}
-                    />
-                    
-                    {/* Favorite Button */}
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleFavorite(product.id);
-                      }}
-                      aria-label={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
-                      className="absolute top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm z-10"
-                    >
-                      <Heart
-                        className={`w-4 h-4 transition-all duration-300 ${
-                          favorites.has(product.id)
-                            ? 'fill-red-500 text-red-500'
-                            : 'text-neutral-400'
-                        }`}
-                      />
-                    </button>
-
-                    {/* Hover Overlay */}
-                    <div 
-                      className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 flex items-end ${
-                        hoveredId === product.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              <div className="relative bg-white rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20">
+                
+                <div className="relative h-64 sm:h-72 md:h-100 overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 480px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                  
+                  <div className="absolute hidden inset-0 bg-gradient-to-t from-[#0f1629] via-transparent to-transparent opacity-60" />
+                  
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(product.id);
+                    }}
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:scale-110"
+                  >
+                    <Heart
+                      className={`w-4 h-4 sm:w-5 sm:h-5 transition-all duration-300 ${
+                        favorites.has(product.id)
+                          ? 'fill-red-400 text-red-400'
+                          : 'text-white'
                       }`}
-                    >
-                      <div className="w-full p-6 text-center">
-                        <p className="text-white/60 text-xs tracking-[0.2em] uppercase mb-2">
-                          Notes
-                        </p>
-                        <p className="text-white text-sm font-light">
-                          {product.notes.slice(0, 3).join(' · ')}
-                        </p>
-                      </div>
+                    />
+                  </button>
+
+                  <div className={`absolute inset-0 bg-[#0a1628]/95 backdrop-blur-sm transition-all duration-500 flex items-center justify-center ${
+                    hoveredId === product.id ? 'opacity-100' : 'opacity-0'
+                  }`}>
+                    <div className="text-center px-4 sm:px-6">
+                      <p className="text-amber-200/80 text-[10px] sm:text-xs tracking-widest uppercase mb-2 font-light">
+                        Notes
+                      </p>
+                      <p className="text-white text-xs sm:text-sm font-light">
+                        {product.notes.slice(0, 3).join(', ')}
+                      </p>
                     </div>
                   </div>
+                </div>
 
-                  {/* Product Details */}
-                  <div className="p-5 sm:p-6 space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-neutral-400 text-xs tracking-[0.15em] uppercase">
-                        {getCategoryLabel(product.category)}
-                      </p>
-                      <h2 className="text-neutral-900 text-base sm:text-lg font-light tracking-wide leading-snug min-h-[3rem]">
-                        {product.name}
-                      </h2>
-                    </div>
+                <div className="p-4 sm:p-6 space-y-2 sm:space-y-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <p className="text-amber-700 text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase font-light">
+                      {product.category === 'men' ? 'For Him' : product.category === 'women' ? 'For Her' : 'Unisex'}
+                    </p>
+                    <h3 className="text-[#3D2F1F] text-base sm:text-lg lg:text-xl font-light tracking-wide line-clamp-2">
+                      {product.name}
+                    </h3>
+                  </div>
 
-                    {/* Price */}
-                    <div className="flex items-baseline gap-2 pt-1">
-                      <p className="text-neutral-900 text-xl sm:text-2xl font-light">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-amber-900 text-lg sm:text-xl lg:text-2xl font-light">
                         ₹{product.price}
                       </p>
                       {product.mrp && product.mrp > product.price && (
-                        <p className="text-neutral-400 text-sm line-through">
+                        <p className="text-slate-500 text-xs sm:text-sm line-through">
                           ₹{product.mrp}
                         </p>
                       )}
                     </div>
-
-                    {/* Add to Cart Button */}
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        addToCart(product.id);
-                      }}
-                      disabled={cartItems.has(product.id)}
-                      aria-label={cartItems.has(product.id) ? 'Added to cart' : `Add ${product.name} to cart`}
-                      className={`w-full py-3.5 text-xs tracking-[0.15em] uppercase font-medium transition-all duration-300 ${
-                        cartItems.has(product.id)
-                          ? 'bg-neutral-900 text-white cursor-default'
-                          : 'bg-neutral-900 text-white hover:bg-neutral-800'
-                      }`}
-                    >
-                      <span className="flex items-center justify-center gap-2">
-                        {cartItems.has(product.id) ? (
-                          <>
-                            <span className="text-base">✓</span>
-                            <span>Added</span>
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingCart className="w-4 h-4" />
-                            <span>Add to Cart</span>
-                          </>
-                        )}
-                      </span>
-                    </button>
                   </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(product.id);
+                    }}
+                    disabled={cartItems.has(product.id)}
+                    className="w-full py-2.5 sm:py-3.5 bg-gradient-to-br cursor-pointer from-[#d4af37] via-[#f4e5c2] to-[#d4af37] text-[#1a1a1a] text-[10px] sm:text-xs tracking-[0.12em] sm:tracking-[0.15em] uppercase font-semibold rounded shadow-xl shadow-black/40 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-700/50 hover:from-[#f0d678] hover:via-[#fff5dc] hover:to-[#f0d678] active:scale-[0.98] border border-[#b8941f] disabled:from-slate-700 disabled:via-slate-600 disabled:to-slate-700 disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed disabled:border-slate-600 flex items-center justify-center gap-1.5 sm:gap-2 relative overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none" />
+                    <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">
+                      {cartItems.has(product.id) ? (
+                        <>
+                          <span>✓</span>
+                          <span className="hidden xs:inline">Added</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <span>Add to Cart</span>
+                        </>
+                      )}
+                    </span>
+                  </button>
                 </div>
-              </Link>
-            </article>
+
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none" />
+              </div>
+            </Link>
           ))}
         </div>
 
-        {/* Coming Soon Section */}
-        <section 
-          aria-labelledby="coming-soon-heading"
-          className="relative overflow-hidden bg-white border border-neutral-100 rounded-lg p-8 sm:p-12 lg:p-16"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-transparent pointer-events-none" />
-          
-          <div className="relative max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-3 px-5 py-2 bg-amber-100/50 border border-amber-200/50 rounded-full">
-              <span className="text-amber-800 text-xs tracking-[0.2em] uppercase font-medium">
-                Expanding Soon
+        <div className="bg-gradient-to-br hidden from-[#1a2540]/80 to-[#0f1629]/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 border border-amber-200/10 shadow-2xl text-center">
+          <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 bg-amber-500/10 border border-amber-500/30 rounded-full mb-3 sm:mb-4">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+              <span className="text-amber-300 text-xs sm:text-sm tracking-widest uppercase font-medium">
+                Coming Soon
               </span>
             </div>
 
-            <div className="space-y-4">
-              <h2 id="coming-soon-heading" className="text-2xl sm:text-3xl lg:text-4xl font-extralight text-neutral-900 tracking-[0.2em] uppercase">
-                New Arrivals
-              </h2>
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto" />
-            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-white tracking-[0.15em] sm:tracking-[0.2em] uppercase mb-3 sm:mb-4">
+              Expanding Our Collection
+            </h2>
             
-            <p className="text-neutral-500 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-              Curating an exceptional collection of luxury fragrances, car fresheners, and home diffusers to elevate every moment.
+            <p className="text-amber-100/70 text-sm sm:text-base lg:text-lg leading-relaxed font-light mb-6 sm:mb-8 px-4 sm:px-0">
+              We are curating an exceptional selection of luxury fragrances to complement our solid perfume collection.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 pt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
               {[
-                { title: 'Eau de Parfum', desc: 'Signature scents', url: 'https://images.unsplash.com/photo-1759793499854-4044b125b37d?w=400&h=300&fit=crop' },
-                { title: 'Car Fresheners', desc: 'Travel in style', url: 'https://images.unsplash.com/photo-1653020194245-484aa429e963?w=400&h=300&fit=crop' },
-                { title: 'Home Diffusers', desc: 'Ambient luxury', url: 'https://images.unsplash.com/photo-1671161238404-e5b4845260b9?w=400&h=300&fit=crop' }
+                { title: 'Liquid Perfumes', desc: 'Premium eau de parfum', url: 'https://images.unsplash.com/photo-1759793499854-4044b125b37d?w=400&h=300&fit=crop' },
+                { title: 'Car Fresheners', desc: 'Luxury on the go', url: 'https://images.unsplash.com/photo-1653020194245-484aa429e963?w=400&h=300&fit=crop' },
+                { title: 'Home Diffusers', desc: 'Ambient elegance', url: 'https://images.unsplash.com/photo-1671161238404-e5b4845260b9?w=400&h=300&fit=crop' }
               ].map((item, index) => (
                 <div 
                   key={index}
-                  className="group text-center"
+                  className="p-4 sm:p-6 bg-white/5 rounded-lg border border-white/10 hover:border-amber-500/30 transition-all duration-300"
                 >
-                  <div className="relative w-full aspect-[4/3] mb-4 overflow-hidden bg-neutral-50">
+                  <div className="relative w-full aspect-video mb-3 sm:mb-4 rounded-md overflow-hidden">
                     <Image
                       src={item.url}
-                      alt=""
+                      alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover"
                       sizes="(max-width: 640px) 100vw, 33vw"
                     />
                   </div>
-                  <h3 className="text-neutral-900 text-base sm:text-lg font-light mb-2 tracking-wide">
+                  <h3 className="text-white text-base sm:text-lg font-medium mb-1 sm:mb-2 tracking-wide">
                     {item.title}
                   </h3>
-                  <p className="text-neutral-400 text-xs sm:text-sm uppercase tracking-wider">
+                  <p className="text-amber-100/60 text-xs sm:text-sm font-light">
                     {item.desc}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </section>
-      </main>
+        </div>
 
-      <style jsx>{`
+      </div>
+
+      <style>{`
         @keyframes slideDown {
           from {
             opacity: 0;
-            transform: translateY(-8px);
+            transform: translateY(-10px);
           }
           to {
             opacity: 1;
@@ -408,18 +343,12 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
           animation: slideDown 0.3s ease-out;
         }
 
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-
         @media (min-width: 480px) {
           .xs\:grid-cols-2 {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+          .xs\:inline {
+            display: inline;
           }
         }
       `}</style>
