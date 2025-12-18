@@ -191,8 +191,8 @@ export default function LuxuryFooter() {
 
             <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
               <p className="text-xs text-gray-500 font-light leading-relaxed text-center sm:text-left">
-                Available Mon-Fri<br />
-                9:00 AM - 6:00 PM IST
+                Available Mon-Sat<br />
+                10:00 AM - 6:00 PM IST
               </p>
             </div>
           </div>

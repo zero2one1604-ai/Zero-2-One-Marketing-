@@ -73,19 +73,18 @@ export default function LuxuryPerfumeGallery () {
                       sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                       className='w-full h-full cursor-pointer object-cover transition-transform duration-700 group-hover:scale-110'
                     />
-                  </Link>
 
                   <div className='absolute inset-0 bg-gradient-to-t hidden from-[#D4C4A8] via-transparent to-transparent opacity-60' />
 
                   <button
                     onClick={() => toggleFavorite(perfume.id)}
-                    className='absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:scale-110'
+                    className='absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-slate-900 flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:scale-110'
                   >
                     <Heart
                       className={`w-5 h-5 transition-all duration-300 ${
                         favorites.has(perfume.id)
                           ? 'fill-red-400 text-red-400'
-                          : 'text-white'
+                          : 'text-black'
                       }`}
                     />
                   </button>
@@ -95,7 +94,7 @@ export default function LuxuryPerfumeGallery () {
                       hoveredId === perfume.id ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
-                  <div className='text-center px-6'>
+                    <div className='text-center px-6'>
                       <p className='text-amber-800/80 text-xs tracking-widest uppercase mb-2 font-light'>
                         Notes
                       </p>
@@ -104,21 +103,32 @@ export default function LuxuryPerfumeGallery () {
                       </p>
                     </div>
                   </div>
+                       </Link>
                 </div>
+                
                 <Link href={`/product/${perfume.slug}`}>
                   <div className='p-3 md:p-6 md:space-y-4 cursor-pointer'>
                     <h3 className='text-[#3D2F1F] text-sm text-center md:text-left md:text-xl font-light tracking-wide'>
                       {perfume.name}
                     </h3>
 
-                    <p className='text-amber-900  text-center md:text-left text-lg md:text-2xl font-light'>
-                      ₹{perfume.price}
-                    </p>
+                    <div className='flex items-center mx-auto md:justify-between justify-center'>
+                      <div className='flex items-baseline gap-2'>
+                        <p className='text-amber-900 text-lg sm:text-xl lg:text-2xl font-light'>
+                          ₹{perfume.price}
+                        </p>
+                        {perfume.mrp && perfume.mrp > perfume.price && (
+                          <p className='text-slate-500 text-xs sm:text-sm line-through'>
+                            ₹{perfume.mrp}
+                          </p>
+                        )}
+                      </div>
+                    </div>
 
                     <button
                       onClick={() => addToCart(perfume.id)}
                       disabled={cartItems.has(perfume.id)}
-                  className='
+                      className='
 w-full py-2 mt-2 md:py-3.5 cursor-pointer
 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
 text-[#1A1405]
@@ -132,7 +142,7 @@ border border-[#8F7220]
 relative overflow-hidden rounded-xl
 flex items-center justify-center gap-2
 '
->
+                    >
                       <div className='absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none' />
 
                       <span className='relative z-10 flex text-xs md:text-base items-center gap-2'>

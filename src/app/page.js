@@ -4,6 +4,7 @@ import LuxuryPerfumeGallery from './components/FeaturedCollection'
 import LuxuryReviews from './components/CustomerReviews'
 import LuxuryFooter from './components/Footer'
 import LuxuryNewsletterPopup from './components/NewsletterPopup'
+import RoyalBanner from './components/Banner'
 
 export default function Home () {
   return (
@@ -29,7 +30,7 @@ export default function Home () {
 
     <div className='absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0a0e1a] to-transparent' />
 </div>
-
+<RoyalBanner />
       <LuxuryPerfumeGallery />
       <LuxuryReviews />
       <LuxuryNewsletterPopup/>

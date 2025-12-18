@@ -45,7 +45,7 @@ export default function ProductDetailClient ({ product }) {
   const goldBtnClasses = `
     relative w-full py-4 sm:py-5 overflow-hidden rounded-lg group transition-all duration-300
     bg-gradient-to-b from-[#FBF3E3] via-[#D4AF37] to-[#A37C1A]
-    border border-[#B38D25]
+    border border-[#B38D25] cursor-pointer
     shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_12px_rgba(0,0,0,0.4)]
     hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_6px_16px_rgba(212,175,55,0.3)]
     active:scale-[0.99] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]
@@ -58,18 +58,18 @@ export default function ProductDetailClient ({ product }) {
   return (
     <>
       <div className='min-h-screen bg-[#F6F4EF]  text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
-        <div className='bg-gradient-to-r from-[#0B1929] via-[#1B3A5F] to-[#0B1929] backdrop-blur-md sticky top-0 z-50'>
+        <div className='bg-gradient-to-b from-amber-50 via-white to-amber-50 backdrop-blur-md sticky top-0 z-50'>
           <div className='max-w-[1440px] mx-auto px-4 sm:px-6 py-3 sm:py-4'>
             <div className='flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-slate-500 font-medium overflow-x-auto'>
-              <Link href='/' className='hover:text-amber-400 transition-colors whitespace-nowrap'>
+              <Link href='/' className='hover:text-amber-900 transition-colors whitespace-nowrap'>
                 Home
               </Link>
               <ChevronRight className='w-3 h-3 text-slate-700 flex-shrink-0' />
-              <Link href='/shop' className='hover:text-amber-400 transition-colors whitespace-nowrap'>
+              <Link href='/shop' className='hover:text-amber-900 transition-colors whitespace-nowrap'>
                 Shop
               </Link>
               <ChevronRight className='w-3 h-3 text-slate-700 flex-shrink-0' />
-              <span className='text-slate-300 whitespace-nowrap'>{product.category}</span>
+              <span className='text-black whitespace-nowrap'>{product.category}</span>
             </div>
           </div>
         </div>
@@ -79,14 +79,14 @@ export default function ProductDetailClient ({ product }) {
             
             <div className='lg:col-span-7 space-y-4 sm:space-y-8'>
               <div className='relative w-full h-[400px] px-0 sm:px-0 sm:h-[500px] lg:h-[600px] mb-30 md:mb-0 xl:h-[700px] 2xl:h-[800px]'>
-                <Product3DScene image={product.dimage} alt={product.name} />
+                <Product3DScene image={product.dimage} />
               </div>
 
               <div className='grid grid-cols-3 divide-x divide-black/65 border border-black  rounded-lg sm:rounded-xl bg-white backdrop-blur-lg'>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
                   <Truck className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
                   <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
-                    Free Shipping
+                    Quick Shipping
                   </p>
                 </div>
                 <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
@@ -113,18 +113,18 @@ export default function ProductDetailClient ({ product }) {
                     <div className='flex items-center gap-2 sm:gap-4'>
                       <button
                         onClick={() => setIsFavorite(!isFavorite)}
-                        className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'
+                        className='w-9 h-9 cursor-pointer sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'
                       >
                         <Heart
                           className={`w-4 h-4 transition-all ${
                             isFavorite
                               ? 'fill-rose-500 text-rose-500'
-                              : 'text-slate-400 group-hover:text-white'
+                              : 'text-slate-400 group-hover:text-slate-800'
                           }`}
                         />
                       </button>
-                      <button className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'>
-                        <Share2 className='w-4 h-4 text-slate-400 group-hover:text-white' />
+                      <button className='w-9 h-9 cursor-pointer sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'>
+                        <Share2 className='w-4 h-4 text-slate-400 group-hover:text-slate-800' />
                       </button>
                     </div>
                   </div>
@@ -220,7 +220,7 @@ export default function ProductDetailClient ({ product }) {
                       className={goldBtnClasses}
                     >
                       <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out' />
-                      <span className='relative z-10 flex cursor-pointer items-center justify-center gap-2 sm:gap-3 text-[#42200B] text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold'>
+                      <span className='relative z-10 flex items-center justify-center gap-2 sm:gap-3 text-[#42200B] text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold'>
                         <ShoppingBag className='w-4 h-4 sm:w-5 sm:h-5' /> 
                         <span className='hidden xs:inline'>Purchase Now</span>
                         <span className='xs:hidden'>Buy Now</span>
@@ -261,7 +261,7 @@ export default function ProductDetailClient ({ product }) {
                 </p>
               </div>
 
-              <button className='inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-[#232323] text-[#000000] hover:bg-[#D4AF37]/10 transition-all hover:scale-105'>
+              <button className='inline-flex cursor-pointer items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-[#232323] text-[#000000] hover:bg-[#D4AF37]/10 transition-all hover:scale-105'>
                 <Star className='w-4 h-4' />
                 Write a Review
               </button>

@@ -207,8 +207,8 @@ export default function LuxuryReviews() {
                       <ThumbsUp 
                         className={`md:w-5 md:h-5 w-4 h-4 transition-all duration-300 ${
                           likedReviews.has(review.id)
-                            ? 'fill-amber-400 text-amber-400'
-                            : 'text-[#6E6A61] group-hover:text-amber-400'
+                            ? 'fill-amber-900 text-amber-900'
+                            : 'text-black group-hover:text-amber-900'
                         }`}
                       />
                       <span className="text-amber-100/70 text-sm font-light">
