@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import ProductDetailClient from './ProductDetailClient';
-import products from '../../data/products';
+import products from '@/data/products';
 
 export async function generateStaticParams() {
   return products.map((product) => ({

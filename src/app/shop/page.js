@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import LuxuryShopPage from '../components/ProductCategory';
 import CorporateGifting from '../components/CorporateGifting';
 import LuxuryFooter from '../components/Footer';
-import products from '../data/products';
+import products from '../../data/products';
 
 export const metadata = {
   title: 'Shop Luxury Solid Perfumes | Premium Fragrances Collection',

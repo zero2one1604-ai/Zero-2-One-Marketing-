@@ -91,7 +91,7 @@ export default function LuxuryFooter() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border placeholder:text-black/20 border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 border placeholder:text-gray-600 text-black border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300"
                   disabled={subscribed}
                   onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                 />
@@ -119,9 +119,9 @@ export default function LuxuryFooter() {
                 <a
                   key={index}
                   href={social.href}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-amber-500 hover:bg-amber-50 transition-all duration-300 group"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-amber-800 hover:bg-amber-50 transition-all duration-300 group"
                 >
-                  <social.icon className="w-4 h-4 text-gray-600 group-hover:text-amber-600 transition-colors duration-300" />
+                  <social.icon className="w-4 h-4 text-gray-600 group-hover:text-amber-900 transition-colors duration-300" />
                 </a>
               ))}
             </div>
@@ -136,7 +136,7 @@ export default function LuxuryFooter() {
                 <li key={item}>
                   <a 
                     href="#" 
-                    className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
+                    className="text-sm text-gray-600 hover:text-amber-900 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
                   >
                     {item}
                   </a>
@@ -154,7 +154,7 @@ export default function LuxuryFooter() {
                 <li key={item}>
                   <a 
                     href="#" 
-                    className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
+                    className="text-sm text-gray-600 hover:text-amber-900 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
                   >
                     {item}
                   </a>
@@ -163,39 +163,57 @@ export default function LuxuryFooter() {
             </ul>
           </div>
 
-          <div className="text-center sm:text-left">
-            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4 sm:mb-6">
+        <div className="text-center md:text-left max-w-xs mx-auto md:mx-0">
+  {/* Section Header */}
+<h4 className="text-xs sm:text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4 sm:mb-6">
               Contact
             </h4>
-            <ul className="space-y-3 sm:space-y-4">
-             
-              <li className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 group">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0" />
-                <a href="tel:+918448444373" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light">
-                  +91 8448 444 373
-                </a>
-                 <a href="tel:+918800504373" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light">
-                  +91 8800 504 373
-                </a>
-              </li>
-              <li className="flex flex-col items-center justify-center sm:justify-start gap-2 sm:gap-3 group">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 flex-shrink-0" />
-                <a href="mailto:info@saaviskincare.com" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light break-all">
-                  info@saaviskincare.com
-                </a>
-                <a href="mailto:support@saaviskincare.com" className="text-sm text-gray-600 hover:text-amber-600 transition-colors duration-300 font-light break-all">
-                  support@saaviskincare.com
-                </a>
-              </li>
-            </ul>
 
-            <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
-              <p className="text-xs text-gray-500 font-light leading-relaxed text-center sm:text-left">
-                Available Mon-Sat<br />
-                10:00 AM - 6:00 PM IST
-              </p>
-            </div>
-          </div>
+  <div className="space-y-6">
+    {/* Phone Section */}
+    <div className="flex flex-col md:items-start items-center gap-2 group">
+      <div className="flex items-center gap-2 text-gray-400 group-hover:text-black transition-colors">
+        <Phone className="w-3.5 h-3.5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">Call Us</span>
+      </div>
+      <div className="flex flex-col md:flex-row md:gap-4 gap-1">
+        <a href="tel:+918448444373" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+          +91 8448 444 373
+        </a>
+        <span className="hidden md:block text-gray-200">|</span>
+        <a href="tel:+918800504373" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+          +91 8800 504 373
+        </a>
+      </div>
+    </div>
+
+    {/* Email Section */}
+    <div className="flex flex-col md:items-start items-center gap-2 group">
+      <div className="flex items-center gap-2 text-gray-400 group-hover:text-black transition-colors">
+        <Mail className="w-3.5 h-3.5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">Email</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <a href="mailto:info@saaviskincare.com" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+          info@saaviskincare.com
+        </a>
+        <a href="mailto:support@saaviskincare.com" className="text-sm text-gray-600 hover:text-black transition-colors font-light">
+          support@saaviskincare.com
+        </a>
+      </div>
+    </div>
+
+    {/* Availability Footer */}
+    <div className="pt-6 border-t border-gray-100">
+      <div className="flex flex-col md:items-start items-center gap-1">
+        <p className="text-[10px] font-bold text-gray-900 uppercase tracking-tight">Hours</p>
+        <p className="text-[11px] text-gray-500 font-light leading-relaxed tracking-wide">
+          Mon – Sat <span className="mx-1">/</span> 10:00 AM – 6:00 PM IST
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
         </div>
       </div>
@@ -208,31 +226,54 @@ export default function LuxuryFooter() {
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 order-3 md:order-2">
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-600 transition-colors duration-300 font-light whitespace-nowrap">
+              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
                 Privacy Policy
               </a>
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-600 transition-colors duration-300 font-light whitespace-nowrap">
+              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
                 Terms of Service
               </a>
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-600 transition-colors duration-300 font-light whitespace-nowrap">
+              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
                 Cookie Policy
               </a>
             </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2 order-1 md:order-3">
-              <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gray-200 rounded flex items-center justify-center text-[7px] sm:text-[8px] font-semibold text-gray-600">
-                VISA
-              </div>
-              <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gray-200 rounded flex items-center justify-center text-[7px] sm:text-[8px] font-semibold text-gray-600">
-                MC
-              </div>
-              <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gray-200 rounded flex items-center justify-center text-[7px] sm:text-[8px] font-semibold text-gray-600">
-                AMEX
-              </div>
-              <div className="w-8 h-5 sm:w-10 sm:h-6 bg-gray-200 rounded flex items-center justify-center text-[7px] sm:text-[8px] font-semibold text-gray-600">
-                PayPal
-              </div>
-            </div>
+       <div className="flex items-center gap-1.5 sm:gap-2 order-1 md:order-3">
+  {/* UPI Logo */}
+  <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center p-0.5">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" 
+      alt="UPI" 
+      className="h-full object-contain"
+    />
+  </div>
+  
+  {/* Google Pay */}
+  <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center p-0.5">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" 
+      alt="GPay" 
+      className="h-full object-contain"
+    />
+  </div>
+
+  {/* PhonePe */}
+  <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center p-0.5">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" 
+      alt="PhonePe" 
+      className="h-full object-contain"
+    />
+  </div>
+
+  {/* Paytm */}
+  <div className="w-8 h-5 sm:w-10 sm:h-6 bg-white border border-gray-200 rounded flex items-center justify-center p-0.5">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" 
+      alt="Paytm" 
+      className="h-full object-contain"
+    />
+  </div>
+</div>
           </div>
         </div>
       </div>

@@ -244,8 +244,23 @@ friendly and safe to be used by the whole family. </p>
                 Our Journey
               </h2>
             </div>
-
-            <div className="relative">
+            <div className="flex justify-center px-4">
+  <div className="relative w-full max-w-[350px] aspect-[9/16] overflow-hidden rounded-[2rem] border border-neutral-100 shadow-2xl">
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
+    >
+      <source src="/Video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    
+    <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/5 rounded-[2rem]"></div>
+  </div>
+</div>
+            <div className="hidden relative">
 
               <div className="hidden md:block">
                 <div className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-gradient-to-b from-amber-800 via-amber-500 to-amber-900" />
@@ -255,7 +270,7 @@ friendly and safe to be used by the whole family. </p>
                     <div key={index} className={`flex items-center gap-6 lg:gap-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                       <div className={`flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
                         <div className="inline-block bg-white p-4 sm:p-6 rounded-xl border border-amber-200/10 hover:border-amber-500/30 transition-all duration-300 hover:scale-[1.02]">
-                          <time className="text-2xl sm:text-3xl font-light text-amber-900 mb-2 block">{item.year}</time>
+                          <time className="text-2xl sm:text-3xl font-light text-amber-900 hidden mb-2 block">{item.year}</time>
                           <h3 className="text-[#1C1C1A] text-base sm:text-lg font-medium mb-2">{item.event}</h3>
                           <p className="text-[#6E6A61] text-sm font-light">{item.description}</p>
                         </div>
@@ -277,7 +292,7 @@ friendly and safe to be used by the whole family. </p>
                       <div className="absolute left-2.5 top-5 w-px h-full bg-amber-500/50" />
                     )}
                     <div className="bg-white p-4 rounded-xl border border-amber-200/10">
-                      <time className="text-lg font-light text-amber-900 mb-2 block">{item.year}</time>
+                      <time className="text-lg font-light hidden text-amber-900 mb-2 block">{item.year}</time>
                       <h3 className="text-[#1C1C1A] text-sm font-medium mb-2">{item.event}</h3>
                       <p className="text-[#6E6A61] text-xs font-light">{item.description}</p>
                     </div>
@@ -314,8 +329,8 @@ friendly and safe to be used by the whole family. </p>
 
                 <div className="space-y-3 sm:space-y-4 pt-4">
                   {[
-                    { label: "Zero-Waste Packaging", status: "Achieved 2022" },
-                    { label: "Carbon-Neutral Operations", status: "Achieved 2022" },
+                    { label: "Zero-Waste Packaging", status: "Achieved" },
+                    { label: "Carbon-Neutral Operations", status: "Achieved" },
                     { label: "Sustainable Ingredient Sourcing", status: "100% Compliant" },
                     { label: "Recyclable Materials", status: "100% Usage" }
                   ].map((item, index) => (

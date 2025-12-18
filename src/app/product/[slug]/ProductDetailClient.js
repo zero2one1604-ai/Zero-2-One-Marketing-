@@ -21,12 +21,18 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import LuxuryFooter from '@/app/components/Footer'
-import products from '../../data/products'
+import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/navigation'
+import { createOrder } from '@/app/actions/createOrder'
+import products from '@/data/products'
 import Product3DScene from '@/app/components/Product3DScene'
+import { useAuthModal } from '@/app/components/AuthModalProvider'
 
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
+   const { openAuthModal } = useAuthModal()
+  const router = useRouter()
   const [isAddedToCart, setIsAddedToCart] = useState(false)
 
   const handleAddToCart = () => {
@@ -51,6 +57,30 @@ export default function ProductDetailClient ({ product }) {
     active:scale-[0.99] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]
     disabled:opacity-70 disabled:cursor-not-allowed
   `
+  const handleBuyNow = async () => {
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    openAuthModal({
+      onSuccess: () => {
+        handleBuyNow()
+      }
+    })
+    return
+  }
+
+  const orderId = await createOrder({
+    productId: product.id,
+    quantity,
+    userId: user.id
+  })
+
+  router.push(`/checkout/${orderId}`)
+}
+
+
 
   const goldTextClasses =
     'text-transparent bg-clip-text bg-gradient-to-b from-[#FBF3E3] via-[#D4AF37] to-[#A37C1A] drop-shadow-sm'
@@ -216,6 +246,7 @@ export default function ProductDetailClient ({ product }) {
 
                   <div className='flex gap-3 sm:gap-4'>
                     <button
+                    onClick={handleBuyNow}
                       disabled={isAddedToCart}
                       className={goldBtnClasses}
                     >

@@ -4,9 +4,35 @@ import { useState } from "react";
 import { ShoppingCartIcon, MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SaaviLogo from '../../../public/images/logo.png';
+import { useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import UserMenu from "./UserMenu";
+import { useAuthModal } from "@/app/components/AuthModalProvider";
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false)
+
+const { openAuthModal } = useAuthModal();
+
+useEffect(() => {
+  // initial user
+  supabase.auth.getUser().then(({ data }) => {
+    setUser(data.user);
+  });
+
+  // listen to auth changes
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setUser(session?.user ?? null);
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -55,14 +81,40 @@ export default function Navbar() {
 
           <div className="flex items-center space-x-4 lg:ml-4">
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition" />
-            <ShoppingCartIcon className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition" />
+         {user?.user_metadata?.avatar_url ? (
+<img
+  src={user.user_metadata.avatar_url}
+  className="w-6 h-6 rounded-full cursor-pointer"
+  onClick={() => setMenuOpen(!menuOpen)}
+/>
+
+) : (
+  <ShoppingCartIcon
+    className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition"
+    onClick={() => openAuthModal({ onSuccess: () => {} })}
+  />
+)}
+
           </div>
         </nav>
 
         {/* Mobile Icons and Menu Button */}
         <div className="md:hidden flex items-center space-x-4">
           <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 cursor-pointer" />
-          <ShoppingCartIcon className="w-5 h-5 text-gray-700 cursor-pointer" />
+          {user?.user_metadata?.avatar_url ? (
+  <img
+    src={user.user_metadata.avatar_url}
+    alt="User"
+    className="w-5 h-5 rounded-full cursor-pointer"
+    onClick={() => setMenuOpen(!menuOpen)}
+  />
+) : (
+  <ShoppingCartIcon
+    className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition"
+    onClick={() => openAuthModal({ onSuccess: () => {} })}
+  />
+)}
+
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="text-gray-700 focus:outline-none"
@@ -72,33 +124,82 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      <div 
-        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="bg-gradient-to-b from-white to-gray-50 border-t border-gray-100 shadow-lg">
-          <nav className="flex flex-col px-6 py-6 space-y-1">
-            {navigation.map((item, index) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`group relative text-gray-700 hover:text-gray-900 font-medium text-base py-3 px-4 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:pl-6 ${
-                  isMenuOpen ? 'animate-slideIn' : ''
-                }`}
-                style={{ animationDelay: `${index * 50}ms` }}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="relative z-10">{item.name}</span>
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gray-900 rounded-r transition-all duration-300 group-hover:h-8"></span>
-              </Link>
-            ))}
-          </nav>
+<div 
+  className={`fixed left-0 right-0 z-[100] md:hidden bg-white transition-all duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] ${
+    isMenuOpen 
+      ? 'top-0 h-screen opacity-100' 
+      : 'top-[-100%] h-0 opacity-0 pointer-events-none'
+  }`}
+>
+  <button 
+    onClick={() => setIsMenuOpen(false)}
+    className={`absolute top-6 right-8 z-[110] flex items-center justify-center w-12 h-12 rounded-full border border-gray-100 bg-white shadow-sm transition-all duration-500 ${
+      isMenuOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 rotate-90'
+    } active:scale-90`}
+  >
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 1L13 13M1 13L13 1" stroke="black" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  </button>
+  <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+
+  <div className="relative h-full flex flex-col px-8 pt-24 pb-12">
+    
+    <div className="mb-12">
+      <p className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase">Navigation Menu</p>
+      <div className="h-[1px] w-12 bg-black mt-2"></div>
+    </div>
+
+    <nav className="flex flex-col space-y-6">
+      {navigation.map((item, index) => (
+        <Link
+          key={item.name}
+          href={item.href}
+          onClick={() => setIsMenuOpen(false)}
+          className="group flex items-baseline gap-4"
+        >
+          <span className="text-[10px] font-mono text-gray-400 group-hover:text-black transition-colors">
+            0{index + 1}
+          </span>
+          
+          <div className="relative overflow-hidden">
+            <span className={`block text-4xl the-seasons font-light tracking-tighter text-gray-900 transition-transform duration-500 ease-out group-hover:-translate-y-full ${isMenuOpen ? 'translate-y-0' : 'translate-y-12'}`}
+                  style={{ transitionDelay: `${index * 100}ms` }}>
+              {item.name}
+            </span>
+            <span className="absolute top-0 left-0 block text-4xl font-medium tracking-tighter text-black translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0">
+              {item.name}
+            </span>
+          </div>
+
+          <div className="h-1.5 w-1.5 rounded-full bg-black opacity-0 group-hover:opacity-100 transition-opacity ml-auto"></div>
+        </Link>
+      ))}
+    </nav>
+
+    {/* Bottom Section: Socials & Info */}
+    <div className="mt-auto grid grid-cols-2 gap-8 border-t border-gray-100 pt-10">
+      <div>
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Connect</p>
+        <div className="flex text-black flex-col gap-2">
+          <a href="#" className="text-sm font-medium hover:underline">Instagram</a>
+          <a href="#" className="text-sm font-medium hover:underline">LinkedIn</a>
         </div>
       </div>
+      <div>
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Quick Contact</p>
+        <p className="text-sm font-medium text-black">info@saaviskincare.com</p>
+        <p className="text-xs text-gray-500 mt-1">Available 24/7</p>
+      </div>
+    </div>
 
-      {/* Custom CSS for Marquee Animation */}
+    {/* Big Background Text (Watermark) */}
+    <div className="absolute bottom-[-20px] right-[-20px] text-[120px] font-black text-gray-50 select-none -z-10 leading-none">
+      MENU
+    </div>
+  </div>
+</div>
+
       <style jsx global>{`
         /* Define the animation keyframes */
         @keyframes marquee {
@@ -143,6 +244,12 @@ export default function Navbar() {
           opacity: 0;
         }
       `}</style>
+      <UserMenu
+  open={menuOpen}
+  onClose={() => setMenuOpen(false)}
+  user={user}
+/>
+
     </header>
   );
 }

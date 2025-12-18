@@ -101,7 +101,7 @@ export default function CorporateGifting() {
   return (
     <div className="min-h-screen bg-[#F6F4EF]">
       
-      <div className="relative overflow-hidden border-b border-amber-200/10">
+      <div className="relative overflow-hidden border-b hidden border-amber-200/10">
         <div className="absolute inset-0 bg-amber-50 opacity-90" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464566558090-22f750fec8b2?w=1600&h=600&fit=crop')] bg-cover bg-center opacity-20" />
         
@@ -133,9 +133,9 @@ export default function CorporateGifting() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
         
-        <div className="mb-12 sm:mb-16 lg:mb-20">
+        <div className="mb-12 hidden sm:mb-16 lg:mb-20">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl the-seasons md:text-4xl font-light text-[#3D2F1F] tracking-[0.15em] sm:tracking-[0.2em] uppercase md:not-first:mb-3 sm:mb-4">
               Gifting Packages
