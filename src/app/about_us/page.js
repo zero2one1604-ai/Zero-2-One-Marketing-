@@ -21,7 +21,6 @@ export default function AboutUsPage() {
     <>
       <div className="min-h-screen bg-[#FAF9F6]">
         
-        {/* --- LUXURY HERO SECTION --- */}
         <header className="relative pt-32 pb-20 px-6 border-b border-neutral-100">
           <div className="max-w-7xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-8">
@@ -35,7 +34,7 @@ export default function AboutUsPage() {
             </h1>
             
             <p className="text-sm md:text-xl text-neutral-500 font-light max-w-2xl mx-auto leading-relaxed italic">
-              "A journey born from love, crafted with care, and shared with the world."
+              &quot;A journey born from love, crafted with care, and shared with the world.&quot;
             </p>
           </div>
         </header>

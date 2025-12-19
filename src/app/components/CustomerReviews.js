@@ -97,7 +97,7 @@ export default function LuxuryReviews() {
                 <div className="lg:col-span-7 space-y-8">
                   <Quote className="w-12 h-12 text-neutral-100" />
                   <h3 className="text-3xl md:text-5xl font-light text-neutral-900 leading-tight italic font-serif">
-                    "{rev.review}"
+                    &quot;{rev.review}&quot;
                   </h3>
                   <div className="flex items-center gap-4">
                     <span className="px-4 py-1.5 rounded-full bg-neutral-900 text-white text-[9px] font-bold uppercase tracking-widest">
