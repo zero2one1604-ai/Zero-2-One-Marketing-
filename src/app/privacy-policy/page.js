@@ -1,0 +1,158 @@
+'use client'
+
+import React from 'react'
+import { Lock, Eye, Database, ShieldCheck, Cookie, Mail } from 'lucide-react'
+import LuxuryFooter from '../components/Footer'
+
+export default function PrivacyPolicy() {
+  return (
+    <div className="bg-[#FAF9F6] min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 pt-24 pb-20">
+        
+        {/* Header Section */}
+        <header className="text-center mb-20">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-[1px] w-10 bg-neutral-300"></div>
+            <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">
+              Privacy & Trust
+            </span>
+            <div className="h-[1px] w-10 bg-neutral-300"></div>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-light tracking-tightest text-neutral-900 mb-6">
+            Privacy Statement
+          </h1>
+          <p className="text-sm text-neutral-500 font-light max-w-lg mx-auto leading-relaxed">
+            Your trust is our most valuable asset. We are dedicated to protecting your personal information with absolute transparency.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+          <div className="p-6 bg-white border border-neutral-100 rounded-3xl text-center">
+            <Eye className="w-5 h-5 mx-auto mb-4 text-neutral-400" />
+            <h3 className="text-[10px] text-black font-bold uppercase tracking-widest mb-2">Transparency</h3>
+            <p className="text-[11px] text-neutral-500 font-light">Know exactly what data we collect and why.</p>
+          </div>
+          <div className="p-6 bg-white border border-neutral-100 rounded-3xl text-center">
+            <Lock className="w-5 h-5 mx-auto mb-4 text-neutral-400" />
+            <h3 className="text-[10px] text-black font-bold uppercase tracking-widest mb-2">Security</h3>
+            <p className="text-[11px] text-neutral-500 font-light">Industry-standard encryption for every transaction.</p>
+          </div>
+          <div className="p-6 bg-white border border-neutral-100 rounded-3xl text-center">
+            <ShieldCheck className="w-5 h-5 mx-auto mb-4 text-neutral-400" />
+            <h3 className="text-[10px] text-black font-bold uppercase tracking-widest mb-2">Control</h3>
+            <p className="text-[11px] text-neutral-500 font-light">Your right to access or delete your data at any time.</p>
+          </div>
+        </div>
+
+        {/* Policy Sections */}
+        <div className="space-y-20">
+          
+          {/* Collection */}
+          <section className="group">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="md:w-1/3">
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                  01. Data Collection
+                </h2>
+                <div className="h-px w-full bg-neutral-200 mt-4"></div>
+              </div>
+              <div className="md:w-2/3">
+                <p className="text-sm text-neutral-600 font-light leading-relaxed mb-4">
+                  We collect information necessary to fulfill your orders and enhance your experience. This includes:
+                </p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {['Contact Details', 'Shipping Address', 'Order History', 'Device Information'].map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-[13px] font-medium text-neutral-800">
+                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-300"></span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Usage */}
+          <section className="group">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="md:w-1/3">
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                  02. Usage & Purpose
+                </h2>
+                <div className="h-px w-full bg-neutral-200 mt-4"></div>
+              </div>
+              <div className="md:w-2/3">
+                <p className="text-sm text-neutral-600 font-light leading-relaxed">
+                  Your data allows us to process payments, ship your Saavi perfumes, and provide tailored skincare advice. We never sell your personal information to third-party marketers. Data shared with logistics partners (BlueDart/DHL) is strictly for delivery purposes.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Cookies - Glass Card */}
+          <section className="p-10 bg-white border border-neutral-100 rounded-[3rem] shadow-sm">
+            <div className="flex items-center gap-4 mb-6">
+              <Cookie className="w-5 h-5 text-neutral-900" />
+              <h2 className="text-[11px] font-bold text-black uppercase tracking-[0.2em]">Cookie Policy</h2>
+            </div>
+            <p className="text-sm text-neutral-600 font-light leading-relaxed">
+              We use "cookies" to remember your cart and understand how you interact with our boutique. These are small files stored on your device that help us provide a seamless journey. You may disable cookies in your browser settings, though some site features may become unavailable.
+            </p>
+          </section>
+
+          <section className="group">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="md:w-1/3">
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                  03. Your Rights
+                </h2>
+                <div className="h-px w-full bg-neutral-200 mt-4"></div>
+              </div>
+              <div className="md:w-2/3">
+                <p className="text-sm text-neutral-600 font-light leading-relaxed mb-6">
+                  In accordance with Indian Digital Personal Data Protection (DPDP) standards, you have the right to:
+                </p>
+                <div className="space-y-4">
+                  <div className="flex gap-4 p-4 rounded-2xl bg-neutral-50 border border-neutral-100">
+                     <Database className="w-4 h-4 text-neutral-400 shrink-0 mt-1" />
+                     <p className="text-xs text-neutral-600 font-light leading-relaxed">
+                       Request a copy of the personal information we hold about you or request its permanent deletion from our servers.
+                     </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Contact Grievance Officer */}
+          <section className="p-10 bg-neutral-900 rounded-[3rem] text-white">
+            <div className="flex items-center gap-4 mb-8">
+              <Mail className="w-5 h-5 text-neutral-400" />
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.3em]">Privacy Concerns</h2>
+            </div>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+              <div className="space-y-2">
+                <p className="text-sm font-light text-neutral-300 leading-relaxed">
+                  For any privacy-related inquiries or to exercise your data rights, please contact our Grievance Officer:
+                </p>
+                <p className="text-lg font-medium">privacy@saaviskincare.com</p>
+              </div>
+              <button className="px-8 py-3 border cursor-pointer border-neutral-700 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                Submit Request
+              </button>
+            </div>
+          </section>
+
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-32 pt-12 border-t border-neutral-200 text-center">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-neutral-400 uppercase">
+            © 2025 Saavi Skincare • Crafted for Privacy
+          </p>
+        </footer>
+      </div>
+      <LuxuryFooter />
+    </div>
+  )
+}

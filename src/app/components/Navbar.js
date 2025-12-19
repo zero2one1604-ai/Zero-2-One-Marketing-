@@ -98,7 +98,6 @@ useEffect(() => {
           </div>
         </nav>
 
-        {/* Mobile Icons and Menu Button */}
         <div className="md:hidden flex items-center space-x-4">
           <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 cursor-pointer" />
           {user?.user_metadata?.avatar_url ? (

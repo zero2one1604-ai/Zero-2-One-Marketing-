@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin, Send, Award, Shield, Bus } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function LuxuryFooter() {
   const [email, setEmail] = useState('');
@@ -149,18 +150,25 @@ export default function LuxuryFooter() {
             <h4 className="text-xs sm:text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4 sm:mb-6">
               Support
             </h4>
-            <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
-              {['Contact Us', 'FAQs', 'Shipping Info', 'Returns & Exchanges', 'Size Guide', 'Track Order'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-sm text-gray-600 hover:text-amber-900 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+       <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
+  {[
+    { label: 'Contact Us', href: '/contact' },
+    { label: 'FAQs', href: '/faqs' },
+    { label: 'Shipping Policy', href: '/shipping-policy' },
+    { label: 'Returns & Exchanges', href: '/return-refund-cancellation-policy' },
+    { label: 'Size Guide', href: '/size-guide' },
+    { label: 'Track Order', href: '/track-order' },
+  ].map((item) => (
+    <li key={item.label}>
+      <Link
+        href={item.href}
+        className="text-sm text-gray-600 hover:text-amber-900 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
+      >
+        {item.label}
+      </Link>
+    </li>
+  ))}
+</ul>
           </div>
 
         <div className="text-center md:text-left max-w-xs mx-auto md:mx-0">
@@ -226,14 +234,11 @@ export default function LuxuryFooter() {
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 order-3 md:order-2">
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
+              <a href="/privacy-policy" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
                 Privacy Policy
               </a>
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
-                Terms of Service
-              </a>
-              <a href="#" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
-                Cookie Policy
+              <a href="/terms-and-conditions" className="text-[10px] sm:text-xs text-gray-500 hover:text-amber-900 transition-colors duration-300 font-light whitespace-nowrap">
+                Terms and Conditions
               </a>
             </div>
 

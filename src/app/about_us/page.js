@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Heart, Globe, Users, Award, Leaf, HandHeart, Package, Target, Shield } from 'lucide-react';
+import { Heart, Globe, Users, Award, Leaf, HandHeart, Package, Target, Shield, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import LuxuryFooter from '../components/Footer';
 
@@ -9,365 +9,183 @@ export default function AboutUsPage() {
   const [activeValue, setActiveValue] = useState(0);
 
   const values = [
-    {
-      icon: Package,
-      title: "Small Batch Craftsmanship",
-      description: "Every fragrance is meticulously crafted in limited quantities to ensure uncompromising quality and attention to detail."
-    },
-    {
-      icon: HandHeart,
-      title: "Handcrafted Excellence",
-      description: "Our artisans pour their expertise and passion into each bottle, creating fragrances that are truly one-of-a-kind."
-    },
-    {
-      icon: Users,
-      title: "Women Empowerment",
-      description: "We are committed to empowering women in our workforce and communities, creating opportunities for growth and leadership."
-    },
-    {
-      icon: Award,
-      title: "Premium Raw Materials",
-      description: "We source only the finest natural ingredients from sustainable suppliers around the world."
-    },
-    {
-      icon: Heart,
-      title: "Personal Touch",
-      description: "From formulation to packaging, every step carries the care and dedication of our family-run business."
-    },
-    {
-      icon: Shield,
-      title: "Dedicated Team",
-      description: "Our passionate team shares a common vision: creating fragrances that transform everyday moments into extraordinary experiences."
-    }
-  ];
-
-  const timeline = [
-    { year: "2015", event: "A Family Solution", description: "Founded out of a personal need to address family skin sensitivities" },
-    { year: "2017", event: "First Collection", description: "Launched our signature solid perfume line, safe for all skin types" },
-    { year: "2019", event: "Growing Recognition", description: "Featured in major lifestyle publications for our child-friendly formulas" },
-    { year: "2022", event: "Sustainable Commitment", description: "Achieved zero-waste packaging and carbon-neutral operations" },
-    { year: "2024", event: "Global Expansion", description: "Now serving customers in 45+ countries worldwide" }
+    { icon: Package, title: "Small Batch", description: "Meticulously crafted in limited quantities to ensure uncompromising quality." },
+    { icon: HandHeart, title: "Artisan Made", description: "Our artisans pour expertise into each tin, creating unique olfactory experiences." },
+    { icon: Users, title: "Empowerment", description: "Dedicated to creating leadership opportunities for women in our community." },
+    { icon: Award, title: "Pure Sourcing", description: "Finest natural ingredients from sustainable, ethical suppliers worldwide." },
+    { icon: Heart, title: "Personal Care", description: "Family-run dedication from our laboratory to your home." },
+    { icon: Shield, title: "Verified Safe", description: "Personally tested formulas that prioritize skin health and integrity." }
   ];
 
   return (
     <>
-      <div className="min-h-screen bg-[#F6F4EF]">
+      <div className="min-h-screen bg-[#FAF9F6]">
         
-        <header className="relative overflow-hidden border-b border-amber-200/10">
-          <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-white to-amber-50 opacity-90" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1600&h=600&fit=crop')] bg-cover bg-center opacity-20" />
-          
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32 text-center">
-            <Image
-              src="/images/logo.png"
-              alt="Saavi Perfumes - About Us"
-              width={800}
-              height={400}
-              className="mx-auto mb-4 w-fit h-20 md:w-70 md:h-fit"
-              priority
-            />
-
-            <div className="w-1/2 sm:w-2/5 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4 mx-auto h-0.5 sm:h-1 rounded-full bg-gradient-to-l from-amber-100/80 via-amber-100 to-amber-100/80" />
+        {/* --- LUXURY HERO SECTION --- */}
+        <header className="relative pt-32 pb-20 px-6 border-b border-neutral-100">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="h-[1px] w-12 bg-neutral-300"></div>
+              <span className="text-[10px] font-bold tracking-[0.5em] text-neutral-400 uppercase">Since 2015</span>
+              <div className="h-[1px] w-12 bg-neutral-300"></div>
+            </div>
             
-            <h1 className="text-2xl md:text-5xl the-seasons lg:text-6xl xl:text-7xl font-light text-[#1C1C1A] tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] uppercase mb-4 sm:mb-6">
-              Our Story
+            <h1 className="text-6xl md:text-9xl font-light text-neutral-900 tracking-tightest uppercase mb-8">
+              Our <span className="font-serif italic text-neutral-400">Story</span>
             </h1>
             
-            <p className="text-sm md:text-2xl text-[#6E6A61] font-light leading-relaxed max-w-3xl mx-auto italic px-20 md:px-4">
-              Born from love, crafted with care, shared with the world
+            <p className="text-sm md:text-xl text-neutral-500 font-light max-w-2xl mx-auto leading-relaxed italic">
+              "A journey born from love, crafted with care, and shared with the world."
             </p>
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <section className="py-12 sm:py-16 md:py-20 lg:py-24">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-              
-              <div className="relative order-2 lg:order-1">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+        <main className="max-w-7xl mx-auto px-6 py-24">
+          
+          {/* --- BRAND STORY: ASYMMETRIC GRID --- */}
+          <section className="mb-40">
+            <div className="grid lg:grid-cols-12 gap-16 items-center">
+              <div className="lg:col-span-7 relative">
+                <div className="relative aspect-[4/5] md:aspect-[16/9] overflow-hidden rounded-[3rem] shadow-2xl">
                   <Image
                     src="/images/savicover.jpg"
-                    alt="Saavi Perfumes Story - Family Business Since 2015"
-                    width={800}
-                    height={600}
-                    className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+                    alt="Saavi Heritage"
+                    fill
+                    className="object-cover"
+                    priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/80 via-transparent to-transparent" />
                 </div>
-                
-              </div>
-
-              <div className="sm:space-y-8 order-1 lg:order-2">
-                <div className='flex flex-col'>
-                  <div className="inline-block mb-2 md:mb-4 mx-auto md:mx-0 sm:mb-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-amber-900" />
-                      <span className="text-amber-900 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Brand Story</span>
-                    </div>
-                  </div>
-
-                  <h2 className="text-lg text-center md:text-left md:text-4xl font-light text-[#1C1C1A] tracking-wide mb-4 sm:mb-6">
-                    A Journey Born from <span className="text-amber-900">Love</span>
-                  </h2>
-                </div>
-
-                <div className="space-y-4 sm:space-y-6 text-[#1C1C1A] leading-relaxed font-light text-justify text-base sm:text-lg">
-                  <p>
-                   The journey began at home - an unforced desire to care for the family’s skin concerns. The solution
-which was used for treating personal skin problems swiftly unfolded into a brand intrenched in trust
-and truth. Each of our product, we create has been personally used and believe to be lovingly
-prepared, examined by the family which further has been introduced with the outside world. From
-us to your home, we got you a delicate, efficient skincare which has been made with love and care.
-Our simple belief is that skincare should be easy, reliable and focus should be towards care. The
-articulations regard to the product are prepared in such small batches and being careful about the
-ingredients which specifically helps the skin to nourish, restore and protect. Each of our product
-hydrating creams to solid perfumes, each one of them has been designed in a way that are skin
-friendly and safe to be used by the whole family. </p>
-                </div>
-
-                <div className="pt-4 sm:pt-6">
-                  <div className="inline-flex items-center gap-2 sm:gap-3 px-2 sm:px-6 py-1 sm:py-3 bg-amber-800/30 border border-amber-500 rounded-full">
-                    <Shield className="w-3 h-3 sm:w-5 sm:h-5 text-amber-900 flex-shrink-0" />
-                    <span className="text-amber-900 text-[8px] sm:text-sm tracking-wider uppercase font-medium">
-                      Family-Safe • Child-Friendly • Personally Tested
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="py-12 sm:py-16 md:py-20 lg:py-24 border-t border-gray-900">
-            <div className="text-center mb-4 sm:mb-16">
-              <div className="inline-flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-amber-900" />
-                <span className="text-amber-900 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Our Mission</span>
-              </div>
-              
-              <h2 className="text-2xl the-seasons sm:text-4xl md:text-5xl font-light text-[#1C1C1A] tracking-[0.15em] sm:tracking-[0.2em] uppercase md:mb-6 sm:mb-8 px-4">
-                Going Global
-              </h2>
-              
-              <p className="text-xs sm:text-lg md:text-xl text-[#6E6A61] font-light leading-relaxed max-w-4xl mx-auto px-4">
-                To become the world&apos;s most trusted luxury fragrance brand by making safe, sophisticated scents accessible to families everywhere, transforming the way people experience fragrance.
-              </p>
-            </div>
-
-            <div className="bg-white backdrop-blur-xl rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 border border-amber-200/10 shadow-2xl">
-              <div className="grid grid-cols-3 sm:gap-8 text-center">
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center mx-auto shadow-lg">
-                    <Globe className="w-6 h-6 sm:w-10 sm:h-10 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-lg sm:text-4xl md:text-5xl font-light text-[#1C1C1A] md:mb-2">45+</div>
-                    <p className="text-[#6E6A61] tracking-wider uppercase text-[8px] sm:text-sm">Countries Served</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center mx-auto shadow-lg">
-                    <Users className="w-6` h-6 sm:w-10 sm:h-10 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-lg sm:text-4xl md:text-5xl font-light text-[#1C1C1A] md:mb-2">50K+</div>
-                    <p className="text-[#6E6A61] tracking-wider uppercase text-[8px] sm:text-sm">Happy Families</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center mx-auto shadow-lg">
-                    <Target className="w-6 h-6 sm:w-10 sm:h-10 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-lg sm:text-4xl md:text-5xl font-light text-[#1C1C1A] md:mb-2">100+</div>
-                    <p className="text-[#6E6A61] tracking-wider uppercase text-[8px] sm:text-sm">Countries by 2030</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="py-12 sm:py-16 md:py-20 lg:py-24 border-t border-gray-900">
-            <div className="text-center mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <Award className="w-5 h-5 sm:w-6 sm:h-6 text-amber-900" />
-                <span className="text-amber-900 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Our Values</span>
-              </div>
-              
-              <h2 className="text-2xl the-seasons sm:text-4xl md:text-5xl font-light text-[#1C1C1A] tracking-[0.15em] sm:tracking-[0.2em] uppercase sm:mb-8 px-4">
-                What We Stand For
-              </h2>
-              
-              <p className="text-xs sm:text-lg md:text-xl text-[#6E6A61] font-light leading-relaxed max-w-3xl mx-auto px-4">
-                Our values are not just words on a wall, they are the principles that guide every decision we make.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6 lg:gap-8">
-              {values.map((value, index) => (
-                <article
-                  key={index}
-                  onMouseEnter={() => setActiveValue(index)}
-                  className={`group p-3 sm:p-8 bg-white backdrop-blur-md rounded-2xl border transition-all duration-500 hover:scale-[1.02] cursor-pointer ${
-                    activeValue === index
-                      ? 'border-gray-500 shadow-2xl shadow-amber-500/20'
-                      : 'border-amber-200/10 hover:border-amber-500/30'
-                  }`}
-                >
-                  <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-4 sm:mb-6 transition-all duration-300 ${
-                    activeValue === index
-                      ? 'bg-gradient-to-br from-amber-800 to-amber-900 scale-110'
-                      : 'bg-gradient-to-br from-amber-50 to-amber-100'
-                  }`}>
-                    <value.icon className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transition-colors duration-300 ${
-                      activeValue === index ? 'text-white' : 'text-amber-900'
-                    }`} />
-                  </div>
-
-                  <h3 className="text-[#1C1C1A] text-sm sm:text-xl font-medium mb-2 sm:mb-3 tracking-wide">
-                    {value.title}
-                  </h3>
-
-                  <p className="text-[#6E6A61] font-light leading-relaxed text-xs sm:text-base">
-                    {value.description}
+                {/* Floating Detail */}
+                <div className="absolute -bottom-10 -right-6 hidden md:block bg-white p-8 rounded-[2rem] shadow-xl border border-neutral-100 max-w-xs">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-400 mb-2">The Philosophy</p>
+                  <p className="text-sm font-light text-neutral-800 leading-relaxed">
+                    Skincare should be easy, reliable, and focused purely on care.
                   </p>
-                </article>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 space-y-8">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-neutral-900" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-900">The Genesis</span>
+                </div>
+                <h2 className="text-4xl font-light tracking-tight text-neutral-900 leading-tight">
+                  Crafted by <span className="font-serif italic text-neutral-400">Family</span> for the Family.
+                </h2>
+                <div className="space-y-6 text-neutral-600 font-light leading-relaxed text-base md:text-lg">
+                  <p>
+                    Our journey began at home—an unforced desire to care for our family’s skin concerns. What started as a personal solution swiftly unfolded into a brand entrenched in trust and truth.
+                  </p>
+                  <p>
+                    Every product we create is lovingly examined by the family before it is introduced to the world. We produce in small batches to ensure that every solid perfume and hydrating cream nourishes and protects.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* --- GLOBAL IMPACT: STATS --- */}
+          <section className="mb-40 py-20 border-y border-neutral-100">
+            <div className="text-center mb-16">
+              <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Our Reach</span>
+              <h2 className="text-4xl font-light text-neutral-900 mt-4 tracking-tightest uppercase">Going Global</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+              {[
+                { val: "45+", label: "Countries Served", icon: Globe },
+                { val: "50K+", label: "Happy Families", icon: Users },
+                { val: "100+", label: "Target 2030", icon: Target }
+              ].map((stat, i) => (
+                <div key={i} className="space-y-4">
+                  <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-black transition-colors">
+                    <stat.icon className="w-6 h-6 text-neutral-400" />
+                  </div>
+                  <div className="text-5xl font-light text-neutral-900 tracking-tighter">{stat.val}</div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">{stat.label}</p>
+                </div>
               ))}
             </div>
           </section>
 
-          <section className="py-12 sm:py-16 md:py-20 lg:py-24 border-t border-gray-900">
-            <div className="text-center mb-8 sm:mb-16">
-              <h2 className="text-2xl the-seasons sm:text-4xl md:text-5xl font-light text-[#1C1C1A] tracking-[0.15em] sm:tracking-[0.2em] uppercase mb-6 sm:mb-8 px-4">
-                Our Journey
-              </h2>
-            </div>
-            <div className="flex justify-center px-4">
-  <div className="relative w-full max-w-[350px] aspect-[9/16] overflow-hidden rounded-[2rem] border border-neutral-100 shadow-2xl">
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      className="absolute inset-0 w-full h-full object-cover"
-    >
-      <source src="/Video.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    
-    <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/5 rounded-[2rem]"></div>
-  </div>
-</div>
-            <div className="hidden relative">
-
-              <div className="hidden md:block">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-gradient-to-b from-amber-800 via-amber-500 to-amber-900" />
-
-                <div className="space-y-12 lg:space-y-16">
-                  {timeline.map((item, index) => (
-                    <div key={index} className={`flex items-center gap-6 lg:gap-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                      <div className={`flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                        <div className="inline-block bg-white p-4 sm:p-6 rounded-xl border border-amber-200/10 hover:border-amber-500/30 transition-all duration-300 hover:scale-[1.02]">
-                          <time className="text-2xl sm:text-3xl font-light text-amber-900 hidden mb-2 block">{item.year}</time>
-                          <h3 className="text-[#1C1C1A] text-base sm:text-lg font-medium mb-2">{item.event}</h3>
-                          <p className="text-[#6E6A61] text-sm font-light">{item.description}</p>
-                        </div>
-                      </div>
-                      <div className="relative z-10">
-                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-br from-amber-900 to-amber-800 border-2 border-[#0f1629] shadow-lg" />
-                      </div>
-                      <div className="flex-1" />
-                    </div>
-                  ))}
-                </div>
+          {/* --- VALUES: INTERACTIVE CARDS --- */}
+          <section className="mb-40">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+              <div className="max-w-xl">
+                <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Core Values</span>
+                <h2 className="text-4xl font-light text-neutral-900 mt-4 tracking-tightest uppercase">The Saavi Standards</h2>
               </div>
-
-              <div className="md:hidden space-y-4">
-                {timeline.map((item, index) => (
-                  <div key={index} className="relative pl-8">
-                    <div className="absolute left-0 top-0 w-5 h-5 rounded-full bg-gradient-to-br from-amber-900 to-amber-800 border-2 border-[#0f1629] shadow-lg" />
-                    {index < timeline.length - 1 && (
-                      <div className="absolute left-2.5 top-5 w-px h-full bg-amber-500/50" />
-                    )}
-                    <div className="bg-white p-4 rounded-xl border border-amber-200/10">
-                      <time className="text-lg font-light hidden text-amber-900 mb-2 block">{item.year}</time>
-                      <h3 className="text-[#1C1C1A] text-sm font-medium mb-2">{item.event}</h3>
-                      <p className="text-[#6E6A61] text-xs font-light">{item.description}</p>
-                    </div>
+              <p className="text-sm text-neutral-500 font-light max-w-xs md:text-right leading-relaxed">
+                Principles that guide every formulation and every connection we build.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {values.map((v, i) => (
+                <div 
+                  key={i} 
+                  onMouseEnter={() => setActiveValue(i)}
+                  className={`p-10 rounded-[2.5rem] border transition-all duration-500 cursor-pointer ${
+                    activeValue === i ? 'bg-white border-neutral-200 shadow-xl scale-[1.02]' : 'bg-transparent border-transparent grayscale opacity-60'
+                  }`}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-neutral-900 flex items-center justify-center mb-8 text-white">
+                    <v.icon className="w-5 h-5" />
                   </div>
-                ))}
+                  <h3 className="text-lg font-semibold text-neutral-900 mb-4">{v.title}</h3>
+                  <p className="text-sm text-neutral-500 font-light leading-relaxed">{v.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* --- JOURNEY VIDEO: THE REEL --- */}
+          <section className="mb-40 text-center">
+            <h2 className="text-4xl font-light text-neutral-900 uppercase tracking-tightest mb-16">The Journey <span className="font-serif italic text-neutral-400">in Motion</span></h2>
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-[320px] aspect-[9/16] overflow-hidden rounded-[3rem] border-8 border-white shadow-2xl">
+                <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+                  <source src="/Video.mp4" type="video/mp4" />
+                </video>
               </div>
             </div>
           </section>
 
-          <section className="py-12 sm:py-16 md:py-20 lg:py-24 border-t border-gray-900">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-              
-              <div className="sm:space-y-8 order-2 lg:order-1">
-                <div className='flex flex-col'>
-                  <div className="inline-flex items-center mx-auto gap-2 sm:gap-3 mb-4 sm:mb-6">
-                    <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-green-700" />
-                    <span className="text-green-700 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">Sustainability</span>
-                  </div>
-                  
-                  <h2 className="text-2xl the-seasons text-center sm:text-3xl md:text-4xl font-light text-[#1C1C1A] tracking-wide mb-4 sm:mb-6">
-                    Our Commitment to the <span className="text-green-700">Planet</span>
-                  </h2>
+          {/* --- SUSTAINABILITY: THE PACT --- */}
+          <section className="bg-neutral-900 rounded-[4rem] p-10 md:p-20 text-white overflow-hidden relative">
+            <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
+              <div className="space-y-8">
+                <div className="flex items-center gap-3">
+                  <Leaf className="w-5 h-5 text-green-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">Planet Commitment</span>
                 </div>
-
-                <div className="space-y-4 sm:space-y-6 text-[#1C1C1A] leading-relaxed font-light text-sm sm:text-lg">
-                  <p>
-                    We believe that luxury and sustainability are not mutually exclusive. In fact, we see environmental responsibility as the ultimate luxury—caring for the planet we all call home.
-                  </p>
-                  
-                  <p>
-                    Our commitment extends beyond just creating beautiful fragrances. We have implemented comprehensive sustainability practices across every aspect of our business.
-                  </p>
-                </div>
-
-                <div className="space-y-3 sm:space-y-4 pt-4">
-                  {[
-                    { label: "Zero-Waste Packaging", status: "Achieved" },
-                    { label: "Carbon-Neutral Operations", status: "Achieved" },
-                    { label: "Sustainable Ingredient Sourcing", status: "100% Compliant" },
-                    { label: "Recyclable Materials", status: "100% Usage" }
-                  ].map((item, index) => (
-                    <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 sm:p-4 bg-white/5 rounded-lg border border-green-700 hover:border-green-500/40 transition-all duration-300">
-                      <span className="text-amber-900 font-light text-sm sm:text-base">{item.label}</span>
-                      <span className="text-green-700 text-xs sm:text-sm tracking-wider uppercase font-medium">{item.status}</span>
+                <h2 className="text-4xl md:text-5xl font-light leading-tight tracking-tight">
+                  Luxury with <br /><span className="font-serif italic text-green-400">Conscience.</span>
+                </h2>
+                <div className="grid grid-cols-1 gap-4">
+                  {["Zero-Waste Packaging", "Carbon-Neutral Operations", "Sustainable Sourcing"].map((p, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-all group">
+                      <span className="text-sm font-light text-neutral-300">{p}</span>
+                      <span className="text-[10px] font-bold text-green-400 uppercase tracking-widest">Achieved</span>
                     </div>
                   ))}
                 </div>
               </div>
-
-              <div className="relative order-1 lg:order-2">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&h=1000&fit=crop"
-                    alt="Sustainable Fragrance Production - Eco-Friendly Practices"
-                    width={800}
-                    height={1000}
-                    className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/80 via-transparent to-transparent" />
-                  
-                  <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8">
-                    <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-xl border border-white/20">
-                      <p className="text-white text-sm sm:text-base md:text-lg font-light italic leading-relaxed">
-                        &quot;Every bottle we create is a step towards a more beautiful, sustainable future.&quot;
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative aspect-square overflow-hidden rounded-[3rem]">
+                <Image 
+                  src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800"
+                  alt="Nature"
+                  fill
+                  className="object-cover opacity-60"
+                />
               </div>
             </div>
+            {/* Massive Background Text */}
+            <div className="absolute -bottom-10 left-10 text-[180px] font-black text-white/[0.03] select-none pointer-events-none">PLANET</div>
           </section>
 
         </main>
       </div>
-      <LuxuryFooter/>
+      <LuxuryFooter />
     </>
   );
 }

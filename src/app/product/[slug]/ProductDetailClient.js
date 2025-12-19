@@ -1,22 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-  ShoppingCart,
-  Heart,
-  Share2,
-  Sparkles,
-  ChevronRight,
-  Minus,
-  Plus,
-  Check,
-  Package,
-  Shield,
-  ShoppingBag,
-  Truck,
-  Star,
-  ArrowRight,
-  MessageSquare
+  ShoppingCart, Heart, Share2, ChevronRight, Minus, Plus, Check, 
+  Package, Shield, ShoppingBag, Truck, Star, ArrowRight, MessageSquare
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -31,7 +18,7 @@ import { useAuthModal } from '@/app/components/AuthModalProvider'
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
-   const { openAuthModal } = useAuthModal()
+  const { openAuthModal } = useAuthModal()
   const router = useRouter()
   const [isAddedToCart, setIsAddedToCart] = useState(false)
 
@@ -40,312 +27,155 @@ export default function ProductDetailClient ({ product }) {
     setTimeout(() => setIsAddedToCart(false), 2000)
   }
 
-  const discount = Math.round(
-    ((product.mrp - product.price) / product.mrp) * 100
-  )
+  const handleBuyNow = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      openAuthModal({ onSuccess: () => handleBuyNow() })
+      return
+    }
+    const orderId = await createOrder({ productId: product.id, quantity, userId: user.id })
+    router.push(`/checkout/${orderId}`)
+  }
 
   const similarProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
 
-  const goldBtnClasses = `
-    relative w-full py-4 sm:py-5 overflow-hidden rounded-lg group transition-all duration-300
-    bg-gradient-to-b from-[#FBF3E3] via-[#D4AF37] to-[#A37C1A]
-    border border-[#B38D25] cursor-pointer
-    shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_12px_rgba(0,0,0,0.4)]
-    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_6px_16px_rgba(212,175,55,0.3)]
-    active:scale-[0.99] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]
-    disabled:opacity-70 disabled:cursor-not-allowed
-  `
-  const handleBuyNow = async () => {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    openAuthModal({
-      onSuccess: () => {
-        handleBuyNow()
-      }
-    })
-    return
-  }
-
-  const orderId = await createOrder({
-    productId: product.id,
-    quantity,
-    userId: user.id
-  })
-
-  router.push(`/checkout/${orderId}`)
-}
-
-
-
-  const goldTextClasses =
-    'text-transparent bg-clip-text bg-gradient-to-b from-[#FBF3E3] via-[#D4AF37] to-[#A37C1A] drop-shadow-sm'
-
   return (
     <>
-      <div className='min-h-screen bg-[#F6F4EF]  text-slate-200 font-sans selection:bg-amber-900/50 selection:text-amber-100'>
-        <div className='bg-gradient-to-b from-amber-50 via-white to-amber-50 backdrop-blur-md sticky top-0 z-50'>
-          <div className='max-w-[1440px] mx-auto px-4 sm:px-6 py-3 sm:py-4'>
-            <div className='flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-slate-500 font-medium overflow-x-auto'>
-              <Link href='/' className='hover:text-amber-900 transition-colors whitespace-nowrap'>
-                Home
-              </Link>
-              <ChevronRight className='w-3 h-3 text-slate-700 flex-shrink-0' />
-              <Link href='/shop' className='hover:text-amber-900 transition-colors whitespace-nowrap'>
-                Shop
-              </Link>
-              <ChevronRight className='w-3 h-3 text-slate-700 flex-shrink-0' />
-              <span className='text-black whitespace-nowrap'>{product.category}</span>
-            </div>
+      <div className="min-h-screen bg-[#FAF9F6]">
+        
+        {/* --- BREADCRUMBS --- */}
+        <nav className="pt-24 pb-4 px-6 sm:px-12">
+          <div className="max-w-[1600px] mx-auto flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
+            <Link href="/" className="hover:text-black transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link href="/shop" className="hover:text-black transition-colors">Collection</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-neutral-900">{product.name}</span>
           </div>
-        </div>
+        </nav>
 
-        <main className='max-w-[1440px] px-4 sm:px-6 mx-auto pb-12 sm:pb-24'>
-          <div className='grid lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-24 py-8 sm:py-12 lg:py-20'>
+        <main className="max-w-[1600px] mx-auto px-6 sm:px-12 pb-24">
+          <div className="grid lg:grid-cols-12 gap-16 xl:gap-24">
             
-            <div className='lg:col-span-7 space-y-4 sm:space-y-8'>
-              <div className='relative w-full h-[400px] px-0 sm:px-0 sm:h-[500px] lg:h-[600px] mb-30 md:mb-0 xl:h-[700px] 2xl:h-[800px]'>
-                <Product3DScene image={product.dimage} />
+            <div className="lg:col-span-7 space-y-12">
+              <div className="relative aspect-square md:aspect-[4/5] bg-white rounded-[3rem] overflow-hidden shadow-sm border border-neutral-100">
+                 <Product3DScene image={product.dimage} />
+                 
+                 <div className="absolute top-8 right-8 flex flex-col gap-4">
+                    <button onClick={() => setIsFavorite(!isFavorite)} className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border border-neutral-100 shadow-sm hover:scale-110 transition-all">
+                      <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-neutral-400'}`} />
+                    </button>
+                    <button className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border border-neutral-100 shadow-sm hover:scale-110 transition-all">
+                      <Share2 className="w-5 h-5 text-neutral-400" />
+                    </button>
+                 </div>
               </div>
 
-              <div className='grid grid-cols-3 divide-x divide-black/65 border border-black  rounded-lg sm:rounded-xl bg-white backdrop-blur-lg'>
-                <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Truck className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
-                    Quick Shipping
-                  </p>
-                </div>
-                <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Shield className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
-                    100% Authentic
-                  </p>
-                </div>
-                <div className='p-3 sm:p-5 flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center'>
-                  <Package className='w-4 h-4 sm:w-5 sm:h-5 text-[#3D2F1F]' />
-                  <p className='text-[9px] sm:text-[11px] font-bold text-[#6E6A61] uppercase tracking-wider sm:tracking-widest leading-tight'>
-                    Premium Packaging
-                  </p>
-                </div>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { icon: Truck, label: "Express Delivery" },
+                  { icon: Shield, label: "Verified Purity" },
+                  { icon: Package, label: "Bespoke Packaging" }
+                ].map((item, i) => (
+                  <div key={i} className="py-6 flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-neutral-100 text-center">
+                    <item.icon className="w-5 h-5 text-neutral-900" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">{item.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className='lg:col-span-5 flex flex-col justify-center'>
-              <div>
-                
-                <div className='space-y-3 sm:space-y-4 pb-6 sm:pb-8 border-b border-gray-500'>
-                  <div className='flex items-center justify-between'>
-                  
-                    <div className='flex items-center gap-2 sm:gap-4'>
-                      <button
-                        onClick={() => setIsFavorite(!isFavorite)}
-                        className='w-9 h-9 cursor-pointer sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'
-                      >
-                        <Heart
-                          className={`w-4 h-4 transition-all ${
-                            isFavorite
-                              ? 'fill-rose-500 text-rose-500'
-                              : 'text-slate-400 group-hover:text-slate-800'
-                          }`}
-                        />
-                      </button>
-                      <button className='w-9 h-9 cursor-pointer sm:w-10 sm:h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center hover:bg-white/10 transition-all group'>
-                        <Share2 className='w-4 h-4 text-slate-400 group-hover:text-slate-800' />
-                      </button>
-                    </div>
+            {/* --- RIGHT: PRODUCT INFO --- */}
+            <div className="lg:col-span-5 flex flex-col justify-center py-10">
+              <div className="space-y-10">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">For {product.category}</span>
                   </div>
-
-                  <h1 className='text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif text-[#3D2F1F] font-medium leading-tight'>
+                  <h1 className="text-5xl the-seasons md:text-7xl font-light text-neutral-900 tracking-tight leading-none uppercase">
                     {product.name}
                   </h1>
+                  <p className="text-lg font-serif italic text-neutral-500">{product.tagline}</p>
+                </div>
 
-                  <p className='text-base sm:text-lg lg:text-xl text-[#6E6A61] font-serif italic'>
-                    {product.tagline}
-                  </p>
+                <div className="flex items-baseline gap-6 border-y border-neutral-100 py-8">
+                  <span className="text-4xl font-light text-neutral-900">₹{product.price.toLocaleString()}</span>
+                  <span className="text-xl text-neutral-300 line-through font-light italic">₹{product.mrp.toLocaleString()}</span>
+                  <span className="ml-auto text-[10px] font-bold text-green-600 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">Save {Math.round(((product.mrp - product.price) / product.mrp) * 100)}%</span>
+                </div>
 
-                  <div className='flex items-end gap-3 sm:gap-4 pt-2 sm:pt-4'>
-                    <span className={`text-3xl sm:text-4xl font-serif font-medium text-amber-900`}>
-                      ₹{product.price.toLocaleString()}
-                    </span>
-                    <span className='text-lg sm:text-xl text-slate-500 line-through mb-1 font-serif'>
-                      ₹{product.mrp.toLocaleString()}
-                    </span>
+                <div className="space-y-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 italic">Description</p>
+                  <p className="text-base text-neutral-600 font-light leading-relaxed">{product.description}</p>
+                </div>
+
+                {/* Scent Profile Cards */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-6 bg-white rounded-2xl">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-black mb-4">Top Notes</p>
+                    <div className="flex flex-wrap gap-2">
+                      {product.notes.map((n, i) => (
+                        <span key={i} className="text-xs font-medium text-neutral-900">{n}{i < product.notes.length - 1 ? ' •' : ''}</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                <div className='space-y-3 mt-6 sm:space-y-4'>
-                  <h3 className='text-xs sm:text-sm font-bold text-[#6E6A61] uppercase tracking-widest flex items-center gap-2'>
-                    <span className='w-6 sm:w-8 h-[1px] bg-black'></span>
-                    The Experience
-                  </h3>
-                  <p className='text-sm sm:text-base lg:text-lg text-[#6E6A61] leading-relaxed font-light'>
-                    {product.description}
-                  </p>
-                </div>
-
-                <div className=' py-6 sm:py-8 border-y border-amber-100/5'>
-                  <div className='space-y-3'>
-                    <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
-                      Mood
-                    </h4>
-                    <div className='flex flex-wrap gap-2'>
+                  <div className="p-6 bg-white rounded-2xl">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Intended Mood</p>
+                    <div className="flex flex-wrap gap-2">
                       {product.mood.map((m, i) => (
-                        <span
-                          key={i}
-                          className='px-3 sm:px-4 py-1 sm:py-1.5 bg-[#0A1329] border border-amber-500/20 text-amber-100/90 text-[10px] sm:text-xs rounded-full uppercase tracking-wider'
-                        >
-                          {m}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className='space-y-3 mt-6'>
-                    <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
-                      Notes
-                    </h4>
-                    <div className='flex flex-wrap gap-2'>
-                      {product.notes.slice(0, 3).map((note, i) => (
-                        <span
-                          key={i}
-                          className='px-3 sm:px-4 py-1 sm:py-1.5 bg-[#0A1329] border border-amber-500/20 text-amber-100/90 text-[10px] sm:text-xs rounded-full uppercase tracking-wider'
-                        >
-                          {note}
-                        </span>
+                        <span key={i} className="text-xs font-medium text-neutral-900">{m}{i < product.mood.length - 1 ? ' •' : ''}</span>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                <div className='space-y-6 sm:space-y-8 pt-2 sm:pt-4'>
-                  <div className='flex items-center justify-between'>
-                    <label className='text-xs sm:text-sm text-black font-medium tracking-wider uppercase'>
-                      Quantity
-                    </label>
-                    <div className='flex items-center border border-amber-100/20 rounded-full p-0.5 sm:p-1 bg-[#0A1329]'>
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className='w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-white/5 text-slate-400 hover:text-amber-400 transition-colors'
-                      >
-                        <Minus className='w-3 h-3 sm:w-4 sm:h-4' />
-                      </button>
-                      <span className='w-12 sm:w-14 text-center text-base sm:text-lg font-medium text-white tabular-nums font-serif'>
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className='w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-white/5 text-slate-400 hover:text-amber-400 transition-colors'
-                      >
-                        <Plus className='w-3 h-3 sm:w-4 sm:h-4' />
-                      </button>
-                    </div>
+                <div className="pt-10 space-y-6">
+                  <div className="flex items-center justify-between p-2 bg-white border border-neutral-100 rounded-full">
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-neutral-100 cursor-pointer transition-colors"><Minus className="w-4 h-4" /></button>
+                    <span className="text-xl text-black font-light">{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)} className="w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-neutral-100 cursor-pointer transition-colors"><Plus className="w-4 h-4" /></button>
                   </div>
 
-                  <div className='flex gap-3 sm:gap-4'>
-                    <button
-                    onClick={handleBuyNow}
-                      disabled={isAddedToCart}
-                      className={goldBtnClasses}
-                    >
-                      <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out' />
-                      <span className='relative z-10 flex items-center justify-center gap-2 sm:gap-3 text-[#42200B] text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase font-bold'>
-                        <ShoppingBag className='w-4 h-4 sm:w-5 sm:h-5' /> 
-                        <span className='hidden xs:inline'>Purchase Now</span>
-                        <span className='xs:hidden'>Buy Now</span>
-                      </span>
+                  <div className="flex gap-4">
+                    <button onClick={handleBuyNow} className="flex-1 py-5 cursor-pointer bg-black text-white text-[11px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-neutral-800 transition-all active:scale-95 shadow-xl shadow-black/5">
+                      Purchase Now
                     </button>
-                    <button
-                      className='py-4 sm:py-5 px-4 sm:px-6 border border-black cursor-pointer hover:scale-105 transition-all rounded-lg sm:rounded-xl flex items-center justify-center'
-                      onClick={handleAddToCart}
-                    >
-                      {isAddedToCart ? (
-                        <Check className='w-4 h-4 sm:w-5 sm:h-5 text-green-400' />
-                      ) : (
-                        <ShoppingCart className='w-4 h-4 sm:w-5 sm:h-5 text-black' />
-                      )}
+                    <button onClick={handleAddToCart} className="w-20 py-5 cursor-pointer border border-neutral-200 rounded-full flex items-center justify-center hover:bg-neutral-50 transition-all">
+                      {isAddedToCart ? <Check className="w-5 h-5 text-green-600" /> : <ShoppingCart className="w-5 h-5 text-neutral-900" />}
                     </button>
                   </div>
-
-                  <p className='text-center text-[10px] sm:text-xs text-[#6E6A61] font-medium tracking-wider'>
-                    In Stock. Ships within 24 hours.
-                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <section className='py-12 sm:py-16 lg:py-24 border-t border-amber-100/5'>
-            <div className='max-w-3xl mx-auto text-center space-y-6 sm:space-y-8'>
-              <div className='inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-500/10 border border-[#3D2F1F] mb-4'>
-                <MessageSquare className='w-8 h-8 sm:w-10 sm:h-10 text-[#3D2F1F]' />
-              </div>
-              
-              <div className='space-y-3 sm:space-y-4'>
-                <h2 className='text-2xl sm:text-3xl lg:text-4xl font-serif text-[#3D2F1F]'>
-                  Be The First to Review
-                </h2>
-                <p className='text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl mx-auto px-4'>
-                  Share your experience with {product.name} and help others discover this exceptional fragrance.
-                </p>
-              </div>
-
-              <button className='inline-flex cursor-pointer items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-[#232323] text-[#000000] hover:bg-[#D4AF37]/10 transition-all hover:scale-105'>
-                <Star className='w-4 h-4' />
-                Write a Review
-              </button>
-            </div>
-          </section>
-
-          {similarProducts.length > 0 && (
-            <section className='py-12 sm:py-16 lg:py-24 border-t border-amber-100/5'>
-              <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-12'>
-                <h2 className='text-2xl sm:text-3xl font-serif text-black'>
-                  Curated For You
-                </h2>
-                <Link
-                  href='/shop'
-                  className='group flex items-center gap-2 text-xs font-bold text-[#3D2F1F] uppercase tracking-widest'
-                >
-                  View Collection{' '}
-                  <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
-                </Link>
-              </div>
-
-              <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8'>
+          {/* --- CURATED COLLECTION --- */}
+          <section className="mt-40 pt-20 border-t border-neutral-100">
+             <div className="flex items-end justify-between mb-16">
+                <div>
+                   <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Discover</span>
+                   <h2 className="text-4xl font-light text-neutral-900 mt-4 uppercase tracking-tightest">Curated For You</h2>
+                </div>
+                <Link href="/shop" className="text-[10px] font-bold uppercase underline underline-offset-8 tracking-widest">Explore All</Link>
+             </div>
+             
+             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                 {similarProducts.map(item => (
-                  <Link
-                    href={`/product/${item.slug}`}
-                    key={item.id}
-                    className='group block'
-                  >
-                    <div className='relative aspect-[3/4] rounded-lg sm:rounded-xl overflow-hidden mb-3 sm:mb-6 border border-amber-100/5 bg-[#0A1329]'>
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className='object-cover  group-hover:scale-105 transition-all duration-700'
-                        sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
-                      />
-                     </div>
-                    <div className='text-center space-y-1 sm:space-y-2 px-1'>
-                      <p className='text-[9px] sm:text-xs text-[#6E6A61] font-medium uppercase tracking-widest'>
-                        {item.category}
-                      </p>
-                      <h3 className='text-sm sm:text-base lg:text-lg font-serif text-[#3D2F1F] group-hover:text-amber-800 transition-colors line-clamp-2'>
-                        {item.name}
-                      </h3>
-                      <p className={`text-sm sm:text-base font-serif text-amber-900`}>
-                        ₹{item.price.toLocaleString()}
-                      </p>
+                  <Link href={`/product/${item.slug}`} key={item.id} className="group">
+                    <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-6 bg-neutral-50">
+                      <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                    </div>
+                    <div className="text-center space-y-2">
+                       <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">{item.category}</p>
+                       <h3 className="text-lg font-light text-neutral-900 uppercase tracking-tight">{item.name}</h3>
+                       <p className="text-sm font-medium text-neutral-900">₹{item.price.toLocaleString()}</p>
                     </div>
                   </Link>
                 ))}
-              </div>
-            </section>
-          )}
+             </div>
+          </section>
         </main>
       </div>
       <LuxuryFooter />

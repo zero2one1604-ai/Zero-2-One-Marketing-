@@ -44,7 +44,6 @@ export function AuthModalProvider({ children }) {
       <AnimatePresence>
         {open && (
           <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
-            {/* Backdrop with Blur */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
