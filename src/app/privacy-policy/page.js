@@ -89,14 +89,13 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* Cookies - Glass Card */}
           <section className="p-10 bg-white border border-neutral-100 rounded-[3rem] shadow-sm">
             <div className="flex items-center gap-4 mb-6">
               <Cookie className="w-5 h-5 text-neutral-900" />
               <h2 className="text-[11px] font-bold text-black uppercase tracking-[0.2em]">Cookie Policy</h2>
             </div>
             <p className="text-sm text-neutral-600 font-light leading-relaxed">
-              We use "cookies" to remember your cart and understand how you interact with our boutique. These are small files stored on your device that help us provide a seamless journey. You may disable cookies in your browser settings, though some site features may become unavailable.
+              We use &quot;cookies&quot; to remember your cart and understand how you interact with our boutique. These are small files stored on your device that help us provide a seamless journey. You may disable cookies in your browser settings, though some site features may become unavailable.
             </p>
           </section>
 

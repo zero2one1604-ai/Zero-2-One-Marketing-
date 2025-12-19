@@ -22,13 +22,12 @@ export default function ReturnRefundPolicy() {
             Returns <span className="font-serif italic text-neutral-400">&</span> Refunds
           </h1>
           <p className="text-sm text-neutral-500 font-light max-w-lg mx-auto leading-relaxed italic">
-            "At Saavi, we are committed to delivering the finest experience. We believe in transparency and clarity in every interaction."
+            &quot;At Saavi, we are committed to delivering the finest experience. We believe in transparency and clarity in every interaction.&quot;
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           
-          {/* Sidebar Navigation - Sticky on Desktop */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
             <nav className="flex flex-col gap-6 border-l border-neutral-200 pl-6">
               <a href="#returns" className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-colors">Returns</a>

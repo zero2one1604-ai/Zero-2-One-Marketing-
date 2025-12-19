@@ -61,7 +61,7 @@ export default function TermsConditions() {
             </div>
             <div className="md:w-3/4">
               <p className="text-sm text-neutral-600 font-light leading-relaxed">
-                Saavi Skincare products are for external use only. While we use premium natural extracts, it is the user's responsibility to check for allergen sensitivities. We recommend a patch test before regular application. We are not liable for adverse reactions resulting from improper use or known sensitivities.
+                Saavi Skincare products are for external use only. While we use premium natural extracts, it is the user&apos;s responsibility to check for allergen sensitivities. We recommend a patch test before regular application. We are not liable for adverse reactions resulting from improper use or known sensitivities.
               </p>
             </div>
           </section>
