@@ -1,9 +1,19 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
-  ShoppingCart, Heart, Share2, ChevronRight, Minus, Plus, Check, 
-  Package, Shield, ShoppingBag, Truck, Star, ArrowRight, MessageSquare
+  ShoppingCart,
+  Heart,
+  Share2,
+  ChevronRight,
+  Minus,
+  Plus,
+  Check,
+  Package,
+  Shield,
+  Truck,
+  MessageSquare,
+  PenLine
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,9 +28,10 @@ import { useAuthModal } from '@/app/components/AuthModalProvider'
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [isAddedToCart, setIsAddedToCart] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(0)
   const { openAuthModal } = useAuthModal()
   const router = useRouter()
-  const [isAddedToCart, setIsAddedToCart] = useState(false)
 
   const handleAddToCart = () => {
     setIsAddedToCart(true)
@@ -28,12 +39,19 @@ export default function ProductDetailClient ({ product }) {
   }
 
   const handleBuyNow = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
     if (!user) {
       openAuthModal({ onSuccess: () => handleBuyNow() })
       return
     }
-    const orderId = await createOrder({ productId: product.id, quantity, userId: user.id })
+    const orderId = await createOrder({
+      productId: product.id,
+      quantity,
+      userId: user.id,
+      email: user.email
+    })
     router.push(`/checkout/${orderId}`)
   }
 
@@ -41,109 +59,264 @@ export default function ProductDetailClient ({ product }) {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
 
+  const productImages = product.dimage
+    ? [product.dimage, product.image]
+    : [product.image]
+
   return (
     <>
-      <div className="min-h-screen bg-[#FAF9F6]">
-        
-        {/* --- BREADCRUMBS --- */}
-        <nav className="pt-24 pb-4 px-6 sm:px-12">
-          <div className="max-w-[1600px] mx-auto flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-            <Link href="/" className="hover:text-black transition-colors">Home</Link>
-            <ChevronRight className="w-3 h-3" />
-            <Link href="/shop" className="hover:text-black transition-colors">Collection</Link>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-neutral-900">{product.name}</span>
+      <div className='min-h-screen bg-[#FAF9F6]'>
+        <nav className='sticky top-0 z-40 bg-[#FAF9F6]/80 backdrop-blur-xl border-b border-neutral-100'>
+          <div className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-4'>
+            <div className='flex items-center gap-2 text-[11px] font-medium tracking-wide text-neutral-500'>
+              <Link
+                href='/'
+                className='hover:text-neutral-900 transition-colors'
+              >
+                Home
+              </Link>
+              <ChevronRight className='w-3.5 h-3.5' />
+              <Link
+                href='/shop'
+                className='hover:text-neutral-900 transition-colors'
+              >
+                Collection
+              </Link>
+              <ChevronRight className='w-3.5 h-3.5' />
+              <span className='text-neutral-900 font-semibold'>
+                {product.name}
+              </span>
+            </div>
           </div>
         </nav>
 
-        <main className="max-w-[1600px] mx-auto px-6 sm:px-12 pb-24">
-          <div className="grid lg:grid-cols-12 gap-16 xl:gap-24">
-            
-            <div className="lg:col-span-7 space-y-12">
-              <div className="relative aspect-square md:aspect-[4/5] bg-white rounded-[3rem] overflow-hidden shadow-sm border border-neutral-100">
-                 <Product3DScene image={product.dimage} />
-                 
-                 <div className="absolute top-8 right-8 flex flex-col gap-4">
-                    <button onClick={() => setIsFavorite(!isFavorite)} className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border border-neutral-100 shadow-sm hover:scale-110 transition-all">
-                      <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-neutral-400'}`} />
-                    </button>
-                    <button className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border border-neutral-100 shadow-sm hover:scale-110 transition-all">
-                      <Share2 className="w-5 h-5 text-neutral-400" />
-                    </button>
-                 </div>
+        <main className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 lg:py-5'>
+          <div className='grid lg:grid-cols-2 gap-8 lg:gap-16 mb-5 md:mb-20'>
+            <div className='space-y-4'>
+              <div className='relative rounded-3xl overflow-hidden bg-neutral-100 group'>
+                {selectedImage === 0 && product.dimage ? (
+                  <Product3DScene image={product.dimage} />
+                ) : (
+                  <div className='relative w-full h-full'>
+                    <Image
+                      src={productImages[selectedImage]}
+                      alt={product.name}
+                      fill
+                      className='object-cover'
+                    />
+                  </div>
+                )}
+
+                <div className='absolute top-6 right-6 flex flex-col gap-3 z-10'>
+                  <button
+                    onClick={() => setIsFavorite(!isFavorite)}
+                    className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
+                  >
+                    <Heart
+                      className={`w-5 h-5 transition-colors ${
+                        isFavorite
+                          ? 'fill-red-500 text-red-500'
+                          : 'text-neutral-700'
+                      }`}
+                    />
+                  </button>
+                  <button className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'>
+                    <Share2 className='w-5 h-5 text-neutral-700' />
+                  </button>
+                </div>
+
+                {productImages.length > 1 && (
+                  <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+                    {productImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedImage(i)}
+                        className={`h-2 rounded-full transition-all ${
+                          selectedImage === i
+                            ? 'bg-white w-8'
+                            : 'bg-white/50 w-2'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              {productImages.length > 1 && (
+                <div className='hidden lg:grid grid-cols-2 gap-3'>
+                  {productImages.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImage(i)}
+                      className={`relative aspect-square rounded-2xl overflow-hidden transition-all ${
+                        selectedImage === i
+                          ? 'ring-2 ring-neutral-900 ring-offset-2'
+                          : 'opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <Image src={img} alt='' fill className='object-cover' />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div className='grid grid-cols-3 gap-1 md:gap-3 md:pt-4'>
                 {[
-                  { icon: Truck, label: "Express Delivery" },
-                  { icon: Shield, label: "Verified Purity" },
-                  { icon: Package, label: "Bespoke Packaging" }
+                  {
+                    icon: Truck,
+                    label: 'Express Delivery',
+                    sublabel: '2-3 Days'
+                  },
+                  {
+                    icon: Shield,
+                    label: 'Verified Purity',
+                    sublabel: '100% Authentic'
+                  },
+                  {
+                    icon: Package,
+                    label: 'Luxury Packaging',
+                    sublabel: 'Gift Ready'
+                  }
                 ].map((item, i) => (
-                  <div key={i} className="py-6 flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-neutral-100 text-center">
-                    <item.icon className="w-5 h-5 text-neutral-900" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">{item.label}</span>
+                  <div
+                    key={i}
+                    className='p-2 md:p-4 flex flex-col items-center text-center gap-2 bg-white rounded-2xl border border-neutral-200 hover:border-neutral-300 transition-colors'
+                  >
+                    <item.icon className='md:w-6 w-4 h-4 md:h-6 text-neutral-900' />
+                    <div>
+                      <p className='text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-neutral-900'>
+                        {item.label}
+                      </p>
+                      <p className='text-[8px] md:text-[9px] text-neutral-500 mt-0.5'>
+                        {item.sublabel}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* --- RIGHT: PRODUCT INFO --- */}
-            <div className="lg:col-span-5 flex flex-col justify-center py-10">
-              <div className="space-y-10">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">For {product.category}</span>
-                  </div>
-                  <h1 className="text-5xl the-seasons md:text-7xl font-light text-neutral-900 tracking-tight leading-none uppercase">
+            <div className='flex flex-col lg:pt-8'>
+              <div className='md:space-y-6'>
+                <div className='md:space-y-3'>
+                  <span className='inline-block mb-4 px-4 py-1.5 bg-neutral-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full'>
+                    For {product.category}
+                  </span>
+                  <h1 className='text-5xl the-seasons lg:text-6xl xl:text-7xl font-light text-neutral-900 tracking-tight leading-[0.95]'>
                     {product.name}
                   </h1>
-                  <p className="text-lg font-serif italic text-neutral-500">{product.tagline}</p>
+                  <p className='text-lg lg:text-xl text-neutral-600 font-light italic'>
+                    {product.tagline}
+                  </p>
                 </div>
 
-                <div className="flex items-baseline gap-6 border-y border-neutral-100 py-8">
-                  <span className="text-4xl font-light text-neutral-900">₹{product.price.toLocaleString()}</span>
-                  <span className="text-xl text-neutral-300 line-through font-light italic">₹{product.mrp.toLocaleString()}</span>
-                  <span className="ml-auto text-[10px] font-bold text-green-600 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">Save {Math.round(((product.mrp - product.price) / product.mrp) * 100)}%</span>
+                <div className='flex flex-wrap items-center py-2 gap-4 md:py-6 border-y border-neutral-200'>
+                  <span className='text-2xl md:text-5xl font-light text-neutral-900'>
+                    ₹{product.price.toLocaleString()}
+                  </span>
+                  <span className='text-xl text-neutral-400 line-through font-light'>
+                    ₹{product.mrp.toLocaleString()}
+                  </span>
+                  <span className='ml-auto text-xs font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full'>
+                    {Math.round(
+                      ((product.mrp - product.price) / product.mrp) * 100
+                    )}
+                    % OFF
+                  </span>
                 </div>
 
-                <div className="space-y-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 italic">Description</p>
-                  <p className="text-base text-neutral-600 font-light leading-relaxed">{product.description}</p>
+                <div className='mt-5 md:mt-0 space-y-3'>
+                  <h3 className='text-xs md:text-xs font-bold uppercase tracking-[0.2em] text-neutral-500'>
+                    About This Perfume
+                  </h3>
+                  <p className='text-sm lg:text-lg text-neutral-700 leading-relaxed font-light'>
+                    {product.description}
+                  </p>
                 </div>
 
-                {/* Scent Profile Cards */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-6 bg-white rounded-2xl">
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-black mb-4">Top Notes</p>
-                    <div className="flex flex-wrap gap-2">
-                      {product.notes.map((n, i) => (
-                        <span key={i} className="text-xs font-medium text-neutral-900">{n}{i < product.notes.length - 1 ? ' •' : ''}</span>
+                <div className='grid mt-5 sm:grid-cols-2 gap-4'>
+                  <div className='p-6 bg-gradient-to-br from-neutral-50 to-white rounded-2xl border border-neutral-200'>
+                    <h4 className='text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 mb-4'>
+                      Signature Notes
+                    </h4>
+                    <div className='flex flex-wrap gap-2'>
+                      {product.notes.map((note, i) => (
+                        <span
+                          key={i}
+                          className='px-3 py-1.5 bg-white border border-neutral-200 rounded-full text-sm font-medium text-neutral-800'
+                        >
+                          {note}
+                        </span>
                       ))}
                     </div>
                   </div>
-                  <div className="p-6 bg-white rounded-2xl">
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Intended Mood</p>
-                    <div className="flex flex-wrap gap-2">
-                      {product.mood.map((m, i) => (
-                        <span key={i} className="text-xs font-medium text-neutral-900">{m}{i < product.mood.length - 1 ? ' •' : ''}</span>
+
+                  <div className='p-6 bg-gradient-to-br from-neutral-50 to-white rounded-2xl border border-neutral-200'>
+                    <h4 className='text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 mb-4'>
+                      Perfect For
+                    </h4>
+                    <div className='flex flex-wrap gap-2'>
+                      {product.mood.map((mood, i) => (
+                        <span
+                          key={i}
+                          className='px-3 py-1.5 bg-white border border-neutral-200 rounded-full text-sm font-medium text-neutral-800'
+                        >
+                          {mood}
+                        </span>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-10 space-y-6">
-                  <div className="flex items-center justify-between p-2 bg-white border border-neutral-100 rounded-full">
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-neutral-100 cursor-pointer transition-colors"><Minus className="w-4 h-4" /></button>
-                    <span className="text-xl text-black font-light">{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)} className="w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-neutral-100 cursor-pointer transition-colors"><Plus className="w-4 h-4" /></button>
+                <div className='pt-6 space-y-4 sticky bottom-0 bg-[#FAF9F6] pb-6 lg:pb-0'>
+                  <div className='flex items-center gap-4'>
+                    <span className='text-xs md:text-sm font-medium text-neutral-700'>
+                      Quantity
+                    </span>
+                    <div className='flex items-center bg-white border border-neutral-300 rounded-full'>
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className='md:w-11 w-8 h-8 md:h-11 cursor-pointer flex items-center justify-center text-neutral-900 hover:bg-neutral-50 rounded-full transition-colors'
+                      >
+                        <Minus className='w-4 h-4' />
+                      </button>
+                      <span className='w-8 md:w-12 text-center text-sm md:text-lg font-medium text-neutral-900'>
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className='md:w-11 w-8 h-8 md:h-11 flex items-center cursor-pointer justify-center text-neutral-900 hover:bg-neutral-50 rounded-full transition-colors'
+                      >
+                        <Plus className='w-4 h-4' />
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <button onClick={handleBuyNow} className="flex-1 py-5 cursor-pointer bg-black text-white text-[11px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-neutral-800 transition-all active:scale-95 shadow-xl shadow-black/5">
-                      Purchase Now
+                  <div className='flex gap-3'>
+                    <button
+                      onClick={handleBuyNow}
+                      className='flex-1 cursor-pointer h-10 md:h-14 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
+text-[#1A1405]
+shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
+transition-all duration-300
+hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-2px_0_rgba(0,0,0,0.35)]
+hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
+active:scale-[0.98]
+focus:outline-none focus:ring-2 focus:ring-[#D6B45A]/40 focus:ring-offset-2
+border border-[#8F7220] text-xs md:text-sm font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 '
+                    >
+                      Buy Now
                     </button>
-                    <button onClick={handleAddToCart} className="w-20 py-5 cursor-pointer border border-neutral-200 rounded-full flex items-center justify-center hover:bg-neutral-50 transition-all">
-                      {isAddedToCart ? <Check className="w-5 h-5 text-green-600" /> : <ShoppingCart className="w-5 h-5 text-neutral-900" />}
+
+                    <button
+                      onClick={handleAddToCart}
+                      className='md:w-14 w-10 h-10 md:h-14 cursor-pointer border-2 border-neutral-900 rounded-full flex items-center justify-center hover:bg-neutral-50 transition-all active:scale-95'
+                    >
+                      {isAddedToCart ? (
+                        <Check className='md:w-6 h-4 w-4 md:h-6 text-green-600' />
+                      ) : (
+                        <ShoppingCart className='md:w-6 h-4 w-4 md:h-6 text-neutral-900' />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -151,33 +324,87 @@ export default function ProductDetailClient ({ product }) {
             </div>
           </div>
 
-          {/* --- CURATED COLLECTION --- */}
-          <section className="mt-40 pt-20 border-t border-neutral-100">
-             <div className="flex items-end justify-between mb-16">
-                <div>
-                   <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Discover</span>
-                   <h2 className="text-4xl font-light text-neutral-900 mt-4 uppercase tracking-tightest">Curated For You</h2>
-                </div>
-                <Link href="/shop" className="text-[10px] font-bold uppercase underline underline-offset-8 tracking-widest">Explore All</Link>
-             </div>
-             
-             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                {similarProducts.map(item => (
-                  <Link href={`/product/${item.slug}`} key={item.id} className="group">
-                    <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-6 bg-neutral-50">
-                      <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                    </div>
-                    <div className="text-center space-y-2">
-                       <p className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">{item.category}</p>
-                       <h3 className="text-lg font-light text-neutral-900 uppercase tracking-tight">{item.name}</h3>
-                       <p className="text-sm font-medium text-neutral-900">₹{item.price.toLocaleString()}</p>
-                    </div>
-                  </Link>
-                ))}
-             </div>
+          <section className='mb-5 md:mb-20 md:py-16 py-5 border-y border-neutral-200'>
+            <div className='max-w-3xl mx-auto text-center md:space-y-6'>
+              <div className='inline-flex mb-2 items-center justify-center w-16 h-16 rounded-2xl bg-neutral-900 text-white'>
+                <MessageSquare className='w-7 h-7' />
+              </div>
+              <h2 className='text-2xl lg:text-5xl font-light text-neutral-900 tracking-tight'>
+                Share Your Experience
+              </h2>
+              <p className='text-sm md:text-lg text-neutral-600 font-light max-w-xl mx-auto'>
+                Your review helps others discover their perfect scent. Tell us
+                about your experience with {product.name}.
+              </p>
+              <button
+                className=' mt-2 inline-flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
+text-[#1A1405]
+shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
+transition-all duration-300
+hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-2px_0_rgba(0,0,0,0.35)]
+hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
+active:scale-[0.98] cursor-pointer
+focus:outline-none focus:ring-2 focus:ring-[#D6B45A]/40 focus:ring-offset-2
+border border-[#8F7220] rounded-full text-xs md:text-sm font-bold uppercase tracking-wider hover:bg-neutral-800'
+              >
+                <PenLine className='md:w-4 w-3 h-3 md:h-4' />
+                Write a Review
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <div className='flex items-end justify-between mb-4 md:mb-10'>
+              <div>
+                <span className='text-[10px] font-bold tracking-[0.3em] text-neutral-500 uppercase'>
+                  Discover More
+                </span>
+                <h2 className='text-xl lg:text-4xl font-light text-neutral-900 md:mt-2 tracking-tight'>
+                  You May Also Like
+                </h2>
+              </div>
+              <Link
+                href='/shop'
+                className='text-xs md:text-sm md:font-semibold text-neutral-900 hover:gap-3 flex items-center gap-2 transition-all group'
+              >
+                View All
+                <ChevronRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+              </Link>
+            </div>
+
+            <div className='grid grid-cols-2 lg:grid-cols-4 pb-10 gap-6'>
+              {similarProducts.map(item => (
+                <Link
+                  href={`/product/${item.slug}`}
+                  key={item.id}
+                  className='group'
+                >
+                  <div className='relative aspect-[3/4] rounded-2xl overflow-hidden mb-4 bg-neutral-100'>
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className='object-cover group-hover:scale-110 transition-transform duration-700'
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <p className='text-[10px] font-bold text-neutral-500 uppercase tracking-wider'>
+                      {item.category}
+                    </p>
+                    <h3 className='text-lg font-light text-neutral-900 tracking-tight'>
+                      {item.name}
+                    </h3>
+                    <p className='text-base font-semibold text-neutral-900'>
+                      ₹{item.price.toLocaleString()}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </section>
         </main>
       </div>
+
       <LuxuryFooter />
     </>
   )

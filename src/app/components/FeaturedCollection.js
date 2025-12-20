@@ -61,7 +61,7 @@ export default function LuxuryPerfumeGallery () {
               onMouseEnter={() => setHoveredId(perfume.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className='relative bg-white rounded-lg overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
+              <div className='relative bg-white rounded-2xl overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
                 <div className='relative h-fit overflow-hidden'>
                   <Link href={`/product/${perfume.slug}`}>
                     <Image

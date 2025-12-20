@@ -47,26 +47,25 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
   return (
     <div className="min-h-screen bg-[#FAF9F6]">
       
-      {/* --- MINIMALIST HEADER --- */}
-      <div className="pt-32 pb-16 px-6 border-b border-neutral-100">
+      <div className="md:pt-32 pt-10 md:pb-16 pb-10 px-6 border-b border-neutral-100">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-3 mb-2 md:mb-6">
             <div className="h-[1px] w-8 bg-neutral-300"></div>
-            <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase italic">The Collection</span>
+            <span className="text-[8px] md:text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase italic">The Collection</span>
             <div className="h-[1px] w-8 bg-neutral-300"></div>
           </div>
-          <h1 className="text-5xl md:text-8xl font-light text-neutral-900 tracking-tightest uppercase mb-6">
+          <h1 className="text-2xl md:text-8xl font-light text-neutral-900 tracking-tightest uppercase mb-2 md:mb-6">
             Solid <span className="font-serif italic text-neutral-400">Perfumes</span>
           </h1>
-          <p className="text-sm text-neutral-500 font-light tracking-widest uppercase">
+          <p className="text-xs md:text-sm text-neutral-500 font-light tracking-widest uppercase">
             Portable luxury for the modern nomad.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 md:py-12">
         
-        <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-5 md:mb-16 md:gap-8">
           <div className="flex items-center gap-8 overflow-x-auto no-scrollbar w-full md:w-auto pb-4 md:pb-0">
             {categories.map((cat) => (
               <button
@@ -93,9 +92,8 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
           </button>
         </div>
 
-        {/* --- EXPANDABLE FILTERS --- */}
         {showFilters && (
-          <div className="mb-16 p-10 bg-white border border-neutral-100 rounded-[2.5rem] animate-fadeIn">
+          <div className="md:mb-16 mb-5 p-10 bg-white border border-neutral-100 rounded-[2.5rem] animate-fadeIn">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               <div className="space-y-4">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Sort By</p>
@@ -121,8 +119,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
           </div>
         )}
 
-        {/* --- PRODUCT GALLERY --- */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-10">
           {sortedProducts.map((product) => (
             <div
               key={product.id}
@@ -131,7 +128,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
               onMouseLeave={() => setHoveredId(null)}
             >
               <Link href={`/product/${product.slug}`} className="block">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-neutral-100 mb-6">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-neutral-100 mb-2 md:mb-6">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -139,7 +136,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   
-                  {/* Notes Overlay */}
+          
                   <div className={`absolute inset-0 bg-neutral-900/40 backdrop-blur-md transition-all duration-500 flex flex-col items-center justify-center p-8 text-center ${hoveredId === product.id ? 'opacity-100' : 'opacity-0'}`}>
                     <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300 mb-4">Scent Profile</p>
                     <div className="h-px w-8 bg-white/30 mb-4"></div>
@@ -156,14 +153,14 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
                   </button>
                 </div>
 
-                <div className="space-y-2 text-center">
+                <div className="md:space-y-2 text-center">
                   <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-                    {product.category} — Essence
+                    For {product.category}
                   </p>
                   <h3 className="text-lg font-light text-neutral-900 tracking-tight transition-colors group-hover:text-neutral-500">
                     {product.name}
                   </h3>
-                  <div className="flex items-center justify-center gap-3 pt-2">
+                  <div className="flex items-center justify-center gap-3 md:pt-2">
                     <p className="text-base font-medium text-neutral-900">₹{product.price}</p>
                     {product.mrp && product.mrp > product.price && (
                       <p className="text-xs text-neutral-400 line-through font-light">₹{product.mrp}</p>
@@ -173,7 +170,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
               </Link>
               
               {/* Minimalist CTA */}
-              <button className="mt-6 w-full py-4 rounded-full border border-neutral-200 text-[10px] font-bold uppercase tracking-widest text-neutral-900 hover:bg-black hover:text-white hover:border-black transition-all duration-300 active:scale-95">
+              <button className="mt-2 md:mt-6 w-full py-2 md:py-4 rounded-full border border-neutral-200 text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-neutral-900 hover:bg-black hover:text-white hover:border-black transition-all duration-300 active:scale-95">
                 Discover Fragrance
               </button>
             </div>
