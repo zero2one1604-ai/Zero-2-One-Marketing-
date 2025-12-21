@@ -28,3 +28,15 @@ body {
 .the-seasons {
   font-family: var(--font-the-seasons), serif;
 }
+
+@keyframes buyProgress {
+  0% { width: 0%; }
+  40% { width: 55%; }
+  70% { width: 85%; }
+  100% { width: 100%; }
+}
+
+.animate-buy-progress {
+  animation: buyProgress 1.4s ease-out forwards;
+}
+

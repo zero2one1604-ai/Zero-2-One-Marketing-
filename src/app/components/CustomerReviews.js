@@ -85,7 +85,7 @@ export default function LuxuryReviews() {
           </div>
         </div>
 
-        <div className="relative min-h-[500px]">
+        <div className="relative">
           {reviews.map((rev, index) => (
             <div
               key={rev.id}
@@ -113,7 +113,7 @@ export default function LuxuryReviews() {
                     </button>
                   </div>
                 </div>
-                <div className="lg:col-span-5 flex flex-col items-center lg:items-end">
+                <div className="lg:col-span-5 hidden items-center lg:items-end">
                   <div className="relative w-64 h-80 md:w-80 md:h-[450px] rounded-[3rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-700">
                     <img src={rev.image} alt={rev.name} className="absolute inset-0 w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -131,7 +131,7 @@ export default function LuxuryReviews() {
           ))}
         </div>
 
-        <div className="md:mt-20 mt-10 flex flex-col md:flex-row items-center justify-between gap-12 md:pt-12 border-t border-neutral-100">
+        <div className="flex flex-col mt-10 md:flex-row items-center justify-between gap-12 md:pt-12 border-t border-neutral-100">
           <div className="flex gap-4">
             {reviews.map((_, i) => (
               <button
@@ -142,7 +142,7 @@ export default function LuxuryReviews() {
             ))}
           </div>
 
-          <div className="flex items-center gap-12">
+          <div className="flex hidden items-center gap-12">
             <div className="text-center">
               <p className="text-2xl font-light text-neutral-900">1000+</p>
               <p className="text-[8px] font-bold text-neutral-400 uppercase tracking-[0.2em]">Verified Reviews</p>

@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "@/app/components/Navbar";
 import localFont from "next/font/local";
 import { AuthModalProvider } from "@/app/components/AuthModalProvider";
+import ClientReveal from "./components/ClientReveal";
 
 const theSeasons = localFont({
   src: "../../public/fonts/theseasons.otf",
@@ -76,8 +77,10 @@ export default function RootLayout({ children }) {
     <html lang="en" className={theSeasons.variable}>
       <body>
    <AuthModalProvider>
-          <Navbar />
-          {children}
+        <ClientReveal>
+            <Navbar />
+            {children}
+          </ClientReveal>
         </AuthModalProvider>
       </body>
     </html>

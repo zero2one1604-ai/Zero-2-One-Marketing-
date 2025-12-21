@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   ShoppingCart,
   Heart,
@@ -11,6 +11,7 @@ import {
   Check,
   Package,
   Shield,
+  X,
   Truck,
   MessageSquare,
   PenLine
@@ -21,6 +22,7 @@ import LuxuryFooter from '@/app/components/Footer'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 import { createOrder } from '@/app/actions/createOrder'
+import { submitReview } from '@/app/actions/submitReview'
 import products from '@/data/products'
 import Product3DScene from '@/app/components/Product3DScene'
 import { useAuthModal } from '@/app/components/AuthModalProvider'
@@ -28,10 +30,83 @@ import { useAuthModal } from '@/app/components/AuthModalProvider'
 export default function ProductDetailClient ({ product }) {
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [buyLoading, setBuyLoading] = useState(false)
   const [isAddedToCart, setIsAddedToCart] = useState(false)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [canReview, setCanReview] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [reviewLoading, setReviewLoading] = useState(false)
+  const [orderForReview, setOrderForReview] = useState(null)
+  const [showReviewModal, setShowReviewModal] = useState(false)
   const { openAuthModal } = useAuthModal()
   const router = useRouter()
+
+  async function getPaidOrderIds () {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data } = await supabase
+      .from('orders')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('status', 'paid')
+
+    return data?.map(o => o.id) || []
+  }
+
+  async function checkReviewEligibility (productId) {
+    const orderIds = await getPaidOrderIds()
+    if (!orderIds.length) return false
+
+    const { data } = await supabase
+      .from('order_items')
+      .select('id')
+      .in('order_id', orderIds)
+      .eq('product_id', String(productId))
+      .limit(1)
+
+    return !!data?.length
+  }
+
+  useEffect(() => {
+    const run = async () => {
+      const eligible = await checkReviewEligibility(product.id)
+      setCanReview(eligible)
+    }
+    run()
+  }, [product.id])
+
+  const handleSubmitReview = async () => {
+    setReviewLoading(true)
+
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+
+    try {
+    const res = await submitReview({
+  productId: product.id,
+  rating,
+  comment
+})
+
+if (res?.error) {
+  alert(res.error)
+  console.error(res.debug)
+  return
+}
+
+alert('Review submitted successfully')
+      setCanReview(false)
+    } catch (err) {
+      alert(err.message)
+    } finally {
+      setReviewLoading(false)
+    }
+  }
 
   const handleAddToCart = () => {
     setIsAddedToCart(true)
@@ -39,20 +114,35 @@ export default function ProductDetailClient ({ product }) {
   }
 
   const handleBuyNow = async () => {
+    if (buyLoading) return
+
+    setBuyLoading(true)
+
     const {
       data: { user }
     } = await supabase.auth.getUser()
+
     if (!user) {
-      openAuthModal({ onSuccess: () => handleBuyNow() })
+      setBuyLoading(false)
+      openAuthModal({
+        onSuccess: () => handleBuyNow()
+      })
       return
     }
-    const orderId = await createOrder({
-      productId: product.id,
-      quantity,
-      userId: user.id,
-      email: user.email
-    })
-    router.push(`/checkout/${orderId}`)
+
+    try {
+      const orderId = await createOrder({
+        productId: product.id,
+        quantity,
+        userId: user.id,
+        email: user.email
+      })
+
+      router.push(`/checkout/${orderId}`)
+    } catch (err) {
+      console.error(err)
+      setBuyLoading(false)
+    }
   }
 
   const similarProducts = products
@@ -126,7 +216,7 @@ export default function ProductDetailClient ({ product }) {
                 </div>
 
                 {productImages.length > 1 && (
-                  <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+                  <div className='absolute hidden bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
                     {productImages.map((_, i) => (
                       <button
                         key={i}
@@ -143,7 +233,7 @@ export default function ProductDetailClient ({ product }) {
               </div>
 
               {productImages.length > 1 && (
-                <div className='hidden lg:grid grid-cols-2 gap-3'>
+                <div className='hidden lg:hidden grid-cols-2 gap-3'>
                   {productImages.map((img, i) => (
                     <button
                       key={i}
@@ -295,7 +385,9 @@ export default function ProductDetailClient ({ product }) {
                   <div className='flex gap-3'>
                     <button
                       onClick={handleBuyNow}
-                      className='flex-1 cursor-pointer h-10 md:h-14 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
+                      disabled={buyLoading}
+                      className={`flex-1 relative overflow-hidden cursor-pointer h-10 md:h-14
+bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
 text-[#1A1405]
 shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
 transition-all duration-300
@@ -303,9 +395,16 @@ hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),
 hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
 active:scale-[0.98]
 focus:outline-none focus:ring-2 focus:ring-[#D6B45A]/40 focus:ring-offset-2
-border border-[#8F7220] text-xs md:text-sm font-bold uppercase tracking-wider rounded-full hover:bg-neutral-800 '
+border border-[#8F7220] text-xs md:text-sm font-bold uppercase tracking-wider rounded-full
+disabled:opacity-80 disabled:cursor-not-allowed`}
                     >
-                      Buy Now
+                      <span className='relative z-10'>
+                        {buyLoading ? 'Preparing Checkout…' : 'Buy Now'}
+                      </span>
+
+                      {buyLoading && (
+                        <span className='absolute bottom-0 left-0 h-[2px] bg-black/80 animate-buy-progress' />
+                      )}
                     </button>
 
                     <button
@@ -326,30 +425,29 @@ border border-[#8F7220] text-xs md:text-sm font-bold uppercase tracking-wider ro
 
           <section className='mb-5 md:mb-20 md:py-16 py-5 border-y border-neutral-200'>
             <div className='max-w-3xl mx-auto text-center md:space-y-6'>
-              <div className='inline-flex mb-2 items-center justify-center w-16 h-16 rounded-2xl bg-neutral-900 text-white'>
-                <MessageSquare className='w-7 h-7' />
+              <div className='inline-flex mb-2 items-center justify-center md:w-16 w-10 h-10 md:h-16 rounded-2xl bg-neutral-900 text-white'>
+                <MessageSquare className='md:w-7 w-5 h-5 md:h-7' />
               </div>
-              <h2 className='text-2xl lg:text-5xl font-light text-neutral-900 tracking-tight'>
+              <h2 className='text-xl lg:text-5xl font-light text-neutral-900 tracking-tight'>
                 Share Your Experience
               </h2>
-              <p className='text-sm md:text-lg text-neutral-600 font-light max-w-xl mx-auto'>
+              <p className=' text-xs md:text-lg text-neutral-600 font-light max-w-xl px-5 mx-auto'>
                 Your review helps others discover their perfect scent. Tell us
                 about your experience with {product.name}.
               </p>
-              <button
-                className=' mt-2 inline-flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
-text-[#1A1405]
-shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
-transition-all duration-300
-hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-2px_0_rgba(0,0,0,0.35)]
-hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
-active:scale-[0.98] cursor-pointer
-focus:outline-none focus:ring-2 focus:ring-[#D6B45A]/40 focus:ring-offset-2
-border border-[#8F7220] rounded-full text-xs md:text-sm font-bold uppercase tracking-wider hover:bg-neutral-800'
-              >
-                <PenLine className='md:w-4 w-3 h-3 md:h-4' />
-                Write a Review
-              </button>
+              {canReview ? (
+                <button
+                  className=' mt-2 inline-flex cursor-pointer items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 border border-slate-600 rounded-full text-slate-800 hover:bg-slate-800 hover:text-white transition-all text-xs md:text-sm font-bold uppercase tracking-wider hover:bg-neutral-800'
+                  onClick={() => setShowReviewModal(true)}
+                >
+                  <PenLine className='md:w-4 w-3 h-3 md:h-4 hover:text-white text-slate-800' />
+                  Write a Review
+                </button>
+              ) : (
+                <p className='text-xs text-neutral-500'>
+                  Purchase this product to write a review.
+                </p>
+              )}
             </div>
           </section>
 
@@ -404,6 +502,117 @@ border border-[#8F7220] rounded-full text-xs md:text-sm font-bold uppercase trac
           </section>
         </main>
       </div>
+      {showReviewModal && (
+        <div className='fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4'>
+          {/* Modal Card */}
+          <div className='w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200'>
+            {/* Header */}
+            <div className='flex items-center justify-between md:px-6 px-6 py-4 md:py-5 border-b border-neutral-200'>
+              <div>
+                <p className='text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500'>
+                  Review
+                </p>
+                <h3 className='text-lg md:text-xl font-light text-neutral-900 tracking-tight'>
+                  Share your experience
+                </h3>
+              </div>
+
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className='md:w-9 w-7 h-7 md:h-9 rounded-full bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition'
+              >
+                <X className='md:w-4 h-3 w-3 md:h-4 text-neutral-900' />
+              </button>
+            </div>
+
+            <div className='px-6 py-6 space-y-6'>
+              {/* Product Info */}
+              <div className='flex items-center gap-4'>
+                <div className='relative w-16 h-20 rounded-xl overflow-hidden bg-neutral-100'>
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className='object-cover'
+                  />
+                </div>
+                <div>
+                  <p className='text-xs font-bold uppercase tracking-wider text-neutral-500'>
+                    {product.category}
+                  </p>
+                  <p className='text-lg font-light text-neutral-900'>
+                    {product.name}
+                  </p>
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div>
+                <p className='text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-2'>
+                  Your Rating
+                </p>
+
+                <div className='flex gap-2'>
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <button
+                      key={i}
+                      onClick={() => setRating(i)}
+                      className={`w-10 h-10 rounded-full border transition-all
+                  ${
+                    rating >= i
+                      ? 'bg-neutral-900 text-white border-neutral-900'
+                      : 'bg-white border-neutral-300 text-neutral-400 hover:border-neutral-900'
+                  }
+                `}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Comment */}
+              <div>
+                <p className='text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-2'>
+                  Your Review
+                </p>
+
+                <textarea
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                  rows={4}
+                  placeholder='Tell us what you loved, how it made you feel, or how it performed…'
+                  className='w-full text-black resize-none rounded-2xl border border-neutral-300 px-4 py-3 text-sm
+            focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent'
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className='px-6 py-3 md:py-5 border-t border-neutral-200 flex gap-3'>
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className='flex-1 h-8 md:h-11 text-black rounded-full border border-neutral-300 text-[10px] md:text-xs font-bold uppercase tracking-wider
+          hover:bg-neutral-50 transition'
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={async () => {
+                  await handleSubmitReview()
+                  setShowReviewModal(false)
+                }}
+                disabled={reviewLoading}
+                className='flex-1 h-8 md:h-11 rounded-full bg-neutral-900 text-white text-[10px] md:text-xs font-bold uppercase tracking-wider
+          hover:bg-neutral-800 transition disabled:opacity-50'
+              >
+                {reviewLoading ? 'Submitting…' : 'Submit Review'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <LuxuryFooter />
     </>

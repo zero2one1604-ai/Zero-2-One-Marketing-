@@ -9,7 +9,6 @@ export default function TermsConditions() {
     <div className="bg-[#FAF9F6] min-h-screen">
       <div className="max-w-4xl mx-auto px-6 pt-10 md:pt-24 pb-10 md:pb-20">
         
-        {/* Header Section */}
         <header className="text-center mb-5 md:mb-24">
           <div className="flex items-center justify-center gap-3 mb-2 md:mb-6">
             <div className="h-[1px] w-10 bg-neutral-300"></div>
@@ -38,7 +37,6 @@ export default function TermsConditions() {
 
         <div className="space-y-6 md:space-y-16">
           
-          {/* 01. Acceptance of Terms */}
           <section className="flex flex-col md:flex-row gap-2 md:gap-8">
             <div className="md:w-1/4">
               <span className="text-[10px] font-mono text-neutral-400">01 / Agreement</span>
@@ -75,7 +73,6 @@ export default function TermsConditions() {
             </div>
           </section>
 
-          {/* 04. Force Majeure */}
           <section className="flex flex-col md:flex-row gap-2 md:gap-8">
             <div className="md:w-1/4">
               <span className="text-[10px] font-mono text-neutral-400">04 / Logistics</span>
@@ -111,7 +108,6 @@ export default function TermsConditions() {
 
         </div>
 
-        {/* Footer Note */}
         <footer className="md:mt-32 mt-10 pt-5 md:pt-12 border-t border-neutral-200 text-center">
           <p className="text-xs text-neutral-400 font-light italic leading-relaxed">
             By continuing your journey with Saavi Skincare, you acknowledge that you have read and understood these terms in their entirety.

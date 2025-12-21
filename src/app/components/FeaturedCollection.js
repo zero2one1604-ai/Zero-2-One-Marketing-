@@ -108,7 +108,7 @@ export default function LuxuryPerfumeGallery () {
                 
                 <Link href={`/product/${perfume.slug}`}>
                   <div className='p-3 md:p-6 md:space-y-4 cursor-pointer'>
-                    <h3 className='text-[#3D2F1F] text-sm text-center md:text-left md:text-xl font-light tracking-wide'>
+                    <h3 className='text-[#3D2F1F] the-seasons text-sm text-center md:text-left md:text-2xl font-light tracking-wide'>
                       {perfume.name}
                     </h3>
 
