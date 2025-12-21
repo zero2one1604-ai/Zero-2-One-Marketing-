@@ -775,7 +775,7 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
                         </div>
 
                         <div className='text-xs md:text-[15px] text-neutral-700 leading-relaxed font-medium max-w-3xl'>
-                          "{review.comment}"
+                          &quot;{review.comment}&quot;
                         </div>
 
                         {/* Interaction Bar */}
