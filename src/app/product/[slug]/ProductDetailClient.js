@@ -9,13 +9,18 @@ import {
   Minus,
   Plus,
   Check,
+  Star,
   Package,
+  ThumbsUp,
   Shield,
   X,
   Truck,
   MessageSquare,
+  User,
   PenLine
 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import LuxuryFooter from '@/app/components/Footer'
@@ -38,9 +43,32 @@ export default function ProductDetailClient ({ product }) {
   const [comment, setComment] = useState('')
   const [reviewLoading, setReviewLoading] = useState(false)
   const [orderForReview, setOrderForReview] = useState(null)
+  const [reviews, setReviews] = useState([])
+  const [myReview, setMyReview] = useState(null)
+  const [toast, setToast] = useState(null) // { type: 'error' | 'success', message }
+  const [editingReview, setEditingReview] = useState(false)
+  const [sortBy, setSortBy] = useState('recent')
   const [showReviewModal, setShowReviewModal] = useState(false)
   const { openAuthModal } = useAuthModal()
   const router = useRouter()
+
+  const totalReviews = reviews.length
+
+  const averageRating = totalReviews
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
+    : 0
+
+  const ratingDistribution = [5, 4, 3, 2, 1].map(star => {
+    const count = reviews.filter(r => r.rating === star).length
+    return {
+      star,
+      perc: totalReviews ? Math.round((count / totalReviews) * 100) : 0
+    }
+  })
+
+  const orderedReviews = myReview
+    ? [myReview, ...reviews.filter(r => r.id !== myReview.id)]
+    : reviews
 
   async function getPaidOrderIds () {
     const {
@@ -80,6 +108,14 @@ export default function ProductDetailClient ({ product }) {
   }, [product.id])
 
   const handleSubmitReview = async () => {
+    if (!rating || comment.length < 10) {
+      setToast({
+        type: 'error',
+        message: 'Please add rating and a proper review.'
+      })
+      return
+    }
+
     setReviewLoading(true)
 
     const {
@@ -87,22 +123,33 @@ export default function ProductDetailClient ({ product }) {
     } = await supabase.auth.getUser()
 
     try {
-    const res = await submitReview({
-  productId: product.id,
-  rating,
-  comment
-})
+      const res = await submitReview({
+        userId: user.id,
+        productId: product.id,
+        rating,
+        comment
+      })
 
-if (res?.error) {
-  alert(res.error)
-  console.error(res.debug)
-  return
-}
-
-alert('Review submitted successfully')
+      setToast({
+        type: 'success',
+        message: editingReview ? 'Review updated.' : 'Review submitted.'
+      })
+      setShowReviewModal(false)
+      setEditingReview(false)
       setCanReview(false)
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('id, rating, comment, created_at, user_id')
+        .eq('product_id', product.id)
+        .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+          ascending: false
+        })
+
+      setReviews(data)
+      const mine = data.find(r => r.user_id === user.id) || null
+      setMyReview(mine)
     } catch (err) {
-      alert(err.message)
+      setToast({ type: 'error', message: err.message })
     } finally {
       setReviewLoading(false)
     }
@@ -145,6 +192,52 @@ alert('Review submitted successfully')
     }
   }
 
+  useEffect(() => {
+    loadReviews()
+  }, [product.id, sortBy])
+
+  async function loadReviews () {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+
+    const userId = user?.id || null
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .select(
+        `
+      id,
+      rating,
+      comment,
+      created_at,
+      user_id`
+      )
+      .eq('product_id', product.id)
+      .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+        ascending: false
+      })
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setReviews(data || [])
+
+    if (userId) {
+      const mine = data?.find(r => r.user_id === userId) || null
+      setMyReview(mine)
+
+      if (mine) {
+        setRating(mine.rating)
+        setComment(mine.comment)
+      }
+    } else {
+      setMyReview(null)
+    }
+  }
+
   const similarProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
@@ -152,6 +245,93 @@ alert('Review submitted successfully')
   const productImages = product.dimage
     ? [product.dimage, product.image]
     : [product.image]
+
+  const Toast = ({ toast, onClose }) => {
+    useEffect(() => {
+      if (!toast) return
+
+      const timer = setTimeout(() => {
+        onClose()
+      }, 4000) // Slightly longer for better readability
+
+      return () => clearTimeout(timer)
+    }, [toast, onClose])
+
+    return (
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            // Responsive positioning: Top-right on desktop, Top-center on mobile
+            className='fixed top-6 right-0 left-0 sm:left-auto sm:right-6 z-[9999] flex justify-center sm:justify-end px-4 pointer-events-none'
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+          >
+            <div
+              className={`
+              pointer-events-auto
+              relative overflow-hidden
+              flex items-center gap-4
+              min-w-[280px] max-w-[400px]
+              px-6 py-4 rounded-[1.5rem]
+              backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.1)]
+              border border-white/20
+              ${toast.type === 'success' ? 'bg-white/90' : 'bg-white/95'}
+            `}
+            >
+              {/* Indicator Line */}
+              <div
+                className={`absolute top-0 left-0 bottom-0 w-1.5 ${
+                  toast.type === 'success' ? 'bg-neutral-900' : 'bg-red-500'
+                }`}
+              />
+
+              {/* Icon */}
+              <div className='flex-shrink-0'>
+                {toast.type === 'success' ? (
+                  <div className='w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center'>
+                    <CheckCircle2 className='w-5 h-5 text-neutral-900' />
+                  </div>
+                ) : (
+                  <div className='w-8 h-8 rounded-full bg-red-50 flex items-center justify-center'>
+                    <AlertCircle className='w-5 h-5 text-red-500' />
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className='flex-1'>
+                <p className='text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-0.5'>
+                  {toast.type === 'success' ? 'Notification' : 'Attention'}
+                </p>
+                <p className='text-sm font-bold text-neutral-900 leading-tight'>
+                  {toast.message}
+                </p>
+              </div>
+
+              {/* Manual Close */}
+              <button
+                onClick={onClose}
+                className='p-1 hover:bg-neutral-100 rounded-full transition-colors group'
+              >
+                <X className='w-4 h-4 text-neutral-300 group-hover:text-neutral-900' />
+              </button>
+
+              {/* Animated Progress Bar */}
+              <motion.div
+                className={`absolute bottom-0 left-0 h-[3px] opacity-20 ${
+                  toast.type === 'success' ? 'bg-neutral-900' : 'bg-red-500'
+                }`}
+                initial={{ width: '100%' }}
+                animate={{ width: '0%' }}
+                transition={{ duration: 4, ease: 'linear' }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    )
+  }
 
   return (
     <>
@@ -181,7 +361,7 @@ alert('Review submitted successfully')
         </nav>
 
         <main className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 lg:py-5'>
-          <div className='grid lg:grid-cols-2 gap-8 lg:gap-16 mb-5 md:mb-20'>
+          <div className='grid lg:grid-cols-2 gap-8 lg:gap-16 mb-5 md:mb-16'>
             <div className='space-y-4'>
               <div className='relative rounded-3xl overflow-hidden bg-neutral-100 group'>
                 {selectedImage === 0 && product.dimage ? (
@@ -423,31 +603,196 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
             </div>
           </div>
 
-          <section className='mb-5 md:mb-20 md:py-16 py-5 border-y border-neutral-200'>
-            <div className='max-w-3xl mx-auto text-center md:space-y-6'>
-              <div className='inline-flex mb-2 items-center justify-center md:w-16 w-10 h-10 md:h-16 rounded-2xl bg-neutral-900 text-white'>
-                <MessageSquare className='md:w-7 w-5 h-5 md:h-7' />
+          <section className='max-w-[1400px] mx-auto px-4 py-6 sm:px-12 md:py-12 border rounded-4xl mb-6 md:mb-16 border-neutral-200 bg-white'>
+            <div className='flex flex-col lg:flex-row md:gap-16'>
+              <div className='lg:w-80 md:space-y-8 text-center md:text-left flex-shrink-0'>
+                <div>
+                  <h2 className='text-lg md:text-2xl font-bold text-neutral-900 tracking-tight'>
+                    Customer Insights
+                  </h2>
+                  <div className='flex justify-center md:justify-start items-center gap-3 mt-4 mb-4'>
+                    <div className='flex items-center justify-center md:w-14 w-12 h-12 md:h-14 rounded-2xl bg-neutral-900 text-white text-sm md:text-xl font-bold'>
+                      {averageRating}
+                    </div>
+                    <div>
+                      <div className='flex gap-0.5'>
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < Math.round(averageRating)
+                                ? 'fill-neutral-900 text-neutral-900'
+                                : 'text-neutral-200'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <p className='text-[10px] md:text-xs font-bold text-neutral-400 uppercase tracking-widest mt-1'>
+                        Based on {totalReviews} review
+                        {totalReviews !== 1 && 's'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {ratingDistribution.map(item => (
+                  <div key={item.star} className='flex items-center gap-4'>
+                    <span className='text-[11px] font-black w-10 text-neutral-400'>
+                      {item.star} STAR
+                    </span>
+
+                    <div className='flex-1 h-3 bg-neutral-200/50 rounded-full overflow-hidden relative border border-neutral-300/30 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]'>
+                      <div
+                        className='h-full transition-all duration-1000 ease-out relative'
+                        style={{
+                          width: `${item.perc}%`,
+                          background: `linear-gradient(
+        to right, 
+        #BF953F 0%, 
+        #FCF6BA 25%, 
+        #B38728 50%, 
+        #FBF5B7 75%, 
+        #AA771C 100%
+      )`,
+                          boxShadow:
+                            '0 0 10px rgba(191, 149, 63, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4)'
+                        }}
+                      >
+                        <div
+                          className='absolute inset-0 w-full h-full animate-gold-shine'
+                          style={{
+                            background:
+                              'linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent)',
+                            transform: 'skewX(-25deg)'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <span className='text-[11px] font-bold text-neutral-900 w-8 text-right'>
+                      {item.perc}%
+                    </span>
+                  </div>
+                ))}
+
+                <div className='pt-4 mt-4 md:pt-8 border-t border-neutral-100'>
+                  <h3 className='font-bold text-xs md:text-sm text-black uppercase tracking-widest md:mb-2'>
+                    Review this product
+                  </h3>
+                  <p className='text-[10px] md:text-sm text-neutral-500 mb-2 md:mb-6 leading-relaxed'>
+                    Help the community by sharing your honest experience.
+                  </p>
+
+                  {myReview ? (
+                    <button
+                      onClick={() => {
+                        setEditingReview(true)
+                        setShowReviewModal(true)
+                      }}
+                      className='w-full py-2 md:py-4 bg-white cursor-pointer border-2 border-black rounded-xl text-xs text-black uppercase tracking-widest hover:bg-neutral-50 transition-all active:scale-[0.98]'
+                    >
+                      Modify your review
+                    </button>
+                  ) : canReview ? (
+                    <button
+                      onClick={() => setShowReviewModal(true)}
+                      className='w-full py-2 md:py-4 bg-black cursor-pointer text-white rounded-xl text-xs uppercase tracking-widest hover:bg-neutral-800 transition-all shadow-xl active:scale-[0.98]'
+                    >
+                      Write a Review
+                    </button>
+                  ) : (
+                    <div className='p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center'>
+                      <p className='text-[10px] text-neutral-400 font-bold uppercase tracking-widest'>
+                        Purchase to Review
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
-              <h2 className='text-xl lg:text-5xl font-light text-neutral-900 tracking-tight'>
-                Share Your Experience
-              </h2>
-              <p className=' text-xs md:text-lg text-neutral-600 font-light max-w-xl px-5 mx-auto'>
-                Your review helps others discover their perfect scent. Tell us
-                about your experience with {product.name}.
-              </p>
-              {canReview ? (
-                <button
-                  className=' mt-2 inline-flex cursor-pointer items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 border border-slate-600 rounded-full text-slate-800 hover:bg-slate-800 hover:text-white transition-all text-xs md:text-sm font-bold uppercase tracking-wider hover:bg-neutral-800'
-                  onClick={() => setShowReviewModal(true)}
-                >
-                  <PenLine className='md:w-4 w-3 h-3 md:h-4 hover:text-white text-slate-800' />
-                  Write a Review
-                </button>
-              ) : (
-                <p className='text-xs text-neutral-500'>
-                  Purchase this product to write a review.
-                </p>
-              )}
+
+              <div className='flex-1 mt-6'>
+                <div className='flex items-center justify-between border-b border-neutral-100 pb-6 mb-2'>
+                  <h3 className='text-xs md:text-sm font-black uppercase tracking-widest text-neutral-900'>
+                    List of Reviews
+                  </h3>
+                  <select
+                    value={sortBy}
+                    onChange={e => setSortBy(e.target.value)}
+                    className='text-xs text-black font-bold bg-transparent cursor-pointer'
+                  >
+                    <option value='recent'>Sort by: Most Recent</option>
+                    <option value='rating'>Sort by: Highest Rating</option>
+                  </select>
+                </div>
+
+                {reviews.length === 0 ? (
+                  <div className='py-20 text-center'>
+                    <p className='text-neutral-400 text-xs md:text-base md:font-medium italic'>
+                      No reviews have been published yet.
+                    </p>
+                  </div>
+                ) : (
+                  <div className='divide-y divide-neutral-100'>
+                    {orderedReviews.map(review => (
+                      <div
+                        key={review.id}
+                        className='py-4 md:py-10 space-y-2 md:space-y-5 group'
+                      >
+                        <div className='flex items-center mb-4 justify-between'>
+                          <div className='flex items-center gap-3'>
+                            <div className='md:w-10 w-8 h-8 md:h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white text-[10px] font-bold'>
+                              {review.user_name?.charAt(0) || 'U'}
+                            </div>
+                            <div className='flex flex-col justify-center gap-0.5'>
+                              {' '}
+                      
+                              <span className='text-xs mb-1 md:text-sm font-black text-neutral-900 leading-tight block'>
+                                {review.user_name || 'Verified Client'}
+                              </span>
+                              <span className='text-[8px] md:text-[10px] font-bold text-green-600 uppercase tracking-tighter block leading-none -mt-0.5'>
+                                Verified Purchase
+                              </span>
+                            </div>
+                          </div>
+                          <span className='text-[10px] md:text-[11px] font-bold text-neutral-500 uppercase'>
+                            {new Date(review.created_at).toLocaleDateString(
+                              'en-IN',
+                              { month: 'short', year: 'numeric' }
+                            )}
+                          </span>
+                        </div>
+                        <div className='flex gap-0.5'>
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < review.rating
+                                  ? 'fill-black text-black'
+                                  : 'text-neutral-200'
+                              }`}
+                            />
+                          ))}
+                        </div>
+
+                        <div className='text-xs md:text-[15px] text-neutral-700 leading-relaxed font-medium max-w-3xl'>
+                          "{review.comment}"
+                        </div>
+
+                        {/* Interaction Bar */}
+                        <div className='pt-2 flex items-center gap-6'>
+                          <button className='group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-black transition-colors'>
+                            <ThumbsUp className='w-3.5 h-3.5 group-active:scale-90 transition-transform' />
+                            Helpful
+                          </button>
+                          <button className='text-[10px] font-black uppercase tracking-widest text-neutral-300 hover:text-red-500 transition-colors'>
+                            Report
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </section>
 
@@ -613,7 +958,7 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
           </div>
         </div>
       )}
-
+      <Toast toast={toast} onClose={() => setToast(null)} />
       <LuxuryFooter />
     </>
   )

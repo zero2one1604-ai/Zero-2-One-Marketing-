@@ -2,6 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function SplashScreen({ finishLoading }) {
@@ -12,15 +13,14 @@ export default function SplashScreen({ finishLoading }) {
 
     if (!hasSeenSplash) {
       setIsVisible(true)
-      // Duration of the splash (3.5s)
       const timer = setTimeout(() => {
         setIsVisible(false)
         sessionStorage.setItem('saavi_splash_seen', 'true')
-        finishLoading() // Tell the layout to show the website
+        finishLoading()
       }, 3500)
       return () => clearTimeout(timer)
     } else {
-      finishLoading() // User has seen it, show website immediately
+      finishLoading()
     }
   }, [finishLoading])
 
@@ -30,29 +30,38 @@ export default function SplashScreen({ finishLoading }) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
-            clipPath: 'inset(0 0 100% 0)', // Sophisticated "Slide up" reveal
+            clipPath: 'inset(0 0 100% 0)',
             transition: { duration: 1.2, ease: [0.85, 0, 0.15, 1] } 
           }}
           className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center"
         >
           <div className="relative flex flex-col items-center">
-            <div className="overflow-hidden mb-1 md:mb-4">
-              <motion.h1
-                initial={{ y: 100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className="text-4xl the-seasons md:text-8xl font-light tracking-[0.3em] text-neutral-900 uppercase"
-              >
-                SAAVI
-              </motion.h1>
-            </div>
+            <div className="overflow-hidden mb-1 md:mb-4 relative">
+  <motion.div
+    initial={{ y: "100%" }}
+    animate={{ y: 0 }}
+    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+    className="flex justify-center items-center mb-2"
+  >
+    <div className="relative w-52 h-22 md:w-72 md:h-24"> 
+      <Image
+        src="/images/logo.png"
+        alt="Saavi Logo"
+        fill
+        priority
+        className="object-contain"
+        sizes="(max-width: 768px) 128px, 288px"
+      />
+    </div>
+  </motion.div>
+</div>
             <motion.div 
               initial={{ width: 0 }}
-              animate={{ width: '100%' }}
+              animate={{ width: '80%' }}
               transition={{ delay: 0.5, duration: 1.5, ease: "easeInOut" }}
               className="h-[0.5px] bg-neutral-900 w-full"
             />
-            <div className="overflow-hidden mt-1 mb-1 md:mt-6">
+            <div className="overflow-hidden mt-2 mb-1 md:mt-6">
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

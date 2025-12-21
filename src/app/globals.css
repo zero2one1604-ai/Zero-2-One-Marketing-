@@ -35,6 +35,14 @@ body {
   70% { width: 85%; }
   100% { width: 100%; }
 }
+@keyframes gold-shine {
+  from { transform: translateX(-200%) skewX(-25deg); }
+  to { transform: translateX(200%) skewX(-25deg); }
+}
+
+.animate-gold-shine {
+  animation: gold-shine 4s infinite ease-in-out;
+}
 
 .animate-buy-progress {
   animation: buyProgress 1.4s ease-out forwards;
