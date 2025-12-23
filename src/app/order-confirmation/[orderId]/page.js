@@ -173,7 +173,7 @@ export default function CODConfirmationPage() {
                 <span className="text-[10px] font-bold uppercase tracking-widest">A note for you</span>
               </div>
               <p className="text-xs text-neutral-500 max-w-sm mx-auto leading-relaxed px-4">
-                "Please have the exact amount ready. Our delivery partner will reach out to ensure you are home before arrival."
+                &quot;Please have the exact amount ready. Our delivery partner will reach out to ensure you are home before arrival.&quot;
               </p>
             </div>
 

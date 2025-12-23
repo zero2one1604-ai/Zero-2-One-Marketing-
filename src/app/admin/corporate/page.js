@@ -114,7 +114,7 @@ export default function AdminCorporate() {
                     <MessageSquare className="w-3 h-3 text-neutral-500" /> Requirements
                   </p>
                   <p className="text-sm text-neutral-600 font-medium italic leading-relaxed line-clamp-3">
-                    "{r.message}"
+                    &quot;{r.message}&quot;
                   </p>
                 </div>
 

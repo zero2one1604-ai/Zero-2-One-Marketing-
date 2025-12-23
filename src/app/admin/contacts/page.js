@@ -114,7 +114,7 @@ export default function AdminContacts() {
                     <div>
                         <span className="text-[9px] font-black uppercase text-slate-900 tracking-[0.3em] text-neutral-300 mb-2 block">Message Content</span>
                         <p className="text-base md:text-lg font-light text-neutral-800 leading-relaxed italic">
-                            "{m.message}"
+                            &quot;{m.message}&quot;
                         </p>
                     </div>
 

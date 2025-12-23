@@ -94,7 +94,7 @@ export default function AdminReviews() {
                   </div>
 
                   <p className="text-sm text-neutral-600 leading-relaxed italic font-medium">
-                    "{r.comment}"
+                    &quot;{r.comment}&quot;
                   </p>
                 </div>
 
