@@ -8,7 +8,8 @@ import AdminHeader from './components/AdminHeader'
 
 const ALLOWED_ADMINS = [
   'pravingupta2020@gmail.com',
-  'support@saaviskincare.com'
+  'saaviskincare@gmail.com',
+  'zero2one1604@gmail.com',
 ]
 
 export default function AdminLayout({ children }) {
