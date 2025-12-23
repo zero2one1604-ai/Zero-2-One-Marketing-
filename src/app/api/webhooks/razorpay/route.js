@@ -17,7 +17,7 @@ export async function POST(req) {
     const signature = req.headers.get('x-razorpay-signature')
 
     const expectedSignature = crypto
-      .createHmac('sha256', process.env.TEST_RAZORPAY_WEBHOOK_SECRET)
+      .createHmac('sha256', process.env.RAZORPAY_WEBHOOK_SECRET)
       .update(rawBody)
       .digest('hex')
 

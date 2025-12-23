@@ -133,7 +133,7 @@ export default function LuxuryFooter() {
               Shop
             </h4>
             <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
-              {['New Arrivals', 'Best Sellers', 'For Her', 'For Him', 'Gift Sets', 'Limited Edition'].map((item) => (
+              {['Collection', 'For Her', 'For Him'].map((item) => (
                 <li key={item}>
                   <a 
                     href="#" 
@@ -153,11 +153,8 @@ export default function LuxuryFooter() {
        <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
   {[
     { label: 'Contact Us', href: '/contact' },
-    { label: 'FAQs', href: '/faqs' },
     { label: 'Shipping Policy', href: '/shipping-policy' },
     { label: 'Returns & Exchanges', href: '/return-refund-cancellation-policy' },
-    { label: 'Size Guide', href: '/size-guide' },
-    { label: 'Track Order', href: '/track-order' },
   ].map((item) => (
     <li key={item.label}>
       <Link

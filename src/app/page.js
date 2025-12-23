@@ -6,6 +6,36 @@ import LuxuryFooter from './components/Footer'
 import LuxuryNewsletterPopup from './components/NewsletterPopup'
 import RoyalBanner from './components/Banner'
 
+export const metadata = {
+  title: 'Saavi: Luxury Solid Perfumes & Conscious Care',
+  description:
+    'Discover Saavi Skincare, a luxury fragrance and skincare house crafting solid perfumes with ethical sourcing, artisanal care, and modern elegance.',
+  openGraph: {
+    title: 'Saavi Skincare: Modern Luxury Perfumes',
+    description:
+      'Luxury solid perfumes crafted in small batches with conscious sourcing and timeless design.',
+    url: 'https://saaviskincare.com',
+    siteName: 'Saavi Skincare',
+    images: [
+      {
+        url: '/images/og-home.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Saavi Skincare Luxury Perfumes'
+      }
+    ],
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Saavi Skincare',
+    description:
+      'Luxury solid perfumes crafted with conscience and care.',
+    images: ['/images/og-home.jpg']
+  }
+}
+
+
 export default function Home () {
   return (
     <>

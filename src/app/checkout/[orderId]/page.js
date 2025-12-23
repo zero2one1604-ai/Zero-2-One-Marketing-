@@ -44,6 +44,9 @@ export default function CheckoutPage() {
 
       if (error) return console.error(error)
       setOrder(data)
+    if (data.payment_method) {
+  setPaymentMethod(data.payment_method)
+}
 
       if (data.full_name && data.address_line1 && data.pincode) {
         setAddressSaved(true)
@@ -103,6 +106,13 @@ export default function CheckoutPage() {
       const res = await loadRazorpay()
       if (!res) { alert('Gateway failed'); setLoading(false); return }
       try {
+        await supabase
+  .from('orders')
+  .update({
+    payment_method: 'online',
+    total_amount: finalTotal
+  })
+  .eq('id', orderId)
         const { razorpayOrderId, amount } = await createRazorpayOrder(orderId)
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -117,13 +127,24 @@ export default function CheckoutPage() {
         new window.Razorpay(options).open()
       } catch (err) { console.error(err) } finally { setLoading(false) }
     } else {
-      setLoading(true)
-      const { error } = await supabase.from('orders').update({ 
-        status: 'pending', payment_method: 'cod', total_amount: finalTotal 
-      }).eq('id', orderId)
-      if (error) return alert('COD failed')
-      window.location.href = `/orders/${orderId}`
-    }
+  setLoading(true)
+
+  const { error } = await supabase
+    .from('orders')
+    .update({
+      status: 'pending',
+      payment_method: 'cod',
+      total_amount: finalTotal
+    })
+    .eq('id', orderId)
+
+  if (error) {
+    setLoading(false)
+    return alert('COD failed')
+  }
+
+  window.location.href = `/order-confirmation/${orderId}`
+}
   }
 
   return (
@@ -400,7 +421,13 @@ export default function CheckoutPage() {
     <div className="grid sm:grid-cols-2 gap-1 md:gap-4">
 
       <button
-        onClick={() => setPaymentMethod('online')}
+     onClick={async () => {
+  setPaymentMethod('online')
+  await supabase
+    .from('orders')
+    .update({ payment_method: 'online' })
+    .eq('id', orderId)
+}}
         className={`p-6 rounded-2xl cursor-pointer border-2 text-left transition-all relative ${
           paymentMethod === 'online'
             ? 'border-neutral-900 bg-white shadow-lg'
@@ -430,7 +457,13 @@ export default function CheckoutPage() {
       </button>
 
       <button
-        onClick={() => setPaymentMethod('cod')}
+   onClick={async () => {
+  setPaymentMethod('cod')
+  await supabase
+    .from('orders')
+    .update({ payment_method: 'cod' })
+    .eq('id', orderId)
+}}
         className={`p-6 rounded-2xl cursor-pointer border-2 text-left transition-all relative ${
           paymentMethod === 'cod'
             ? 'border-neutral-900 bg-white shadow-lg'

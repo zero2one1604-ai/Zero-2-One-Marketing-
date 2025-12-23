@@ -12,7 +12,7 @@ const theSeasons = localFont({
 
 export const metadata = {
   title: {
-    default: "Saavi — Solid Perfumes & Gentle Skincare Made With Care",
+    default: "Saavi: Solid Perfumes & Gentle Skincare Made With Care",
     template: "%s | Saavi",
   },
 
@@ -60,7 +60,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Saavi — Solid Perfumes & Gentle Skincare",
+    title: "Saavi: Solid Perfumes & Gentle Skincare",
     description:
       "A family-born brand creating solid perfumes and gentle skincare with care, trust and skin-safe ingredients.",
     images: ["/images/logo.png"],

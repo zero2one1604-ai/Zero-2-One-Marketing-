@@ -8,26 +8,30 @@ import { motion } from 'framer-motion'
 export default function AuthCallback() {
   const router = useRouter()
 
-  useEffect(() => {
-    const handleAuth = async () => {
-      const { data, error } = await supabase.auth.getSession()
+useEffect(() => {
+  const handleAuth = async () => {
+    const { data, error } = await supabase.auth.getSession()
 
-      if (error) {
-        console.error('Auth error:', error)
-        router.replace('/?auth_error=true')
-        return
-      }
-
-      if (data.session) {
-        // Subtle delay to allow the animation to feel "intentional" and premium
-        setTimeout(() => {
-          router.replace('/')
-        }, 1500)
-      }
+    if (error) {
+      console.error('Auth error:', error)
+      router.replace('/?auth_error=true')
+      return
     }
 
-    handleAuth()
-  }, [router])
+    if (data.session) {
+      const returnTo =
+        localStorage.getItem('auth:returnTo') || '/'
+
+      localStorage.removeItem('auth:returnTo')
+      setTimeout(() => {
+        router.replace(returnTo)
+      }, 1500)
+    }
+  }
+
+  handleAuth()
+}, [router])
+
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center px-6">

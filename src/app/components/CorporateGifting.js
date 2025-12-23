@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Gift, Briefcase, Package, Check, ChevronRight, Users, Award, Palette, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabaseClient'
 
 export default function CorporateGifting() {
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -87,16 +88,42 @@ export default function CorporateGifting() {
     }
   ];
 
-  const handleSubmit = () => {
-    if (formData.name && formData.email && formData.company) {
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({ name: '', email: '', company: '', quantity: '', message: '' });
-        setSelectedPackage(null);
-      }, 3000);
-    }
-  };
+const handleSubmit = async () => {
+  if (!formData.name || !formData.email || !formData.company) return;
+
+  const selectedPkg = packages.find(p => p.id === selectedPackage);
+
+  const { error } = await supabase
+    .from('corporate_gifting_requests')
+    .insert({
+      name: formData.name,
+      email: formData.email,
+      company: formData.company,
+      quantity: formData.quantity,
+      message: formData.message,
+      selected_package: selectedPkg?.name || null
+    });
+
+  if (error) {
+    console.error('Corporate gifting submit error:', error);
+    return;
+  }
+
+  setIsSubmitted(true);
+
+  setTimeout(() => {
+    setIsSubmitted(false);
+    setFormData({
+      name: '',
+      email: '',
+      company: '',
+      quantity: '',
+      message: ''
+    });
+    setSelectedPackage(null);
+  }, 3000);
+};
+
 
   return (
     <div className="min-h-screen bg-[#F6F4EF]">

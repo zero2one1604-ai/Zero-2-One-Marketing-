@@ -34,7 +34,7 @@ export default function ShopPage() {
     '@type': 'CollectionPage',
     name: 'Luxury Solid Perfumes Collection',
     description: 'Premium handcrafted solid perfumes for men, women, and unisex',
-    url: 'https://yourwebsite.com/shop',
+    url: 'https://saaviskincare.com/shop',
     numberOfItems: products.length,
     offers: {
       '@type': 'AggregateOffer',

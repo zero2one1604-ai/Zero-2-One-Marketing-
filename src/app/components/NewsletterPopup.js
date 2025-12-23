@@ -1,40 +1,71 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { X, Mail, Sparkles, Gift } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+import { X, Mail, Gift } from 'lucide-react'
+import { supabase } from '@/lib/supabaseClient'
+
+const DISMISS_DAYS = 7
+const DELAY_MS = 4000
 
 export default function LuxuryNewsletterPopup() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
+  const [email, setEmail] = useState('')
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 4000);
+    const subscribed = localStorage.getItem('newsletter_subscribed')
+    if (subscribed === 'true') return
 
-    return () => clearTimeout(timer);
-  }, []);
+    const dismissedUntil = localStorage.getItem('newsletter_dismissed_until')
+    if (dismissedUntil && Date.now() < Number(dismissedUntil)) return
+
+    const timer = setTimeout(() => {
+      setIsVisible(true)
+    }, DELAY_MS)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleClose = () => {
-    setIsClosing(true);
+    const until =
+      Date.now() + DISMISS_DAYS * 24 * 60 * 60 * 1000
+
+    localStorage.setItem(
+      'newsletter_dismissed_until',
+      String(until)
+    )
+
+    setIsClosing(true)
     setTimeout(() => {
-      setIsVisible(false);
-      setIsClosing(false);
-    }, 400);
-  };
+      setIsVisible(false)
+      setIsClosing(false)
+    }, 400)
+  }
 
-  const handleSubscribe = () => {
-    if (email) {
-      setIsSubscribed(true);
+  const handleSubscribe = async () => {
+    if (!email || !email.includes('@')) return
+
+    setLoading(true)
+
+    const { error } = await supabase
+      .from('newsletter_subscribers')
+      .insert({ email })
+
+    if (!error || error.code === '23505') {
+      localStorage.setItem('newsletter_subscribed', 'true')
+      setIsSubscribed(true)
+
       setTimeout(() => {
-        handleClose();
-      }, 2000);
+        handleClose()
+      }, 2000)
     }
-  };
 
-  if (!isVisible) return null;
+    setLoading(false)
+  }
+
+  if (!isVisible) return null
 
   return (
     <>
@@ -131,7 +162,9 @@ export default function LuxuryNewsletterPopup() {
                       className="w-full cursor-pointer py-3 sm:py-4 bg-gradient-to-br from-[#d4af37] via-[#f4e5c2] to-[#d4af37] text-[#1a1a1a] text-xs sm:text-sm tracking-[0.15em] uppercase font-semibold rounded-lg shadow-xl shadow-black/20 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-700/30 hover:from-[#f0d678] hover:via-[#fff5dc] hover:to-[#f0d678] active:scale-[0.98] relative overflow-hidden border border-[#b8941f]"
                     >
                       <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/20 pointer-events-none" />
-                      <span className="relative z-10">Claim Your Gift</span>
+                        <span className="relative z-10">
+                        {loading ? 'Subscribing…' : 'Claim Your Gift'}
+                      </span>
                     </button>
                   </div>
 

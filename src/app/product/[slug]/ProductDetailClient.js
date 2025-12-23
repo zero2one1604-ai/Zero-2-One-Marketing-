@@ -42,10 +42,9 @@ export default function ProductDetailClient ({ product }) {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
   const [reviewLoading, setReviewLoading] = useState(false)
-  const [orderForReview, setOrderForReview] = useState(null)
   const [reviews, setReviews] = useState([])
   const [myReview, setMyReview] = useState(null)
-  const [toast, setToast] = useState(null) // { type: 'error' | 'success', message }
+  const [toast, setToast] = useState(null)
   const [editingReview, setEditingReview] = useState(false)
   const [sortBy, setSortBy] = useState('recent')
   const [showReviewModal, setShowReviewModal] = useState(false)
@@ -108,52 +107,72 @@ export default function ProductDetailClient ({ product }) {
   }, [product.id])
 
   const handleSubmitReview = async () => {
-    if (!rating || comment.length < 10) {
-      setToast({
-        type: 'error',
-        message: 'Please add rating and a proper review.'
-      })
-      return
-    }
-
-    setReviewLoading(true)
-
-    const {
-      data: { user }
-    } = await supabase.auth.getUser()
-
-    try {
-      const res = await submitReview({
-        userId: user.id,
-        productId: product.id,
-        rating,
-        comment
-      })
-
-      setToast({
-        type: 'success',
-        message: editingReview ? 'Review updated.' : 'Review submitted.'
-      })
-      setShowReviewModal(false)
-      setEditingReview(false)
-      setCanReview(false)
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('id, rating, comment, created_at, user_id')
-        .eq('product_id', product.id)
-        .order(sortBy === 'rating' ? 'rating' : 'created_at', {
-          ascending: false
-        })
-
-      setReviews(data)
-      const mine = data.find(r => r.user_id === user.id) || null
-      setMyReview(mine)
-    } catch (err) {
-      setToast({ type: 'error', message: err.message })
-    } finally {
-      setReviewLoading(false)
-    }
+  if (!rating || comment.length < 10) {
+    setToast({
+      type: 'error',
+      message: 'Please add rating and a proper review.'
+    })
+    return
   }
+
+  setReviewLoading(true)
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  const displayName =
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    'Verified Client'
+
+  try {
+    await submitReview({
+      userId: user.id,
+      productId: product.id,
+      rating,
+      comment
+    })
+
+    setToast({
+      type: 'success',
+      message: editingReview ? 'Review updated.' : 'Review submitted.'
+    })
+
+    setShowReviewModal(false)
+    setEditingReview(false)
+    setCanReview(false)
+
+    // 🔁 refetch + enrich
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('id, rating, comment, created_at, user_id')
+      .eq('product_id', product.id)
+      .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+        ascending: false
+      })
+
+    if (error) throw error
+
+    const enriched = (data || []).map(review => ({
+      ...review,
+      name: review.user_id === user.id
+        ? displayName
+        : 'Verified Client'
+    }))
+
+    setReviews(enriched)
+
+    const mine = enriched.find(r => r.user_id === user.id) || null
+    setMyReview(mine)
+
+  } catch (err) {
+    setToast({ type: 'error', message: err.message })
+  } finally {
+    setReviewLoading(false)
+  }
+}
+
 
   const handleAddToCart = () => {
     setIsAddedToCart(true)
@@ -171,9 +190,11 @@ export default function ProductDetailClient ({ product }) {
 
     if (!user) {
       setBuyLoading(false)
-      openAuthModal({
-        onSuccess: () => handleBuyNow()
-      })
+   openAuthModal({
+  returnTo: window.location.pathname,
+  onSuccess: () => handleBuyNow()
+})
+
       return
     }
 
@@ -196,47 +217,95 @@ export default function ProductDetailClient ({ product }) {
     loadReviews()
   }, [product.id, sortBy])
 
+  const handleShareProduct = async () => {
+  const shareUrl = window.location.href
+  const shareText = `${product.name} — ${product.tagline || 'Discover this fragrance'}`
+  const shareTitle = product.name
+
+  // Native mobile share (best UX)
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: shareUrl
+      })
+    } catch (err) {
+      // user cancelled, do nothing
+    }
+    return
+  }
+
+  // Desktop fallback: copy link
+  try {
+    await navigator.clipboard.writeText(shareUrl)
+    setToast({
+      type: 'success',
+      message: 'Product link copied to clipboard.'
+    })
+  } catch (err) {
+    setToast({
+      type: 'error',
+      message: 'Unable to share. Please copy the URL manually.'
+    })
+  }
+}
+
+
   async function loadReviews () {
-    const {
-      data: { user }
-    } = await supabase.auth.getUser()
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
 
-    const userId = user?.id || null
+  const userId = user?.id || null
 
-    const { data, error } = await supabase
-      .from('reviews')
-      .select(
-        `
+  const displayName =
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    'Verified Client'
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .select(`
       id,
       rating,
       comment,
       created_at,
-      user_id`
-      )
-      .eq('product_id', product.id)
-      .order(sortBy === 'rating' ? 'rating' : 'created_at', {
-        ascending: false
-      })
+      user_id
+    `)
+    .eq('product_id', product.id)
+    .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+      ascending: false
+    })
 
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    setReviews(data || [])
-
-    if (userId) {
-      const mine = data?.find(r => r.user_id === userId) || null
-      setMyReview(mine)
-
-      if (mine) {
-        setRating(mine.rating)
-        setComment(mine.comment)
-      }
-    } else {
-      setMyReview(null)
-    }
+  if (error) {
+    console.error(error)
+    return
   }
+
+  // 🔥 ENRICH REVIEWS WITH NAME
+  const enriched = (data || []).map(review => ({
+    ...review,
+    name: review.user_id === userId
+      ? displayName
+      : 'Verified Client'
+  }))
+
+  setReviews(enriched)
+
+  if (userId) {
+    const mine = enriched.find(r => r.user_id === userId) || null
+    setMyReview(mine)
+
+    if (mine) {
+      setRating(mine.rating)
+      setComment(mine.comment)
+    }
+  } else {
+    setMyReview(null)
+  }
+}
+
 
   const similarProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
@@ -252,7 +321,7 @@ export default function ProductDetailClient ({ product }) {
 
       const timer = setTimeout(() => {
         onClose()
-      }, 4000) // Slightly longer for better readability
+      }, 4000)
 
       return () => clearTimeout(timer)
     }, [toast, onClose])
@@ -261,7 +330,7 @@ export default function ProductDetailClient ({ product }) {
       <AnimatePresence>
         {toast && (
           <motion.div
-            // Responsive positioning: Top-right on desktop, Top-center on mobile
+          
             className='fixed top-6 right-0 left-0 sm:left-auto sm:right-6 z-[9999] flex justify-center sm:justify-end px-4 pointer-events-none'
             initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -380,7 +449,7 @@ export default function ProductDetailClient ({ product }) {
                 <div className='absolute top-6 right-6 flex flex-col gap-3 z-10'>
                   <button
                     onClick={() => setIsFavorite(!isFavorite)}
-                    className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
+                    className='w-12 hidden h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
                   >
                     <Heart
                       className={`w-5 h-5 transition-colors ${
@@ -390,9 +459,14 @@ export default function ProductDetailClient ({ product }) {
                       }`}
                     />
                   </button>
-                  <button className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'>
-                    <Share2 className='w-5 h-5 text-neutral-700' />
-                  </button>
+                <button
+  onClick={handleShareProduct}
+  className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
+  aria-label={`Share ${product.name}`}
+>
+  <Share2 className='w-5 h-5 text-neutral-700' />
+</button>
+
                 </div>
 
                 {productImages.length > 1 && (
@@ -741,13 +815,13 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
                         <div className='flex items-center mb-4 justify-between'>
                           <div className='flex items-center gap-3'>
                             <div className='md:w-10 w-8 h-8 md:h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white text-[10px] font-bold'>
-                              {review.user_name?.charAt(0) || 'U'}
+                              {review.name?.charAt(0) || 'U'}
                             </div>
                             <div className='flex flex-col justify-center gap-0.5'>
                               {' '}
                       
                               <span className='text-xs mb-1 md:text-sm font-black text-neutral-900 leading-tight block'>
-                                {review.user_name || 'Verified Client'}
+                                {review.name || 'Verified Client'}
                               </span>
                               <span className='text-[8px] md:text-[10px] font-bold text-green-600 uppercase tracking-tighter block leading-none -mt-0.5'>
                                 Verified Purchase
@@ -778,7 +852,6 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
                           &quot;{review.comment}&quot;
                         </div>
 
-                        {/* Interaction Bar */}
                         <div className='pt-2 flex items-center gap-6'>
                           <button className='group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-neutral-400 hover:text-black transition-colors'>
                             <ThumbsUp className='w-3.5 h-3.5 group-active:scale-90 transition-transform' />
@@ -849,9 +922,8 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
       </div>
       {showReviewModal && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4'>
-          {/* Modal Card */}
           <div className='w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200'>
-            {/* Header */}
+
             <div className='flex items-center justify-between md:px-6 px-6 py-4 md:py-5 border-b border-neutral-200'>
               <div>
                 <p className='text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500'>

@@ -9,12 +9,22 @@ const AuthModalContext = createContext(null)
 export function AuthModalProvider({ children }) {
   const [open, setOpen] = useState(false)
   const [onSuccess, setOnSuccess] = useState(null)
+  const [returnTo, setReturnTo] = useState(null)
+
   const [loading, setLoading] = useState(false)
 
-  const openAuthModal = ({ onSuccess }) => {
-    setOnSuccess(() => onSuccess)
-    setOpen(true)
+const openAuthModal = ({ onSuccess, returnTo }) => {
+  setOnSuccess(() => onSuccess)
+  setReturnTo(returnTo || window.location.pathname)
+
+  // persist across OAuth redirect
+  if (returnTo) {
+    localStorage.setItem('auth:returnTo', returnTo)
   }
+
+  setOpen(true)
+}
+
 
   const closeAuthModal = () => {
     if (loading) return
@@ -60,13 +70,16 @@ export function AuthModalProvider({ children }) {
               transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
               className="relative bg-white rounded-[2.5rem] p-10 w-full max-w-[400px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] text-center overflow-hidden"
             >
-              {/* Top Branding Accent */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-neutral-900" />
               
-              {/* Icon Container */}
-              <div className="mx-auto w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mb-6">
-                 <span className="text-xl">✨</span>
-              </div>
+           <div className="mx-auto w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mb-6">
+  <img
+    src="https://www.google.com/favicon.ico"
+    alt="Google"
+    className="w-6 h-6"
+  />
+</div>
+
 
               <h2 className="text-2xl font-light text-neutral-900 tracking-tight mb-3">
                 Final Step<br></br> Checkout

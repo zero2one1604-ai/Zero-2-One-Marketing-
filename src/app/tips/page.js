@@ -26,7 +26,7 @@ export default function TipsPage() {
       
 
           <div className="space-y-4">
-            <h1 className="text-2xl md:text-6xl font-light text-[#1C1C1A] tracking-[0.3em] uppercase">
+            <h1 className="text-2xl the-seasons md:text-6xl font-light text-[#1C1C1A] tracking-[0.3em] uppercase">
               Coming Soon
             </h1>
             <p className="text-sm md:text-xl text-[#6E6A61] font-light tracking-wide leading-relaxed max-w-xl mx-auto">

@@ -16,8 +16,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
   const categories = [
     { id: 'all', label: 'Collection', count: categoryCounts.all },
     { id: 'men', label: 'For Him', count: categoryCounts.men },
-    { id: 'women', label: 'For Her', count: categoryCounts.women },
-    { id: 'unisex', label: 'Unisex', count: categoryCounts.unisex }
+    { id: 'women', label: 'For Her', count: categoryCounts.women }
   ];
 
   const toggleFavorite = (e, id) => {
@@ -84,7 +83,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
 
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center cursor-pointer gap-4 px-8 py-3 text-black bg-white border border-neutral-100 rounded-full text-[10px] font-bold uppercase tracking-widest hover:shadow-lg transition-all active:scale-95"
+            className="flex hidden items-center cursor-pointer gap-4 px-8 py-3 text-black bg-white border border-neutral-100 rounded-full text-[10px] font-bold uppercase tracking-widest hover:shadow-lg transition-all active:scale-95"
           >
             <Filter className="w-3 h-3" />
             Filter & Sort

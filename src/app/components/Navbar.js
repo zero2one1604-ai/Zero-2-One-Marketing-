@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingCartIcon, MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { UserIcon, MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SaaviLogo from '../../../public/images/logo.png';
 import { useEffect } from "react";
@@ -18,12 +18,10 @@ export default function Navbar() {
 const { openAuthModal } = useAuthModal();
 
 useEffect(() => {
-  // initial user
   supabase.auth.getUser().then(({ data }) => {
     setUser(data.user);
   });
 
-  // listen to auth changes
   const {
     data: { subscription },
   } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -32,6 +30,7 @@ useEffect(() => {
 
   return () => subscription.unsubscribe();
 }, []);
+
 
 
   const navigation = [
@@ -80,16 +79,16 @@ useEffect(() => {
           ))}
 
           <div className="flex items-center space-x-4 lg:ml-4">
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition" />
+            <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 hidden hover:text-gray-900 cursor-pointer transition" />
          {user?.user_metadata?.avatar_url ? (
 <img
   src={user.user_metadata.avatar_url}
-  className="w-6 h-6 rounded-full cursor-pointer"
+  className="w-10 h-10 rounded-full cursor-pointer"
   onClick={() => setMenuOpen(!menuOpen)}
 />
 
 ) : (
-  <ShoppingCartIcon
+  <UserIcon
     className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition"
     onClick={() => openAuthModal({ onSuccess: () => {} })}
   />
@@ -99,16 +98,16 @@ useEffect(() => {
         </nav>
 
         <div className="md:hidden flex items-center space-x-4">
-          <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 cursor-pointer" />
+          <MagnifyingGlassIcon className="w-5 h-5 text-gray-700 hidden cursor-pointer" />
           {user?.user_metadata?.avatar_url ? (
   <img
     src={user.user_metadata.avatar_url}
     alt="User"
-    className="w-5 h-5 rounded-full cursor-pointer"
+    className="w-8 h-8 rounded-full cursor-pointer"
     onClick={() => setMenuOpen(!menuOpen)}
   />
 ) : (
-  <ShoppingCartIcon
+  <UserIcon
     className="w-5 h-5 text-gray-700 hover:text-gray-900 cursor-pointer transition"
     onClick={() => openAuthModal({ onSuccess: () => {} })}
   />
@@ -176,7 +175,6 @@ useEffect(() => {
       ))}
     </nav>
 
-    {/* Bottom Section: Socials & Info */}
     <div className="mt-auto grid grid-cols-2 gap-8 border-t border-gray-100 pt-10">
       <div>
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Connect</p>
@@ -192,7 +190,6 @@ useEffect(() => {
       </div>
     </div>
 
-    {/* Big Background Text (Watermark) */}
     <div className="absolute bottom-[-20px] right-[-20px] text-[120px] font-black text-gray-50 select-none -z-10 leading-none">
       MENU
     </div>
