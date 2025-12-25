@@ -38,6 +38,29 @@ export default function OrderStatusPage() {
     return () => clearInterval(interval)
   }, [id])
 
+  useEffect(() => {
+  if (!order) return
+
+  if (!['paid', 'pending'].includes(order.status)) return
+
+  if (order.shiprocket_order_id) return
+
+  const createShipment = async () => {
+    try {
+      await fetch('/api/shiprocket/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id })
+      })
+    } catch (err) {
+      console.error('Shiprocket creation failed', err)
+    }
+  }
+
+  createShipment()
+}, [order])
+
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAF9F6] flex flex-col items-center justify-center">

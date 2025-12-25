@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { motion, AnimatePresence } from 'framer-motion'
-import { LogOut, AlertCircle, X } from 'lucide-react'
+import { LogOut, AlertCircle, ShoppingBag } from 'lucide-react'
 
 export default function UserMenu({ open, onClose, user }) {
   const ref = useRef(null)
@@ -14,7 +14,7 @@ export default function UserMenu({ open, onClose, user }) {
     const handleClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
         onClose()
-        setShowConfirm(false) // Reset confirm state on close
+        setShowConfirm(false)
       }
     }
     if (open) document.addEventListener('mousedown', handleClickOutside)
@@ -24,6 +24,11 @@ export default function UserMenu({ open, onClose, user }) {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     setShowConfirm(false)
+    onClose()
+  }
+
+  const redirectToAccount = () => {
+    window.location.href = '/account'
     onClose()
   }
 
@@ -40,12 +45,11 @@ export default function UserMenu({ open, onClose, user }) {
               transition={{ type: "spring", duration: 0.4, bounce: 0.2 }}
               className="w-72 overflow-hidden bg-white/90 backdrop-blur-2xl rounded-[2rem] border border-neutral-200/50 shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
             >
-              {/* Profile Section */}
               <div className="px-6 py-6 bg-neutral-50/30 border-b border-neutral-100">
                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-3">
                   Account Member
                 </p>
-                <div className="flex items-center gap-3">
+                <div onClick={redirectToAccount} className="flex cursor-pointer items-center gap-3">
                   <img
                     src={user?.user_metadata?.avatar_url || "/default-avatar.png"}
                     alt="User"
@@ -62,8 +66,19 @@ export default function UserMenu({ open, onClose, user }) {
                 </div>
               </div>
 
-              {/* Action Section */}
               <div className="p-2">
+                {/* MY ORDERS BUTTON */}
+                <button
+                  onClick={redirectToAccount}
+                  className="group cursor-pointer w-full flex items-center justify-between px-4 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-600 hover:bg-neutral-50 rounded-[1.2rem] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3">
+                    <ShoppingBag className="w-4 h-4 opacity-50 group-hover:opacity-100" />
+                    <span>My Orders</span>
+                  </div>
+                </button>
+
+                {/* TERMINATE SESSION BUTTON */}
                 <button
                   onClick={() => setShowConfirm(true)}
                   className="group cursor-pointer w-full flex items-center justify-between px-4 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 hover:text-red-500 hover:bg-red-50/50 rounded-[1.2rem] transition-all duration-300"
@@ -79,11 +94,9 @@ export default function UserMenu({ open, onClose, user }) {
         )}
       </AnimatePresence>
 
-      {/* --- BEAUTIFUL LOGOUT ALERT DIALOG --- */}
       <AnimatePresence>
         {showConfirm && (
           <div className="fixed inset-0 z-[300] flex items-center justify-center px-4">
-            {/* Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -92,14 +105,12 @@ export default function UserMenu({ open, onClose, user }) {
               className="absolute inset-0 bg-black/40 backdrop-blur-md"
             />
             
-            {/* Dialog Card */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-[340px] bg-white rounded-[2.5rem] p-8 shadow-2xl text-center overflow-hidden"
             >
-              {/* Design Detail */}
               <div className="absolute top-0 left-0 w-full h-1.5 bg-red-500/10" />
               
               <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">

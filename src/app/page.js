@@ -42,7 +42,7 @@ export default function Home () {
     <div className='relative w-full min-h-screen bg-gradient-to-b from-white via-gray-50 to-white flex flex-col'>
      <div className='relative w-full'>
     <Image
-        src='/images/banner.jpg'
+        src='/images/banner.webp'
         alt='Premium Perfumes'
         height={600}
         width={1920}
@@ -50,7 +50,7 @@ export default function Home () {
         className='hidden md:flex'
     />
     <Image
-        src='/images/mobileabout.png'
+        src='/images/mobileabout.webp'
         alt='Premium Perfumes'
         height={300}
         width={768}
