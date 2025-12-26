@@ -12,7 +12,7 @@ const theSeasons = localFont({
 
 export const metadata = {
   title: {
-    default: "Saavi: Solid Perfumes & Gentle Skincare Made With Care",
+    default: "Saavi Skincare: Solid Perfumes & Gentle Skincare",
     template: "%s | Saavi",
   },
 
@@ -40,8 +40,13 @@ export const metadata = {
     canonical: "/",
   },
 
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
+
   openGraph: {
-    title: "Saavi — Solid Perfumes & Gentle Skincare",
+    title: "Saavi Skincare: Solid Perfumes & Gentle Skincare",
     description:
       "From our home to yours. Saavi creates solid perfumes and skincare products prepared in small batches with trust, truth and care.",
     url: "https://www.saaviskincare.com",
@@ -60,7 +65,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Saavi: Solid Perfumes & Gentle Skincare",
+    title: "Saavi Skincare: Solid Perfumes & Gentle Skincare",
     description:
       "A family-born brand creating solid perfumes and gentle skincare with care, trust and skin-safe ingredients.",
     images: ["/images/logo.png"],

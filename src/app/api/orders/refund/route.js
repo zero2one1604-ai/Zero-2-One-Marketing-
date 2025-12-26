@@ -20,7 +20,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
     }
 
-    // 1. fetch order
+  
     const { data: order, error } = await supabase
       .from('orders')
       .select('*')
@@ -45,16 +45,14 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Payment ID missing' }, { status: 400 })
     }
 
-    // 3. create refund
     const refund = await razorpay.payments.refund(
       order.razorpay_payment_id,
       {
-        amount: Math.round(order.total_amount * 100), // paisa
+        amount: Math.round(order.total_amount * 100),
         speed: 'optimum'
       }
     )
 
-    // 4. update order
     await supabase
       .from('orders')
       .update({
