@@ -63,7 +63,6 @@ export default function CODConfirmationPage() {
       <div className="min-h-screen bg-[#FAF9F6] pt-12 pb-24 px-4 sm:px-6">
         <div className="max-w-xl mx-auto">
           
-          {/* SUCCESS HEADER */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +94,6 @@ export default function CODConfirmationPage() {
             </div>
           </motion.div>
 
-          {/* MAIN CARD */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -159,8 +157,6 @@ export default function CODConfirmationPage() {
                </div>
             </div>
           </motion.div>
-
-          {/* NEXT STEPS & CTAS */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

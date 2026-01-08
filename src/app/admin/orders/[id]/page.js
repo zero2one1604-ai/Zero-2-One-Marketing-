@@ -3,26 +3,27 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import { 
-  ChevronLeft, 
-  MapPin, 
-  Package, 
-  User, 
-  Phone, 
-  Truck, 
-  Calendar,
+import {
+  ChevronLeft,
+  MapPin,
+  Package,
+  User,
+  Phone,
+  Truck,
   CheckCircle2,
   Clock,
   Printer,
   Copy
 } from 'lucide-react'
-import { motion } from 'framer-motion'
 
-export default function AdminOrderDetail() {
+export default function AdminOrderDetail () {
   const { id } = useParams()
   const router = useRouter()
   const [order, setOrder] = useState(null)
   const [items, setItems] = useState([])
+  const [shipmentLoading, setShipmentLoading] = useState(false)
+  const [shipmentMessage, setShipmentMessage] = useState(null)
+  const [shipmentError, setShipmentError] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -46,18 +47,19 @@ export default function AdminOrderDetail() {
     load()
   }, [id])
 
-  const updateStatus = async (status) => {
+  const updateStatus = async status => {
     setLoading(true)
     await supabase.from('orders').update({ status }).eq('id', id)
     setOrder(prev => ({ ...prev, status }))
     setLoading(false)
   }
 
-  if (!order) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-10 h-10 border-4 border-neutral-100 border-t-black animate-spin rounded-full" />
-    </div>
-  )
+  if (!order)
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='w-10 h-10 border-4 border-neutral-100 border-t-black animate-spin rounded-full' />
+      </div>
+    )
 
   const fullAddress = [
     order.address_line1,
@@ -65,60 +67,203 @@ export default function AdminOrderDetail() {
     order.city,
     order.state,
     order.pincode
-  ].filter(Boolean).join(', ')
+  ]
+    .filter(Boolean)
+    .join(', ')
+
+    const canCancelShipment =
+  order.shipment_created &&
+  order.shiprocket_awb &&
+  !['shipped', 'delivered', 'cancelled'].includes(order.shipment_status)
+
+
+    const handleCreateShipment = async () => {
+    if (order.shipment_created && order.shiprocket_awb) {
+      setShipmentMessage(
+        `Shipment already created. AWB: ${order.shiprocket_awb}`
+      )
+      return
+    }
+
+    setShipmentLoading(true)
+    setShipmentMessage(null)
+    setShipmentError(null)
+
+    try {
+      const res = await fetch('/api/dtdc/create-shipment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(
+          data?.response?.data?.[0]?.message ||
+          data?.error ||
+          'Shipment failed'
+        )
+      }
+
+      if (data.already_created) {
+        setShipmentMessage(
+          `Shipment already created. AWB: ${data.awb}`
+        )
+        return
+      }
+
+      setShipmentMessage(
+        `Shipment created successfully. AWB: ${data.awb}`
+      )
+
+const { data: updatedOrder } = await supabase
+  .from('orders')
+  .select('*')
+  .eq('id', order.id)
+  .single()
+
+setOrder(updatedOrder)
+
+    } catch (err) {
+      setShipmentError(err.message)
+    } finally {
+      setShipmentLoading(false)
+    }
+  }
+
+  const handleCancelShipment = async () => {
+  if (!confirm('This will cancel the DTDC shipment. Continue?')) return
+
+  setShipmentLoading(true)
+  setShipmentError(null)
+  setShipmentMessage(null)
+
+  try {
+    const res = await fetch('/api/dtdc/cancel-shipment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: order.id })
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data?.error || 'Cancellation failed')
+    }
+
+    setShipmentMessage('Shipment cancelled successfully')
+
+    const { data: updated } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('id', order.id)
+      .single()
+
+    setOrder(updated)
+
+  } catch (err) {
+    setShipmentError(err.message)
+  } finally {
+    setShipmentLoading(false)
+  }
+}
+
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-20">
-      
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-100 pb-8">
-        <div className="flex items-center gap-4">
-          <button 
+    <div className='max-w-6xl mx-auto space-y-8 pb-20'>
+      <div className='flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-100 pb-8'>
+        <div className='flex items-center gap-4'>
+          <button
             onClick={() => router.back()}
-            className="w-12 h-12 bg-white text-neutral-700 cursor-pointer border border-neutral-200 rounded-2xl flex items-center justify-center hover:bg-neutral-50 transition-all active:scale-95"
+            className='w-12 h-12 bg-white text-neutral-700 cursor-pointer border border-neutral-200 rounded-2xl flex items-center justify-center hover:bg-neutral-50 transition-all active:scale-95'
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className='w-5 h-5' />
           </button>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-light text-neutral-900 uppercase tracking-tighter">
+            <div className='flex items-center gap-3'>
+              <h1 className='text-3xl font-light text-neutral-900 uppercase tracking-tighter'>
                 #{order.id.slice(0, 8)}
               </h1>
-              <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                order.status === 'delivered' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-amber-50 text-amber-700 border-amber-100'
-              }`}>
+              <span
+                className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                  order.status === 'delivered'
+                    ? 'bg-green-50 text-green-700 border-green-100'
+                    : 'bg-amber-50 text-amber-700 border-amber-100'
+                }`}
+              >
                 {order.status}
               </span>
             </div>
-            <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mt-1">
+            <p className='text-[10px] font-bold text-neutral-400 uppercase tracking-widest mt-1'>
               Transaction Date: {new Date(order.created_at).toLocaleString()}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button className="flex items-center text-black cursor-pointer gap-2 px-6 py-3 bg-white border border-neutral-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-neutral-50 transition-all">
-            <Printer className="w-3.5 h-3.5" />
-            Invoice
-          </button>
-          <button className="flex items-center hidden gap-2 px-6 py-3 bg-neutral-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-neutral-800 transition-all shadow-xl">
-            <Truck className="w-3.5 h-3.5" />
-            Ship Order
-          </button>
+        <div className='flex items-center gap-3'>
+          {order.shipment_created && order.shiprocket_awb && (
+            <a
+              href={`/api/dtdc/generate-label?awb=${order.shiprocket_awb}`}
+              target='_blank'
+              className='flex items-center cursor-pointer text-black gap-2 px-6 py-3 bg-white border border-neutral-200 rounded-full text-[10px] font-black uppercase tracking-widest'
+            >
+              <Printer className='w-3.5 h-3.5 text-black' />
+              Print Label
+            </a>
+          )}
+        {!order.shipment_created && (
+            <button
+              onClick={handleCreateShipment}
+              disabled={shipmentLoading}
+              className='flex cursor-pointer items-center gap-2 px-6 py-3 bg-black text-white rounded-full text-[10px] font-black uppercase disabled:opacity-50'
+            >
+              <Truck className='w-3.5 h-3.5' />
+              {shipmentLoading ? 'Creating…' : 'Ship Order'}
+            </button>
+          )}
+          {canCancelShipment && (
+  <button
+    onClick={handleCancelShipment}
+    className="px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest bg-red-600 text-white hover:bg-red-700"
+  >
+    Cancel Shipment
+  </button>
+)}
+
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <div className="lg:col-span-2 space-y-8">
-          
-          {/* MANAGEMENT CENTER */}
-          <div className="bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm">
-            <div className="flex items-center gap-3 mb-8">
-              <Clock className="w-5 h-5 text-neutral-400" />
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-black">Update Lifecycle</h2>
+      {shipmentMessage && (
+  <div className="mt-4 bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 text-xs font-medium">
+    ✅ {shipmentMessage}
+  </div>
+)}
+
+{shipmentError && (
+  <div className="mt-4 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-xs font-medium">
+    ❌ {shipmentError}
+  </div>
+)}
+
+{order.shipment_error && !shipmentMessage && !shipmentError && (
+  <div className="mt-4 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl px-4 py-3 text-xs font-medium">
+    ⚠️ Last shipment attempt failed. Reason stored in system.
+  </div>
+)}
+
+
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+        <div className='lg:col-span-2 space-y-8'>
+          <div className='bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm'>
+            <div className='flex items-center gap-3 mb-8'>
+              <Clock className='w-5 h-5 text-neutral-400' />
+              <h2 className='text-xs font-black uppercase tracking-[0.3em] text-black'>
+                Update Lifecycle
+              </h2>
             </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+            <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
               {['paid', 'shipped', 'delivered', 'cancelled'].map(s => (
                 <button
                   key={s}
@@ -131,8 +276,8 @@ export default function AdminOrderDetail() {
                   }`}
                 >
                   {order.status === s && (
-                    <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                      <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                    <div className='absolute -top-1.5 -right-1.5 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center'>
+                      <CheckCircle2 className='w-2.5 h-2.5 text-white' />
                     </div>
                   )}
                   {s}
@@ -141,36 +286,44 @@ export default function AdminOrderDetail() {
             </div>
           </div>
 
-          {/* ITEM BREAKDOWN */}
-          <div className="bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black mb-8 border-b border-neutral-50 pb-4">
+          <div className='bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm'>
+            <h3 className='text-xs font-black uppercase tracking-[0.3em] text-black mb-8 border-b border-neutral-50 pb-4'>
               Order Content
             </h3>
-            <div className="space-y-6">
+            <div className='space-y-6'>
               {items.map(item => (
-                <div key={item.id} className="flex items-center justify-between group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-neutral-50 rounded-2xl border border-neutral-100 flex items-center justify-center">
-                      <Package className="w-6 h-6 text-neutral-200" />
+                <div
+                  key={item.id}
+                  className='flex items-center justify-between group'
+                >
+                  <div className='flex items-center gap-4'>
+                    <div className='w-16 h-16 bg-neutral-50 rounded-2xl border border-neutral-100 flex items-center justify-center'>
+                      <Package className='w-6 h-6 text-neutral-200' />
                     </div>
                     <div>
-                      <p className="text-sm font-black text-neutral-900 tracking-tight">{item.name_snapshot}</p>
-                      <p className="text-[10px] font-bold text-neutral-400 uppercase">Qty: {item.quantity}</p>
+                      <p className='text-sm font-black text-neutral-900 tracking-tight'>
+                        {item.name_snapshot}
+                      </p>
+                      <p className='text-[10px] font-bold text-neutral-400 uppercase'>
+                        Qty: {item.quantity}
+                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-black text-black">₹{item.price_snapshot?.toLocaleString()}</p>
+                  <div className='text-right'>
+                    <p className='text-sm font-black text-black'>
+                      ₹{item.price_snapshot?.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               ))}
-              
-              <div className="pt-6 border-t border-neutral-100 mt-6 space-y-3">
-                <div className="flex justify-between text-xs font-bold text-neutral-400 uppercase tracking-widest">
+
+              <div className='pt-6 border-t border-neutral-100 mt-6 space-y-3'>
+                <div className='flex justify-between text-xs font-bold text-neutral-400 uppercase tracking-widest'>
                   <span>Subtotal</span>
                   <span>₹{order.total_amount?.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-lg font-light text-black uppercase tracking-widest border-t border-neutral-50 pt-4">
-                  <span className="font-bold text-xs">Final Amount</span>
+                <div className='flex justify-between text-lg font-light text-black uppercase tracking-widest border-t border-neutral-50 pt-4'>
+                  <span className='font-bold text-xs'>Final Amount</span>
                   <span>₹{order.total_amount?.toLocaleString()}</span>
                 </div>
               </div>
@@ -178,60 +331,75 @@ export default function AdminOrderDetail() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: CUSTOMER INFO */}
-        <div className="space-y-8">
-          
-          <div className="bg-neutral-900 text-white rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-10"><User className="w-32 h-32" /></div>
-            
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-8 relative z-10">Client Profile</h3>
-            
-            <div className="space-y-6 relative z-10">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
-                  <User className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Full Name</p>
-                  <p className="text-sm font-medium">{order.full_name}</p>
-                </div>
-              </div>
+        <div className='space-y-8'>
+          <div className='bg-neutral-900 text-white rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden'>
+            <div className='absolute top-0 right-0 p-8 opacity-10'>
+              <User className='w-32 h-32' />
+            </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Contact</p>
-                  <p className="text-sm font-medium">{order.phone}</p>
-                </div>
-              </div>
+            <h3 className='text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 mb-8 relative z-10'>
+              Client Profile
+            </h3>
 
-              <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all">
-                  <MapPin className="w-4 h-4" />
+            <div className='space-y-6 relative z-10'>
+              <div className='flex items-start gap-4'>
+                <div className='w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0'>
+                  <User className='w-4 h-4 text-white' />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center justify-between">
-                    Shipping Address 
-                    <Copy className="w-3 h-3 cursor-pointer hover:text-white" onClick={() => navigator.clipboard.writeText(fullAddress)} />
+                  <p className='text-[10px] font-bold text-neutral-500 uppercase tracking-widest'>
+                    Full Name
                   </p>
-                  <p className="text-sm font-light leading-relaxed text-neutral-200 mt-1">{fullAddress}</p>
+                  <p className='text-sm font-medium'>{order.full_name}</p>
+                </div>
+              </div>
+
+              <div className='flex items-start gap-4'>
+                <div className='w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0'>
+                  <Phone className='w-4 h-4 text-white' />
+                </div>
+                <div>
+                  <p className='text-[10px] font-bold text-neutral-500 uppercase tracking-widest'>
+                    Contact
+                  </p>
+                  <p className='text-sm font-medium'>{order.phone}</p>
+                </div>
+              </div>
+
+              <div className='flex items-start gap-4 group'>
+                <div className='w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all'>
+                  <MapPin className='w-4 h-4' />
+                </div>
+                <div>
+                  <p className='text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center justify-between'>
+                    Shipping Address
+                    <Copy
+                      className='w-3 h-3 cursor-pointer hover:text-white'
+                      onClick={() => navigator.clipboard.writeText(fullAddress)}
+                    />
+                  </p>
+                  <p className='text-sm font-light leading-relaxed text-neutral-200 mt-1'>
+                    {fullAddress}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* INTERNAL LOGS / NOTES */}
-          <div className="bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm">
-             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-black mb-4">Payment Method</h3>
-             <div className="flex items-center gap-3 p-4 bg-neutral-50 rounded-2xl">
-               <div className="w-8 h-8 bg-green-100 text-green-700 rounded-lg flex items-center justify-center font-bold text-[10px]">INR</div>
-               <p className="text-xs font-bold uppercase tracking-widest text-neutral-600">Online Payment</p>
-             </div>
+          <div className='bg-white rounded-[2.5rem] border border-neutral-200 p-8 shadow-sm'>
+            <h3 className='text-[10px] font-black uppercase tracking-[0.3em] text-black mb-4'>
+              Payment Method
+            </h3>
+            <div className='flex items-center gap-3 p-4 bg-neutral-50 rounded-2xl'>
+              <div className='w-8 h-8 bg-green-100 text-green-700 rounded-lg flex items-center justify-center font-bold text-[10px]'>
+                INR
+              </div>
+              <p className='text-xs font-bold uppercase tracking-widest text-neutral-600'>
+                {order.payment_method}
+              </p>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   )

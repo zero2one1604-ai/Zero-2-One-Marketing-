@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   const [product, setProduct] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
   
-  const [paymentMethod, setPaymentMethod] = useState('online')
+  const [paymentMethod, setPaymentMethod] = useState('prepaid')
 
   const [form, setForm] = useState({
     full_name: '',
@@ -101,7 +101,7 @@ export default function CheckoutPage() {
   const handleCheckoutAction = async () => {
     if (!addressSaved) return alert('Please save delivery address first')
     
-    if (paymentMethod === 'online') {
+    if (paymentMethod === 'prepaid') {
       setLoading(true)
       const res = await loadRazorpay()
       if (!res) { alert('Gateway failed'); setLoading(false); return }
@@ -109,7 +109,7 @@ export default function CheckoutPage() {
         await supabase
   .from('orders')
   .update({
-    payment_method: 'online',
+    payment_method: 'prepaid',
     total_amount: finalTotal
   })
   .eq('id', orderId)
