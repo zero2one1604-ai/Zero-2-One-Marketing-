@@ -69,10 +69,8 @@ export async function POST(req) {
       consignments: [
         {
           customer_code: process.env.DTDC_CUSTOMER_CODE,
-          service_type_id:
-            shipmentType === 'cod'
-              ? process.env.DTDC_SERVICE_TYPE_COD
-              : process.env.DTDC_SERVICE_TYPE_PREPAID,
+          service_type_id: process.env.DTDC_SERVICE_TYPE_PRIMARY ||
+        process.env.DTDC_SERVICE_TYPE_SECONDARY,
 
           load_type: 'NON-DOCUMENT',
           consignment_type: 'Forward',

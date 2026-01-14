@@ -43,7 +43,6 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-6">
-      {/* Header & Search */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-1">
         <div>
           <h2 className="text-2xl font-light text-neutral-900 uppercase tracking-tightest">
