@@ -10,7 +10,7 @@ export async function GET(req) {
     }
 
     const labelUrl =
-      `https://demodashboardapi.shipsy.in/api/customer/integration/consignment/shippinglabel/stream` +
+      `https://pxapi.dtdc.in/api/customer/integration/consignment/shippinglabel/stream` +
       `?reference_number=${awb}` +
       `&label_code=SHIP_LABEL_4X6` +
       `&label_format=pdf`
