@@ -40,25 +40,29 @@ export default function Home () {
   return (
     <>
     <div className='relative w-full min-h-screen bg-gradient-to-b from-white via-gray-50 to-white flex flex-col'>
-     <div className='relative w-full'>
-    <Image
-        src='/images/banner.webp'
-        alt='Premium Perfumes'
-        height={600}
-        width={1920}
-        priority
-        className='hidden md:flex'
-    />
-    <Image
-        src='/images/mobileabout.webp'
-        alt='Premium Perfumes'
-        height={300}
-        width={768}
-        priority
-        className='flex md:hidden'
-    />
+     <div className="relative w-full">
+          
+          <div className="hidden md:block">
+           <Image
+  src="/images/banner.webp"
+  priority
+  sizes="(min-width: 768px) 100vw"
+width={1920}
+height={600}
+              className="w-full h-auto"
+            />
+          </div>
+          <div className="block md:hidden">
+     <Image
+  src="/images/mobileabout.webp"
+  width={767}
+  height={600}
+  sizes="(max-width: 767px) 100vw"
+              className="w-full h-auto"
+            />
+          </div>
 
-</div>
+        </div>
 <RoyalBanner />
       <LuxuryPerfumeGallery />
       <SolidPerfumeCombos />
