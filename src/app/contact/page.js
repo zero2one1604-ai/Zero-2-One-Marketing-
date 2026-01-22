@@ -57,7 +57,6 @@ export default function ContactPage() {
         <ContactClient />
       </div>
 
-      <LuxuryFooter />
     </>
   )
 }

@@ -6,6 +6,17 @@ import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin, Send, Award, Shiel
 import Image from 'next/image';
 import Link from 'next/link';
 
+const WhatsAppIcon = ({ className }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M20.52 3.48A11.91 11.91 0 0 0 12.06 0C5.47 0 .12 5.35.12 11.94c0 2.1.55 4.15 1.6 5.96L0 24l6.3-1.65a11.9 11.9 0 0 0 5.76 1.47h.01c6.59 0 11.94-5.35 11.94-11.94a11.86 11.86 0 0 0-3.49-8.46zM12.06 21.8a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.74.98.99-3.64-.23-.38a9.86 9.86 0 1 1 8.37 4.63zm5.41-7.38c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.28-.47-2.43-1.5-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.36.45-.54.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.69-1.65-.95-2.27-.25-.6-.5-.52-.69-.53l-.59-.01c-.2 0-.53.08-.8.38-.28.3-1.05 1.03-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.13 3.25 5.17 4.56.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35z" />
+  </svg>
+);
+
 export default function LuxuryFooter() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -110,40 +121,64 @@ export default function LuxuryFooter() {
               </div>
             </div>
 
-            <div className="flex gap-2 sm:gap-3 justify-center sm:justify-start">
-              {[
-                { icon: Facebook, href: '#' },
-                { icon: Instagram, href: 'https://www.instagram.com/saaviskincareofficial' },
-                { icon: Twitter, href: '#' },
-                { icon: Linkedin, href: '#' }
-              ].map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-amber-800 hover:bg-amber-50 transition-all duration-300 group"
-                >
-                  <social.icon className="w-4 h-4 text-gray-600 group-hover:text-amber-900 transition-colors duration-300" />
-                </a>
-              ))}
-            </div>
+          <div className="flex gap-2 sm:gap-3 justify-center sm:justify-start">
+  {[
+    {
+      icon: Facebook,
+      href: "https://www.facebook.com/share/1QYDTMN98K/",
+      color: "group-hover:text-[#1877F2]",
+      glow: "group-hover:shadow-[0_0_12px_#1877F2]",
+    },
+    {
+      icon: Instagram,
+      href: "https://www.instagram.com/saaviskincareofficial",
+      color: "group-hover:text-[#E4405F]",
+      glow: "group-hover:shadow-[0_0_12px_#E4405F]",
+    },
+    {
+      icon: WhatsAppIcon,
+      href: "https://wa.me/918448444373",
+      color: "group-hover:text-[#25D366]",
+      glow: "group-hover:shadow-[0_0_12px_#25D366]",
+    },
+  ].map((social, index) => (
+    <a
+      key={index}
+      href={social.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 group hover:border-amber-800 hover:bg-amber-50 ${social.glow}`}
+    >
+      <social.icon
+        className={`w-4 h-4 text-gray-600 transition-all duration-300 ${social.color}`}
+      />
+    </a>
+  ))}
+</div>
+
           </div>
 
           <div className="text-center sm:text-left">
             <h4 className="text-xs sm:text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4 sm:mb-6">
               Shop
             </h4>
-            <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
-              {['Collection', 'For Her', 'For Him'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-sm text-gray-600 hover:text-amber-900 transition-colors duration-300 font-light inline-block hover:translate-x-1 transform transition-transform"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <ul className="grid grid-cols-2 md:flex flex-col gap-2 sm:gap-3">
+  {[
+    { label: "Collection", href: "/shop" },
+    { label: "For Her", href: "/shop" },
+    { label: "For Him", href: "/shop" },
+  ].map((item) => (
+    <li key={item.label}>
+      <a
+        href={item.href}
+        className="text-sm text-gray-600 hover:text-amber-900 font-light inline-block transition-all duration-300 hover:translate-x-1"
+      >
+        {item.label}
+      </a>
+    </li>
+  ))}
+</ul>
+
           </div>
 
           <div className="text-center sm:text-left">
@@ -175,7 +210,6 @@ export default function LuxuryFooter() {
             </h4>
 
   <div className="space-y-6">
-    {/* Phone Section */}
     <div className="flex flex-col md:items-start items-center gap-2 group">
       <div className="flex items-center gap-2 text-gray-400 group-hover:text-black transition-colors">
         <Phone className="w-3.5 h-3.5" />

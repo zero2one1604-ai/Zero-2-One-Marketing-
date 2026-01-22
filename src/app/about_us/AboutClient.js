@@ -172,13 +172,11 @@ export default function AboutClient() {
                 />
               </div>
             </div>
-            {/* Massive Background Text */}
             <div className="absolute -bottom-10 left-10 text-[180px] font-black text-white/[0.03] select-none pointer-events-none">PLANET</div>
           </section>
 
         </main>
       </div>
-      <LuxuryFooter />
     </>
   );
 }
