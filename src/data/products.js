@@ -12,7 +12,7 @@ export const products = [
     description:
       "Crafted with exquisite peony and rose petals with a layer of soft vanilla and patchouli base, the fragrance combines the essence of femininity. It’s a serene ode to precious moments – comfort, delicate. The scent that remains with you like a memory engraved in silk.",
     image: "/images/tracesofyou.png",
-    proimage: "/images/products/tracesofyou.png",
+    proimage: "/images/traces.webp",
     dimage: '/images/traces_of_you.png',
   },
   {
@@ -28,7 +28,7 @@ export const products = [
     description:
       "Creamy vanilla and golden amber is a perfect mixture with the soft musk and juicy plum that creates a dreamy embrace which makes the skin feel like sunset. A scent curated for all those dreamers who finds beauty in comfort and serenity.",
     image: "/images/skyvanilla.png",
-    proimage: "/images/products/skyofvanilla.png",
+    proimage: "/images/sky.webp",
     dimage: '/images/sky_of_vanilla.png',
   },
   {
@@ -44,7 +44,7 @@ export const products = [
     description:
       "It’s a mix of juicy raspberry and sun-kissed oranges which dances with such beautiful florals, settles at a golden honeyed base. A perfect showcase of bold yet graceful with the spirit of being warm, radiant and remarkable.",
     image: "/images/fallforme.png",
-    proimage: "/images/products/fallforme.png",
+    proimage: "/images/fallforme.webp",
     dimage: '/images/fall_for_me.png',
   },
   {
@@ -60,7 +60,7 @@ price: 329,
     description:
       "A perfect bottle of pure energy infused with tropical fruits and sparkling citrus with the mixture of joy, laughter and gesture. A scent for those who like to live their life unapologetically, bold and loud which is a fulmination of passionfruit and pineapple.",
     image: "/images/bombdotcom.png",
-    proimage: "/images/products/bombdotcom.png",
+    proimage: "/images/bombdotcom.webp",
     dimage: '/images/bombdotcom_page.png',
   },
   {
@@ -76,7 +76,7 @@ price: 329,
     description:
       "The scent that untwists more of a like a midnight secret, 365 Nights is a perfect combination of marvellous florals with deep woods and amber. It’s a perfect scent to be used a signature after dark as it has an accurate spark of citrus of lemon and mandarin which bestows to a dense heart of jasmine and rose, stranded by patchouli’s smoky charm.",
     image: "/images/369nights.png",
-    proimage: "/images/products/nights.png",
+    proimage: "/images/nights.webp",
     dimage: '/images/night.png',
   },
   {
@@ -92,7 +92,7 @@ price: 329,
     description:
       "Eternal Sunshine is full of brightness which is a beautiful combination of crisp grapefruit and marine with an originality strike with mandarin zest and ambroxan’s clean comfort. This scent show-off’s correct union of power, confidence, and hope just like a sunlight dance on waves.",
     image: "/images/eternalsunshine.png",
-    proimage: "/images/products/eternalsunshine.png",
+    proimage: "/images/eternal.webp",
     dimage: '/images/eternal_sunshine.png',
   },
   {
@@ -108,7 +108,7 @@ price: 329,
     description:
       "The Fire Within is the perfect mixture of wild and strong which explodes like a fiery pepper and smoke-filled woods. Where bergamot meets lavender’s calm, which is further based on the vetiver’s earthy profundity. The scent symbolises the perfect combination of wild, confident and masculinity.",
     image: "/images/firewithin.png",
-    proimage: "/images/products/firewithin.png",
+    proimage: "/images/firewithin.webp",
     dimage: '/images/fire_within.png',
   },
   {
@@ -124,7 +124,7 @@ price: 329,
     description:
       "Our Blues is a love letter to the ocean. Sparkling citrus notes of lime and bergamot mingle with breezy neroli and airy florals, creating a scent that’s light, romantic, and impossibly refreshing—like waves kissing sunlit shores.",
     image: "/images/ourblues.png",
-    proimage: "/images/products/ourblues.png",
+    proimage: "/images/ourblues.webp",
     dimage: '/images/our_blues.png',
   },
   {
@@ -140,7 +140,7 @@ price: 329,
     description:
       "The Breathing Woods fragrance aqueducts with the nature’s tranquillity. The blend of cypress and myrtle with the gentle rose and with woody base which inspires the stillness and strength at the same time. A fragrance which showcases the peace to the restless soul just like a mediation – quiet, thoughtful and positive.",
     image: "/images/breathingwood.png",
-    proimage: "/images/products/breathingwood.png",
+    proimage: "/images/breathingwood.webp",
     dimage: '/images/breathing_wood.png',
   },
   {
@@ -156,9 +156,41 @@ price: 329,
     description:
       "Girls4Eva is perfect scent for all those girls who love to be effortlessly chic. It’s a celebration of friendship and freedom, with the scintillating touch of aldehydes and citrus, blooms in the heart of the gardenia and rose. A fragrance which has an unforgettable impression full of freshness and feminine.",
     image: "/images/girlsone.png",
-    proimage: "/images/products/girlseva.png",
+    proimage: "/images/girls.webp",
     dimage: '/images/girl_4_eva.jpg',
   },
+  {
+    id: 11,
+    slug: "men-combo-set",
+    name: "Luxury Solid Perfume Gift Set for Men",
+    category: "combo",
+    price: 1099,
+    mrp: 1099,
+    mood: ["Romantic", "Alluring", "Elegant"],
+    notes: ["Blackcurrant", "Rose", "Jasmine", "Vanilla", "Musk"],
+    tagline: "Tales of Allure",
+    description:
+      "Saavi Skincare’s Luxury Solid Perfume Gift Set for Men is crafted for those who exude confidence and quiet strength. This premium gifting set includes a collection of 5 best-selling solid perfumes, crafted using skincare-based, skin-friendly formulations. Each solid perfume is spill-proof, compact, and travel-ready, making it perfect for men who are always on the move. excellent option for those seeking affordable luxury perfume gift sets with a modern edge.",
+    image: "/images/men combo cover.webp",
+    proimage: "/images/men combo inside.webp",
+    dimage: '',
+  },
+  {
+    id: 12,
+    slug: "women-combo-set",
+    name: "Luxury Solid Perfume Gift Set for Women",
+    category: "combo",
+    price: 1099,
+    mrp: 1099,
+    mood: ["Balanced", "Calm", "Sophisticated"],
+    notes: ["Green Tea", "Bamboo", "Cedarwood", "Musk"],
+    tagline: "Tales of Balance",
+    description:
+      "Saavi Skincare’s Luxury Solid Perfume Gift Set for Women is a celebration of bold femininity and modern luxury. Gentle on skin, easy to apply, and beautifully packaged, this set makes a thoughtful gift for festive celebrations, birthdays, anniversaries, or self-care moments.he spill-proof, travel-friendly design makes it perfect for handbags, office wear, and travel—an ideal affordable gifting option with a premium feel.",
+    image: "/images/women combo cover.webp",
+    proimage: "/images/women combo inside.webp",
+    dimage: '',  
+  }
 ]
 
 export default products;

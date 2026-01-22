@@ -4,6 +4,7 @@ import LuxuryReviews from './components/CustomerReviews'
 import LuxuryFooter from './components/Footer'
 import LuxuryNewsletterPopup from './components/NewsletterPopup'
 import RoyalBanner from './components/Banner'
+import SolidPerfumeCombos from './components/SolidPerfumeCombos'
 
 export const metadata = {
   title: 'Saavi Skincare: Solid Perfumes & Gentle Skincare',
@@ -60,6 +61,7 @@ export default function Home () {
 </div>
 <RoyalBanner />
       <LuxuryPerfumeGallery />
+      <SolidPerfumeCombos />
       <LuxuryReviews />
       <LuxuryNewsletterPopup/>
     </div>

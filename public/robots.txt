@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /account
+Disallow: /order
+Disallow: /orders
+Disallow: /checkout
+Disallow: /auth
+Disallow: /api
+
+# Host
+Host: https://saaviskincare.com
+
+# Sitemaps
+Sitemap: https://saaviskincare.com/sitemap.xml

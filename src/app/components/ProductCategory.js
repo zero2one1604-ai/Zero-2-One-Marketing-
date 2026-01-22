@@ -16,7 +16,8 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
   const categories = [
     { id: 'all', label: 'Collection', count: categoryCounts.all },
     { id: 'men', label: 'For Him', count: categoryCounts.men },
-    { id: 'women', label: 'For Her', count: categoryCounts.women }
+    { id: 'women', label: 'For Her', count: categoryCounts.women },
+    { id: 'combo', label: 'Combo', count: categoryCounts.combo },
   ];
 
   const toggleFavorite = (e, id) => {
@@ -129,7 +130,7 @@ export default function LuxuryShopPage({ products, categoryCounts }) {
               <Link href={`/product/${product.slug}`} className="block">
                 <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-neutral-100 mb-2 md:mb-6">
                   <Image
-                    src={product.image}
+                    src={product.proimage}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"

@@ -107,72 +107,69 @@ export default function ProductDetailClient ({ product }) {
   }, [product.id])
 
   const handleSubmitReview = async () => {
-  if (!rating || comment.length < 10) {
-    setToast({
-      type: 'error',
-      message: 'Please add rating and a proper review.'
-    })
-    return
-  }
+    if (!rating || comment.length < 10) {
+      setToast({
+        type: 'error',
+        message: 'Please add rating and a proper review.'
+      })
+      return
+    }
 
-  setReviewLoading(true)
+    setReviewLoading(true)
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
 
-  const displayName =
-    user?.user_metadata?.full_name ||
-    user?.user_metadata?.name ||
-    'Verified Client'
+    const displayName =
+      user?.user_metadata?.full_name ||
+      user?.user_metadata?.name ||
+      'Verified Client'
 
-  try {
-    await submitReview({
-      userId: user.id,
-      productId: product.id,
-      rating,
-      comment
-    })
-
-    setToast({
-      type: 'success',
-      message: editingReview ? 'Review updated.' : 'Review submitted.'
-    })
-
-    setShowReviewModal(false)
-    setEditingReview(false)
-    setCanReview(false)
-
-    // 🔁 refetch + enrich
-    const { data, error } = await supabase
-      .from('reviews')
-      .select('id, rating, comment, created_at, user_id')
-      .eq('product_id', product.id)
-      .order(sortBy === 'rating' ? 'rating' : 'created_at', {
-        ascending: false
+    try {
+      await submitReview({
+        userId: user.id,
+        productId: product.id,
+        rating,
+        comment
       })
 
-    if (error) throw error
+      setToast({
+        type: 'success',
+        message: editingReview ? 'Review updated.' : 'Review submitted.'
+      })
 
-    const enriched = (data || []).map(review => ({
-      ...review,
-      name: review.user_id === user.id
-        ? displayName
-        : 'Verified Client'
-    }))
+      setShowReviewModal(false)
+      setEditingReview(false)
+      setCanReview(false)
 
-    setReviews(enriched)
+      // 🔁 refetch + enrich
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('id, rating, comment, created_at, user_id')
+        .eq('product_id', product.id)
+        .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+          ascending: false
+        })
 
-    const mine = enriched.find(r => r.user_id === user.id) || null
-    setMyReview(mine)
+      if (error) throw error
 
-  } catch (err) {
-    setToast({ type: 'error', message: err.message })
-  } finally {
-    setReviewLoading(false)
+      const enriched = (data || []).map(review => ({
+        ...review,
+        name:
+          review.user_id === user.id ? displayName : 'Verified Client'
+      }))
+
+      setReviews(enriched)
+
+      const mine = enriched.find(r => r.user_id === user.id) || null
+      setMyReview(mine)
+    } catch (err) {
+      setToast({ type: 'error', message: err.message })
+    } finally {
+      setReviewLoading(false)
+    }
   }
-}
-
 
   const handleAddToCart = () => {
     setIsAddedToCart(true)
@@ -190,10 +187,10 @@ export default function ProductDetailClient ({ product }) {
 
     if (!user) {
       setBuyLoading(false)
-   openAuthModal({
-  returnTo: window.location.pathname,
-  onSuccess: () => handleBuyNow()
-})
+      openAuthModal({
+        returnTo: window.location.pathname,
+        onSuccess: () => handleBuyNow()
+      })
 
       return
     }
@@ -218,102 +215,101 @@ export default function ProductDetailClient ({ product }) {
   }, [product.id, sortBy])
 
   const handleShareProduct = async () => {
-  const shareUrl = window.location.href
-  const shareText = `${product.name} — ${product.tagline || 'Discover this fragrance'}`
-  const shareTitle = product.name
+    const shareUrl = window.location.href
+    const shareText = `${product.name} — ${
+      product.tagline || 'Discover this fragrance'
+    }`
+    const shareTitle = product.name
 
-  // Native mobile share (best UX)
-  if (navigator.share) {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl
+        })
+      } catch (err) {}
+      return
+    }
+
     try {
-      await navigator.share({
-        title: shareTitle,
-        text: shareText,
-        url: shareUrl
+      await navigator.clipboard.writeText(shareUrl)
+      setToast({
+        type: 'success',
+        message: 'Product link copied to clipboard.'
       })
     } catch (err) {
-      // user cancelled, do nothing
+      setToast({
+        type: 'error',
+        message: 'Unable to share. Please copy the URL manually.'
+      })
     }
-    return
   }
-
-  // Desktop fallback: copy link
-  try {
-    await navigator.clipboard.writeText(shareUrl)
-    setToast({
-      type: 'success',
-      message: 'Product link copied to clipboard.'
-    })
-  } catch (err) {
-    setToast({
-      type: 'error',
-      message: 'Unable to share. Please copy the URL manually.'
-    })
-  }
-}
-
 
   async function loadReviews () {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
 
-  const userId = user?.id || null
+    const userId = user?.id || null
 
-  const displayName =
-    user?.user_metadata?.full_name ||
-    user?.user_metadata?.name ||
-    'Verified Client'
+    const displayName =
+      user?.user_metadata?.full_name ||
+      user?.user_metadata?.name ||
+      'Verified Client'
 
-  const { data, error } = await supabase
-    .from('reviews')
-    .select(`
+    const { data, error } = await supabase
+      .from('reviews')
+      .select(`
       id,
       rating,
       comment,
       created_at,
       user_id
     `)
-    .eq('product_id', product.id)
-    .order(sortBy === 'rating' ? 'rating' : 'created_at', {
-      ascending: false
-    })
+      .eq('product_id', product.id)
+      .order(sortBy === 'rating' ? 'rating' : 'created_at', {
+        ascending: false
+      })
 
-  if (error) {
-    console.error(error)
-    return
-  }
-
-  // 🔥 ENRICH REVIEWS WITH NAME
-  const enriched = (data || []).map(review => ({
-    ...review,
-    name: review.user_id === userId
-      ? displayName
-      : 'Verified Client'
-  }))
-
-  setReviews(enriched)
-
-  if (userId) {
-    const mine = enriched.find(r => r.user_id === userId) || null
-    setMyReview(mine)
-
-    if (mine) {
-      setRating(mine.rating)
-      setComment(mine.comment)
+    if (error) {
+      console.error(error)
+      return
     }
-  } else {
-    setMyReview(null)
-  }
-}
 
+    const enriched = (data || []).map(review => ({
+      ...review,
+      name: review.user_id === userId ? displayName : 'Verified Client'
+    }))
+
+    setReviews(enriched)
+
+    if (userId) {
+      const mine = enriched.find(r => r.user_id === userId) || null
+      setMyReview(mine)
+
+      if (mine) {
+        setRating(mine.rating)
+        setComment(mine.comment)
+      }
+    } else {
+      setMyReview(null)
+    }
+  }
 
   const similarProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4)
 
-  const productImages = product.dimage
-    ? [product.dimage, product.image]
+  // UPDATED: Handle Combo images or fallback to existing logic
+  const productImages = product.images
+    ? product.images
+    : product.proimage
+    ? [product.proimage, product.image]
     : [product.image]
+
+  // Detect if we should use the 3D scene (existing logic) or Image Gallery (Combo logic)
+  const is3DProduct = !!product.dimage
 
   const Toast = ({ toast, onClose }) => {
     useEffect(() => {
@@ -330,7 +326,6 @@ export default function ProductDetailClient ({ product }) {
       <AnimatePresence>
         {toast && (
           <motion.div
-          
             className='fixed top-6 right-0 left-0 sm:left-auto sm:right-6 z-[9999] flex justify-center sm:justify-end px-4 pointer-events-none'
             initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -348,7 +343,6 @@ export default function ProductDetailClient ({ product }) {
               ${toast.type === 'success' ? 'bg-white/90' : 'bg-white/95'}
             `}
             >
-              {/* Indicator Line */}
               <div
                 className={`absolute top-0 left-0 bottom-0 w-1.5 ${
                   toast.type === 'success' ? 'bg-neutral-900' : 'bg-red-500'
@@ -433,10 +427,10 @@ export default function ProductDetailClient ({ product }) {
           <div className='grid lg:grid-cols-2 gap-8 lg:gap-16 mb-5 md:mb-16'>
             <div className='space-y-4'>
               <div className='relative rounded-3xl overflow-hidden bg-neutral-100 group'>
-                {selectedImage === 0 && product.dimage ? (
+                {is3DProduct && selectedImage === 0 ? (
                   <Product3DScene image={product.dimage} />
                 ) : (
-                  <div className='relative w-full h-full'>
+                  <div className='relative w-full h-full  aspect-square'>
                     <Image
                       src={productImages[selectedImage]}
                       alt={product.name}
@@ -459,17 +453,17 @@ export default function ProductDetailClient ({ product }) {
                       }`}
                     />
                   </button>
-                <button
-  onClick={handleShareProduct}
-  className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
-  aria-label={`Share ${product.name}`}
->
-  <Share2 className='w-5 h-5 text-neutral-700' />
-</button>
-
+                  <button
+                    onClick={handleShareProduct}
+                    className='w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-110 transition-transform'
+                    aria-label={`Share ${product.name}`}
+                  >
+                    <Share2 className='w-5 h-5 text-neutral-700' />
+                  </button>
                 </div>
 
-                {productImages.length > 1 && (
+                {/* Desktop Dots - ONLY for 3D Products */}
+                {is3DProduct && productImages.length > 1 && (
                   <div className='absolute hidden bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
                     {productImages.map((_, i) => (
                       <button
@@ -486,7 +480,30 @@ export default function ProductDetailClient ({ product }) {
                 )}
               </div>
 
-              {productImages.length > 1 && (
+              {!is3DProduct && productImages.length > 1 && (
+                <div className='flex gap-3 overflow-x-auto p-2'>
+                  {productImages.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImage(i)}
+                      className={`relative cursor-pointer w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden transition-all ${
+                        selectedImage === i
+                          ? 'ring-2 ring-neutral-900 ring-offset-2'
+                          : 'opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <Image
+                        src={img}
+                        alt={`View ${i + 1}`}
+                        fill
+                        className='object-cover'
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {is3DProduct && productImages.length > 1 && (
                 <div className='hidden lg:hidden grid-cols-2 gap-3'>
                   {productImages.map((img, i) => (
                     <button
@@ -498,7 +515,12 @@ export default function ProductDetailClient ({ product }) {
                           : 'opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <Image src={img} alt='' fill className='object-cover' />
+                      <Image
+                        src={img}
+                        alt=''
+                        fill
+                        className='object-cover'
+                      />
                     </button>
                   ))}
                 </div>
@@ -549,24 +571,35 @@ export default function ProductDetailClient ({ product }) {
                   <h1 className='text-5xl the-seasons lg:text-6xl xl:text-7xl font-light text-neutral-900 tracking-tight leading-[0.95]'>
                     {product.name}
                   </h1>
-                  <p className='text-lg lg:text-xl text-neutral-600 font-light italic'>
+                  {is3DProduct && (
+   <p className='text-lg lg:text-xl text-neutral-600 font-light italic'>
                     {product.tagline}
                   </p>
+                  )}
+               
                 </div>
 
                 <div className='flex flex-wrap items-center py-2 gap-4 md:py-6 border-y border-neutral-200'>
                   <span className='text-2xl md:text-5xl font-light text-neutral-900'>
                     ₹{product.price.toLocaleString()}
                   </span>
-                  <span className='text-xl text-neutral-400 line-through font-light'>
-                    ₹{product.mrp.toLocaleString()}
-                  </span>
-                  <span className='ml-auto text-xs font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full'>
-                    {Math.round(
-                      ((product.mrp - product.price) / product.mrp) * 100
-                    )}
-                    % OFF
-                  </span>
+                  {is3DProduct && (
+                    <span className='text-xl text-neutral-400 line-through font-light'>
+                      ₹{product.mrp.toLocaleString()}
+                    </span>
+                  )}
+              
+                  {is3DProduct && (
+                    <div className='ml-4'>
+                      <span className='text-xs font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full'>
+                        {Math.round(
+                          ((product.mrp - product.price) / product.mrp) * 100
+                        )}
+                        % OFF
+                      </span>
+                    </div>
+                  )}
+              
                 </div>
 
                 <div className='mt-5 md:mt-0 space-y-3'>
@@ -819,7 +852,6 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
                             </div>
                             <div className='flex flex-col justify-center gap-0.5'>
                               {' '}
-                      
                               <span className='text-xs mb-1 md:text-sm font-black text-neutral-900 leading-tight block'>
                                 {review.name || 'Verified Client'}
                               </span>
@@ -923,7 +955,6 @@ disabled:opacity-80 disabled:cursor-not-allowed`}
       {showReviewModal && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4'>
           <div className='w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200'>
-
             <div className='flex items-center justify-between md:px-6 px-6 py-4 md:py-5 border-b border-neutral-200'>
               <div>
                 <p className='text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500'>

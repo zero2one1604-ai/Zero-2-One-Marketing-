@@ -18,8 +18,10 @@ export default function CheckoutPage() {
   const [addressSaved, setAddressSaved] = useState(false)
   const [product, setProduct] = useState(null)
   const [showEditModal, setShowEditModal] = useState(false)
-  
-  const [paymentMethod, setPaymentMethod] = useState('prepaid')
+  const [isFirstTimeBuyer, setIsFirstTimeBuyer] = useState(false)
+  const [discount, setDiscount] = useState(0)
+
+  const [paymentMethod, setPaymentMethod] = useState('online')
 
   const [form, setForm] = useState({
     full_name: '',
@@ -66,13 +68,34 @@ export default function CheckoutPage() {
       if (!item) return
       const matchedProduct = products.find(p => String(p.id) === String(item.product_id))
       setProduct({ ...matchedProduct, quantity: item.quantity })
+
+      // Check if user is first-time buyer
+      if (data.email) {
+        const { data: previousOrders, error: ordersError } = await supabase
+          .from('orders')
+          .select('id')
+          .eq('email', data.email)
+          .neq('id', orderId)
+          .neq('status', 'cancelled')
+
+        if (ordersError) {
+          console.error('Error checking previous orders:', ordersError)
+        } else {
+          const isFirstTime = previousOrders.length === 0
+          setIsFirstTimeBuyer(isFirstTime)
+          if (isFirstTime) {
+            const discountAmount = Math.round(data.total_amount * 0.1)
+            setDiscount(discountAmount)
+          }
+        }
+      }
     }
     fetchOrder()
   }, [orderId])
 
   const subtotal = order?.total_amount || 0
   const shippingCharge = paymentMethod === 'cod' ? 100 : 0
-  const finalTotal = subtotal + shippingCharge
+  const finalTotal = subtotal - discount + shippingCharge
 
   const handleAddressSave = async () => {
     if (!form.full_name || !form.phone || !form.address_line1 || !form.city || !form.state || !form.pincode) {
@@ -100,8 +123,8 @@ export default function CheckoutPage() {
 
   const handleCheckoutAction = async () => {
     if (!addressSaved) return alert('Please save delivery address first')
-    
-    if (paymentMethod === 'prepaid') {
+
+    if (paymentMethod === 'online') {
       setLoading(true)
       const res = await loadRazorpay()
       if (!res) { alert('Gateway failed'); setLoading(false); return }
@@ -250,8 +273,6 @@ export default function CheckoutPage() {
     </div>
   </div>
 </div>
-
-
             {!addressSaved ? (
               <div className="bg-white rounded-2xl sm:rounded-3xl border border-neutral-200 p-6 sm:p-8 space-y-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -529,7 +550,14 @@ export default function CheckoutPage() {
                     <span className="text-neutral-600 font-light">Subtotal</span>
                     <span className="text-neutral-900 font-medium">₹{subtotal.toLocaleString()}</span>
                   </div>
-                  
+
+                  {isFirstTimeBuyer && discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600 font-light">First Time Buyer Discount (10%)</span>
+                      <span className="text-green-600 font-semibold">-₹{discount.toLocaleString()}</span>
+                    </div>
+                  )}
+
                   <div className="flex justify-between text-sm">
                     <span className="text-neutral-600 font-light">Shipping</span>
                     <span className={`font-semibold ${paymentMethod === 'online' ? 'text-green-600' : 'text-neutral-900'}`}>

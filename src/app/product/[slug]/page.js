@@ -30,14 +30,14 @@ export async function generateMetadata({ params }) {
       product.category
     ].join(', '),
     openGraph: {
-      title: `${product.name} by ${product.brand}`,
+      title: `${product.name} by Saavi`,
       description: product.tagline,
       images: [product.image],
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.name} by ${product.brand}`,
+      title: `${product.name} by Saavi`,
       description: product.tagline,
       images: [product.image],
     },

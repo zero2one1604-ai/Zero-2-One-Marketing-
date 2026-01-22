@@ -1,0 +1,5 @@
+- [ ] Add state for discount and first-time buyer check
+- [ ] Implement function to check if user is first-time buyer
+- [ ] Calculate discount and adjusted subtotal
+- [ ] Update order summary to display discount
+- [ ] Ensure discounted total is used in payment processing

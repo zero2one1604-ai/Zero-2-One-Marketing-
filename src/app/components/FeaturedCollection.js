@@ -61,11 +61,11 @@ export default function LuxuryPerfumeGallery () {
               onMouseEnter={() => setHoveredId(perfume.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className='relative bg-white rounded-2xl overflow-hidden border border-amber-200/10 shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
+              <div className='relative bg-white rounded-2xl overflow-hidden border border-amber-200/10 transition-all duration-500 hover:scale-[1.02] hover:shadow-amber-500/20'>
                 <div className='relative h-fit overflow-hidden'>
                   <Link href={`/product/${perfume.slug}`}>
                     <Image
-                      src={perfume.image}
+                      src={perfume.proimage}
                       alt={`${perfume.name} perfume bottle`}
                       width={600}
                       height={600}
@@ -132,7 +132,6 @@ export default function LuxuryPerfumeGallery () {
 w-full py-2 mt-2 md:py-3.5 cursor-pointer
 bg-gradient-to-br from-[#C9A43B] via-[#F1DB8A] to-[#9C7A22]
 text-[#1A1405]
-shadow-[0_6px_24px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.45)]
 transition-all duration-300
 hover:shadow-[0_10px_32px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.45),inset_0_-2px_0_rgba(0,0,0,0.35)]
 hover:from-[#B08D2A] hover:via-[#E6C96A] hover:to-[#8A6A1C]
